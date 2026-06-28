@@ -21,7 +21,7 @@ return [
             'host' => 'localhost',
             'port' => '3306',
             'username' => 'aduser',
-            'password' => 'RealFly2026',
+            'password' => 'RealFly2026!',
             'database' => 'realflylink',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
