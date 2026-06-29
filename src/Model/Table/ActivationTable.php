@@ -10,23 +10,23 @@ class ActivationTable extends Table
 {
     public function initialize(array $config)
     {
-        $this->_table = false;
+        $this->_table = true;
     }
 
     public function checkLicense()
     {
-        $Options = TableRegistry::getTableLocator()->get('Options');
+        // $Options = TableRegistry::getTableLocator()->get('Options');
 
-        $personal_token = $Options->find()->where(['name' => 'personal_token'])->first();
-        $purchase_code = $Options->find()->where(['name' => 'purchase_code'])->first();
+        // $personal_token = $Options->find()->where(['name' => 'personal_token'])->first();
+        // $purchase_code = $Options->find()->where(['name' => 'purchase_code'])->first();
 
-        if (empty($personal_token->value) || empty($purchase_code->value)) {
-            return false;
-        }
+        // if (empty($personal_token->value) || empty($purchase_code->value)) {
+        //     return false;
+        // }
 
-        if (!$this->validateLicense()) {
-            return false;
-        }
+        // if (!$this->validateLicense()) {
+        //     return false;
+        // }
 
         return true;
     }
