@@ -59,25 +59,25 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => ['no_reply@adlinkfly.local' => 'AdLinkFly'],
+            'from' => ['no_reply@realflylink.com' => 'RealFlyLink'],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
         'smtp' => [
             'transport' => 'smtp',
-            'from' => ['no_reply@adlinkfly.local' => 'AdLinkFly'],
+            'from' => ['no_reply@realflylink.com' => 'RealFlyLink'],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
         'mail2' => [
             'transport' => 'mail2',
-            'from' => ['no_reply@adlinkfly.local' => 'AdLinkFly'],
+            'from' => ['no_reply@realflylink.com' => 'RealFlyLink'],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
         'sendmail' => [
             'transport' => 'sendmail',
-            'from' => ['no_reply@adlinkfly.local' => 'AdLinkFly'],
+            'from' => ['no_reply@realflylink.com' => 'RealFlyLink'],
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
 <head>
+<meta name="monetag" content="a269f41b5d2fd7c574d0c60467123811"/>
     <?= $this->element('front_head'); ?>
 </head>
 <body class="<?= ($this->request->getParam('_name') === 'home') ? 'home' : 'inner-page' ?>">

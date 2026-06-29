@@ -115,5 +115,6 @@
 
 <?= $this->fetch('scriptBottom') ?>
 <?= get_option('footer_code'); ?>
+<script src="https://quge5.com/88/tag.min.js" data-zone="254351" async data-cfasync="false"></script>
 </body>
 </html>
