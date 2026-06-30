@@ -100,7 +100,7 @@ html, body {
   color: var(--rf-muted) !important;
   font-size: 13px !important;
   font-weight: 500 !important;
-  padding: 22px 14px !important;
+  padding: 12px 10px !important;
   background: transparent !important;
   transition: color 0.2s;
   letter-spacing: 0.3px;

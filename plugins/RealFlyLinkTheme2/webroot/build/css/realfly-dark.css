@@ -96,7 +96,7 @@ html, body {
   color: var(--rf-muted) !important;
   font-size: 13px !important;
   font-weight: 500 !important;
-  padding: 22px 14px !important;
+  padding: 12px 10px !important;
   letter-spacing: 0.2px;
   transition: color 0.2s;
   background: transparent !important;
