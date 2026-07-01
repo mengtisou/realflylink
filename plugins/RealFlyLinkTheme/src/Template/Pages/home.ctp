@@ -1,336 +1,253 @@
 <?php
 /**
- * RealFlyLink — Home Page
- * Design: matches realflylink-modern.jsx exactly
- * Benchmarked from: plugins/CloudTheme (original AdLinkFly CloudTheme)
- * Fixes: $5.000000 price, duplicate nav, low user count, input layout
+ * RealFlyLink — home.ctp
+ * Bootstrap 3 grid (.container .row .col-*) for all layouts
+ * RF classes for visual styling only
  */
-$this->assign('title',         (get_option('site_meta_title')) ?: get_option('site_name'));
-$this->assign('description',   get_option('description'));
-$this->assign('content_title', get_option('site_name'));
+$this->assign('title',       (get_option('site_meta_title')) ?: get_option('site_name'));
+$this->assign('description', get_option('description'));
 
-// ── Fix price format — prevents $5.000000 ──────────────────────
-$minWithdraw = '$' . number_format((float)get_option('minimum_withdrawal_amount'), 2);
-
-// ── Publisher count — minimum 1,000 so new sites don't look empty
-$realUsers   = isset($totalUsers) ? (int)$totalUsers : 0;
-$realClicks  = isset($totalClicks) ? (int)str_replace([',',' '], '', (string)$totalClicks) : 0;
-$realLinks   = isset($totalLinks)  ? (int)str_replace([',',' '], '', (string)$totalLinks)  : 0;
-
-$showUsers  = max($realUsers,  1000);
-$showClicks = max($realClicks, 1240567);
-$showLinks  = max($realLinks,  48230);
-
-$displayUsers = number_format($showUsers);
+$minWith   = '$' . number_format((float)get_option('minimum_withdrawal_amount'), 2);
+$realU     = isset($totalUsers)  ? (int)$totalUsers  : 0;
+$realC     = isset($totalClicks) ? (int)str_replace([',',' '], '', (string)$totalClicks) : 0;
+$realL     = isset($totalLinks)  ? (int)str_replace([',',' '], '', (string)$totalLinks)  : 0;
+$sU        = max($realU, 1000);
+$sC        = max($realC, 1240567);
+$sL        = max($realL, 48230);
+$dU        = number_format($sU);
 ?>
 
-<!-- ══════════════════════════════════════
-     LIVE PAYMENT TICKER
-══════════════════════════════════════ -->
+<!-- TICKER -->
 <div class="rf-ticker">
-    <div class="rf-ticker-dot"></div>
-    <span class="rf-ticker-mu">🎉 <?= __('Just paid:') ?></span>
+    <div class="rf-dot"></div>
+    <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
     <span class="rf-ticker-user" id="rf-ticker-user">🇰🇭 Sou***412</span>
-    <span class="rf-ticker-mu"><?= __('received') ?></span>
-    <span class="rf-ticker-amount" id="rf-ticker-amount">$12.50</span>
-    <span class="rf-ticker-mu">
-        <?= __('via') ?> <span id="rf-ticker-method">PayPal</span>
-        &middot; <span id="rf-ticker-date">Jun 29</span>
-    </span>
-    <a href="<?= build_main_domain_url('/page/payment-proof') ?>" class="rf-ticker-link">
-        <?= __('View all →') ?>
-    </a>
+    <span class="rf-mu"><?= __('received') ?></span>
+    <span class="rf-ticker-amt" id="rf-ticker-amount">$12.50</span>
+    <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method">PayPal</span> · <span id="rf-ticker-date">Jun 29</span></span>
+    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('View all →') ?></a>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     HERO
-══════════════════════════════════════ -->
-<header class="shorten rf-hero">
+<!-- HERO -->
+<header class="shorten">
     <div class="section-inner">
-        <div class="container">
-            <div class="intro-text" style="text-align:center;">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
 
-                <!-- Badge -->
-                <div class="rf-hero-badge-wrap">
-                    <span class="rf-hero-badge">
-                        <span class="rf-hero-badge-dot"></span>
-                        <?= __('Earn up to $8 per 1,000 clicks · Join') ?>
-                        <?= $displayUsers ?>+
-                        <?= __('publishers') ?>
+                    <span class="rf-badge">
+                        <span class="rf-badge-dot"></span>
+                        <?= __('Earn up to $8 per 1,000 clicks · Join') ?> <?= $dU ?>+ <?= __('publishers') ?>
                     </span>
-                </div>
 
-                <!-- Headline -->
-                <h1 class="intro-heading rf-h1">
-                    <span class="rf-h1-white"><?= __('Shorten Links.') ?></span><br>
-                    <span class="rf-h1-grad"><?= __('Earn Money Daily.') ?></span>
-                </h1>
+                    <h1 class="intro-heading">
+                        <span class="rf-wh"><?= __('Shorten Links.') ?></span><br>
+                        <span class="rf-gr"><?= __('Earn Money Daily.') ?></span>
+                    </h1>
 
-                <p class="rf-hero-sub">
-                    <?= __('The world\'s most trusted monetized URL shortener.') ?><br>
-                    <?= __('Get paid for every click — PayPal, USDT, and more.') ?>
-                </p>
+                    <p class="rf-hero-sub">
+                        <?= __("The world's most trusted monetized URL shortener.") ?><br>
+                        <?= __('Get paid for every click — PayPal, USDT, and more.') ?>
+                    </p>
 
-                <!-- URL Input — single unified box matching JSX exactly -->
-                <?php if (get_option('home_shortening') == 'yes'): ?>
-                <div class="rf-url-box">
-                    <?= $this->element('shorten'); ?>
-                </div>
-                <p class="rf-url-hint"><?= __('Free forever · No signup required to try') ?></p>
-                <?php endif; ?>
-
-                <!-- Trust badges -->
-                <div class="rf-trust-row">
-                    <div class="rf-trust-item"><span>💵</span> <?= __('Daily Payouts') ?></div>
-                    <div class="rf-trust-item"><span>🔒</span> <?= __('SSL Secured') ?></div>
-                    <div class="rf-trust-item"><span>🌍</span> <?= __('200+ Countries') ?></div>
-                    <div class="rf-trust-item"><span>⚡</span> <?= __('Instant Redirect') ?></div>
-                    <?php if ((bool)get_option('enable_referrals', 1)): ?>
-                    <div class="rf-trust-item">
-                        <span>👥</span> <?= h(get_option('referral_percentage')) ?>% <?= __('Referral') ?>
+                    <?php if (get_option('home_shortening') == 'yes'): ?>
+                    <div class="rf-url-box">
+                        <?= $this->element('shorten') ?>
                     </div>
+                    <p class="rf-url-hint"><?= __('Free forever · No signup required to try') ?></p>
                     <?php endif; ?>
-                </div>
 
+                    <div class="rf-trust-row">
+                        <div class="rf-trust-item">💵 <?= __('Daily Payouts') ?></div>
+                        <div class="rf-trust-item">🔒 <?= __('SSL Secured') ?></div>
+                        <div class="rf-trust-item">🌍 <?= __('200+ Countries') ?></div>
+                        <div class="rf-trust-item">⚡ <?= __('Instant Redirect') ?></div>
+                        <?php if ((bool)get_option('enable_referrals', 1)): ?>
+                        <div class="rf-trust-item">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('Referral') ?></div>
+                        <?php endif; ?>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </header>
 
-
-<!-- ══════════════════════════════════════
-     ANIMATED STATS BAR
-══════════════════════════════════════ -->
+<!-- STATS -->
 <?php if ((bool)get_option('display_home_stats', 1)): ?>
-<div class="rf-stats-bar" id="rf-stats-bar">
-    <div class="rf-stats-inner">
-        <div class="rf-stats-grid">
-            <div>
-                <div class="rf-stat-num">
-                    <span class="rf-count-up" data-target="<?= $showClicks ?>" data-suffix="+"><?= number_format($showClicks) ?>+</span>
-                </div>
+<div class="rf-stats-bar">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
+                <div class="rf-stat-num rf-count-up" data-target="<?= $sC ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Total Clicks') ?></div>
-            </div>
-            <div>
-                <div class="rf-stat-num">
-                    <span class="rf-count-up" data-target="<?= $showLinks ?>" data-suffix="+"><?= number_format($showLinks) ?>+</span>
-                </div>
+            </div></div>
+            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
+                <div class="rf-stat-num rf-count-up" data-target="<?= $sL ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Links Created') ?></div>
-            </div>
-            <div>
-                <div class="rf-stat-num">
-                    <span class="rf-count-up" data-target="<?= $showUsers ?>" data-suffix="+"><?= $displayUsers ?>+</span>
-                </div>
+            </div></div>
+            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
+                <div class="rf-stat-num rf-count-up" data-target="<?= $sU ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Publishers') ?></div>
-            </div>
-            <div>
-                <div class="rf-stat-num">
-                    <span class="rf-count-up" data-target="45230" data-prefix="$" data-suffix="+">$45,230+</span>
-                </div>
+            </div></div>
+            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
+                <div class="rf-stat-num rf-count-up" data-target="45230" data-prefix="$" data-suffix="+">$0+</div>
                 <div class="rf-stat-lbl"><?= __('Total Paid Out') ?></div>
-            </div>
+            </div></div>
         </div>
     </div>
 </div>
 <?php endif; ?>
 
-
-<!-- ══════════════════════════════════════
-     HOW IT WORKS — 3 STEPS
-══════════════════════════════════════ -->
-<div class="rf-section-bg">
-    <div class="rf-section rf-text-center">
+<!-- HOW IT WORKS -->
+<div class="rf-bg-main">
+    <div class="container rf-pad text-center">
         <span class="rf-eyebrow"><?= __('How it works') ?></span>
-        <h2 class="rf-sec-title"><?= __('3 steps to start earning') ?></h2>
-
-        <div class="rf-steps-grid">
-            <div class="rf-step-card">
-                <div class="rf-step-num">01</div>
-                <div class="rf-step-icon">👤</div>
-                <div class="rf-step-title"><?= __('Create Account') ?></div>
-                <div class="rf-step-desc"><?= __('Sign up free in 30 seconds. No credit card needed.') ?></div>
-                <div class="rf-step-bar rf-grad-bar"></div>
+        <h2 class="rf-sec-h"><?= __('3 steps to start earning') ?></h2>
+        <div class="row" style="margin-top:32px">
+            <?php
+            $steps = [
+                ['n'=>'01','i'=>'👤','t'=>__('Create Account'),     'd'=>__('Sign up free in 30 seconds. No credit card needed.'),'b'=>'a'],
+                ['n'=>'02','i'=>'🔗','t'=>__('Shorten Your Links'), 'd'=>__('Paste any URL and get a short link instantly.'),       'b'=>'b'],
+                ['n'=>'03','i'=>'💰','t'=>__('Share & Earn'),        'd'=>__('Share your links. Earn money for every visitor.'),     'b'=>'a'],
+            ];
+            foreach ($steps as $s):
+            ?>
+            <div class="col-sm-4" style="margin-bottom:20px">
+                <div class="rf-card rf-step">
+                    <div class="rf-step-n"><?= $s['n'] ?></div>
+                    <div class="rf-step-ico"><?= $s['i'] ?></div>
+                    <div class="rf-step-t"><?= $s['t'] ?></div>
+                    <p class="rf-step-d"><?= $s['d'] ?></p>
+                    <div class="rf-step-bar rf-bar-<?= $s['b'] ?>"></div>
+                </div>
             </div>
-            <div class="rf-step-card">
-                <div class="rf-step-num">02</div>
-                <div class="rf-step-icon">🔗</div>
-                <div class="rf-step-title"><?= __('Shorten Your Links') ?></div>
-                <div class="rf-step-desc"><?= __('Paste any URL and get a short') ?> <?= h(get_option('site_name')) ?> <?= __('link instantly.') ?></div>
-                <div class="rf-step-bar rf-gradr-bar"></div>
-            </div>
-            <div class="rf-step-card">
-                <div class="rf-step-num">03</div>
-                <div class="rf-step-icon">💰</div>
-                <div class="rf-step-title"><?= __('Share & Earn') ?></div>
-                <div class="rf-step-desc"><?= __('Share your links. Earn money for every visitor who clicks.') ?></div>
-                <div class="rf-step-bar rf-grad-bar"></div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     FEATURES BENTO GRID
-══════════════════════════════════════ -->
-<div class="rf-surface">
-    <div class="rf-section rf-text-center">
+<!-- FEATURES -->
+<div class="rf-bg-alt">
+    <div class="container rf-pad text-center">
         <span class="rf-eyebrow"><?= __('Features') ?></span>
-        <h2 class="rf-sec-title"><?= __('Everything you need to earn') ?></h2>
-
-        <div class="rf-feats-grid">
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">⚡</div>
-                <div class="rf-feat-title"><?= __('Instant Payouts') ?></div>
-                <div class="rf-feat-desc"><?= __('Withdraw daily via PayPal or USDT. Minimum just') ?> <?= $minWithdraw ?>.</div>
+        <h2 class="rf-sec-h"><?= __('Why join') ?> <?= h(get_option('site_name')) ?>?</h2>
+        <div class="row" style="margin-top:32px">
+            <?php
+            $feats = [
+                ['i'=>'⚡','t'=>__('Instant Payouts'),    'd'=>__('Withdraw daily via PayPal or USDT. Minimum just') . ' ' . $minWith . '.'],
+                ['i'=>'🌍','t'=>__('Global Traffic'),     'd'=>__('Earn from visitors worldwide. Higher rates for Tier 1 countries.')],
+                ['i'=>'📊','t'=>__('Real-time Stats'),    'd'=>__('Track clicks, earnings, and countries in your dashboard.')],
+                ['i'=>'🔗','t'=>__('API Access'),         'd'=>__('Integrate our shortener into your own apps and tools.')],
+                ['i'=>'🔒','t'=>__('Secure & Safe'),      'd'=>__('SSL encrypted. Your data and earnings are always protected.')],
+                ['i'=>'💎','t'=>__('Highest Rates'),      'd'=>__('Our CPM rates are among the best. More traffic = more money.')],
+                ['i'=>'🛡️','t'=>__('Admin Dashboard'),    'd'=>__('Full control panel. Manage links, stats, payouts, users.')],
+                ['i'=>'💬','t'=>__('Dedicated Support'),  'd'=>__('Our team is ready to help with any questions.')],
+            ];
+            if ((bool)get_option('enable_referrals', 1)) {
+                array_splice($feats, 4, 0, [[
+                    'i' => '👥',
+                    't' => h(get_option('referral_percentage')) . '% ' . __('Referral'),
+                    'd' => __('Earn') . ' ' . h(get_option('referral_percentage')) . '% ' . __("of your referrals' earnings — forever."),
+                ]]);
+            }
+            foreach ($feats as $f):
+            ?>
+            <div class="col-sm-4" style="margin-bottom:16px">
+                <div class="rf-card">
+                    <div class="rf-feat-ico"><?= $f['i'] ?></div>
+                    <div class="rf-feat-t"><?= $f['t'] ?></div>
+                    <p class="rf-feat-d"><?= $f['d'] ?></p>
+                </div>
             </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">🌍</div>
-                <div class="rf-feat-title"><?= __('Global Traffic') ?></div>
-                <div class="rf-feat-desc"><?= __('Earn from visitors worldwide. Higher rates for Tier 1 countries.') ?></div>
-            </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">📊</div>
-                <div class="rf-feat-title"><?= __('Real-time Stats') ?></div>
-                <div class="rf-feat-desc"><?= __('Track clicks, earnings, and countries in your dashboard.') ?></div>
-            </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">🔗</div>
-                <div class="rf-feat-title"><?= __('API Access') ?></div>
-                <div class="rf-feat-desc"><?= __('Integrate our shortener into your own apps and tools.') ?></div>
-            </div>
-            <?php if ((bool)get_option('enable_referrals', 1)): ?>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">👥</div>
-                <div class="rf-feat-title"><?= h(get_option('referral_percentage')) ?>% <?= __('Referral') ?></div>
-                <div class="rf-feat-desc"><?= __('Earn') ?> <?= h(get_option('referral_percentage')) ?>% <?= __("of your referrals' earnings — forever.") ?></div>
-            </div>
-            <?php endif; ?>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">🔒</div>
-                <div class="rf-feat-title"><?= __('Secure & Safe') ?></div>
-                <div class="rf-feat-desc"><?= __('SSL encrypted. Your data and earnings are always protected.') ?></div>
-            </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">💎</div>
-                <div class="rf-feat-title"><?= __('Highest Rates') ?></div>
-                <div class="rf-feat-desc"><?= __('Our CPM rates are among the best. More traffic = more money.') ?></div>
-            </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">🛡️</div>
-                <div class="rf-feat-title"><?= __('Admin Dashboard') ?></div>
-                <div class="rf-feat-desc"><?= __('Full control panel. Manage links, stats, payouts, users.') ?></div>
-            </div>
-            <div class="rf-feat-card">
-                <div class="rf-feat-icon">💬</div>
-                <div class="rf-feat-title"><?= __('Dedicated Support') ?></div>
-                <div class="rf-feat-desc"><?= __('Our team is ready to help with any questions.') ?></div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     CPM RATES TABLE
-══════════════════════════════════════ -->
-<div class="rf-section-bg">
-    <div class="rf-section">
-        <div class="rf-rates-grid">
-
-            <!-- Left text -->
-            <div>
+<!-- CPM RATES -->
+<div class="rf-bg-main">
+    <div class="container rf-pad">
+        <div class="row">
+            <div class="col-sm-5" style="margin-bottom:24px">
                 <span class="rf-eyebrow"><?= __('Publisher Rates') ?></span>
-                <h2 class="rf-sec-title" style="font-size:32px;"><?= __('Earn more from every click') ?></h2>
-                <p class="rf-sec-sub" style="margin-bottom:24px;"><?= __('Our CPM rates are among the highest in the industry. Higher traffic quality = higher earnings.') ?></p>
-
-                <div class="rf-pay-list">
+                <h2 class="rf-sec-h"><?= __('Earn more from every click') ?></h2>
+                <p class="rf-sec-sub"><?= __('Our CPM rates are among the highest in the industry.') ?></p>
+                <ul class="rf-pay-list">
                     <?php
                     $methods = get_withdrawal_methods();
-                    $fallback = ['PayPal','USDT TRC20','USDT BEP20','USDT ERC20','WebMoney'];
-                    $list = !empty($methods) ? array_map(fn($m) => $m['name'] ?? $m['label'] ?? '', $methods) : $fallback;
-                    foreach ($list as $m):
+                    $fb = ['PayPal','USDT TRC20','USDT BEP20','USDT ERC20','WebMoney'];
+                    $ml = !empty($methods) ? array_map(fn($m)=>$m['name']??$m['label']??'',$methods) : $fb;
+                    foreach ($ml as $m):
                     ?>
-                        <div class="rf-pay-item">
-                            <div class="rf-pay-dot"></div>
-                            <?= h($m) ?>
-                        </div>
+                    <li class="rf-pay-item"><span class="rf-pay-dot"></span><?= h($m) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary">
+                    <?= __('Start Earning Free →') ?>
+                </a>
+            </div>
+            <div class="col-sm-7" style="margin-bottom:24px">
+                <div class="rf-rates-tbl">
+                    <div class="rf-rates-hd">
+                        <span><?= __('Country') ?></span>
+                        <span style="margin-right:30px"><?= __('Tier') ?></span>
+                        <span><?= __('CPM Rate') ?></span>
+                    </div>
+                    <?php
+                    $rates = [
+                        ['f'=>'🇺🇸','n'=>__('United States'), 'r'=>'$8.00','t'=>1],
+                        ['f'=>'🇬🇧','n'=>__('United Kingdom'),'r'=>'$6.00','t'=>1],
+                        ['f'=>'🇨🇦','n'=>__('Canada'),         'r'=>'$5.00','t'=>1],
+                        ['f'=>'🇦🇺','n'=>__('Australia'),      'r'=>'$4.00','t'=>1],
+                        ['f'=>'🇩🇪','n'=>__('Germany'),        'r'=>'$3.00','t'=>2],
+                        ['f'=>'🌏', 'n'=>__('SE Asia'),        'r'=>'$1.00','t'=>3],
+                        ['f'=>'🌍', 'n'=>__('Rest of World'),  'r'=>'$0.50','t'=>3],
+                    ];
+                    foreach ($rates as $r):
+                    ?>
+                    <div class="rf-rate-row">
+                        <span class="rf-rate-c"><?= $r['f'] ?> <?= $r['n'] ?></span>
+                        <span class="rf-tier rf-t<?= $r['t'] ?>">Tier <?= $r['t'] ?></span>
+                        <span class="rf-cpm"><?= $r['r'] ?></span>
+                    </div>
                     <?php endforeach; ?>
                 </div>
-
-                <div style="margin-top:28px;">
-                    <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary">
-                        <?= __('Start Earning Free →') ?>
-                    </a>
-                </div>
             </div>
-
-            <!-- Right table -->
-            <div class="rf-card rf-rates-table">
-                <div class="rf-rates-thead">
-                    <span><?= __('Country') ?></span>
-                    <span style="margin-right:40px;"><?= __('Tier') ?></span>
-                    <span><?= __('CPM Rate') ?></span>
-                </div>
-                <?php
-                $rates = [
-                    ['flag'=>'🇺🇸','name'=>__('United States'), 'rate'=>'$8.00','tier'=>1],
-                    ['flag'=>'🇬🇧','name'=>__('United Kingdom'),'rate'=>'$6.00','tier'=>1],
-                    ['flag'=>'🇨🇦','name'=>__('Canada'),         'rate'=>'$5.00','tier'=>1],
-                    ['flag'=>'🇦🇺','name'=>__('Australia'),      'rate'=>'$4.00','tier'=>1],
-                    ['flag'=>'🇩🇪','name'=>__('Germany'),        'rate'=>'$3.00','tier'=>2],
-                    ['flag'=>'🌏','name'=>__('SE Asia'),         'rate'=>'$1.00','tier'=>3],
-                    ['flag'=>'🌍','name'=>__('Rest of World'),   'rate'=>'$0.50','tier'=>3],
-                ];
-                foreach ($rates as $i => $r):
-                ?>
-                <div class="rf-rates-row <?= $i % 2 !== 0 ? 'rf-rates-alt' : '' ?>">
-                    <span class="rf-rates-country"><?= $r['flag'] ?> <?= $r['name'] ?></span>
-                    <span class="rf-tier rf-tier-<?= $r['tier'] ?>">Tier <?= $r['tier'] ?></span>
-                    <span class="rf-cpm"><?= $r['rate'] ?></span>
-                </div>
-                <?php endforeach; ?>
-            </div>
-
         </div>
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     PAYMENT PROOF
-══════════════════════════════════════ -->
-<div class="rf-surface">
-    <div class="rf-section">
-        <div class="rf-text-center" style="margin-bottom:40px;">
+<!-- PAYMENT PROOF -->
+<div class="rf-bg-alt">
+    <div class="container rf-pad">
+        <div class="text-center" style="margin-bottom:36px">
             <span class="rf-eyebrow"><?= __('Transparency') ?></span>
-            <h2 class="rf-sec-title"><?= __('Real payments, real publishers') ?></h2>
-            <p class="rf-sec-sub" style="max-width:560px;margin:0 auto;"><?= __('Every payment is public. See what publishers earn every day.') ?></p>
+            <h2 class="rf-sec-h"><?= __('Real payments, real publishers') ?></h2>
+            <p class="rf-sec-sub" style="max-width:500px;margin:0 auto">
+                <?= __('Every payment is public. See what publishers earn every day.') ?>
+            </p>
         </div>
-
-        <!-- Summary cards -->
-        <div class="rf-proof-summary">
-            <div class="rf-card rf-proof-card">
-                <div class="rf-proof-icon">💵</div>
-                <div class="rf-proof-val">$4,230+</div>
-                <div class="rf-proof-lbl"><?= __('Total Paid This Month') ?></div>
+        <div class="row" style="margin-bottom:20px">
+            <?php
+            $cards = [
+                ['i'=>'💵','v'=>'$4,230+','l'=>__('Total Paid This Month')],
+                ['i'=>'👥','v'=>'47+',    'l'=>__('Publishers Paid Today')],
+                ['i'=>'🏆','v'=>'$145.20','l'=>__('Largest Single Payout')],
+            ];
+            foreach ($cards as $c):
+            ?>
+            <div class="col-sm-4" style="margin-bottom:14px">
+                <div class="rf-proof-card">
+                    <div class="rf-proof-ico"><?= $c['i'] ?></div>
+                    <div class="rf-proof-val"><?= $c['v'] ?></div>
+                    <p class="rf-proof-lbl"><?= $c['l'] ?></p>
+                </div>
             </div>
-            <div class="rf-card rf-proof-card">
-                <div class="rf-proof-icon">👥</div>
-                <div class="rf-proof-val">47+</div>
-                <div class="rf-proof-lbl"><?= __('Publishers Paid Today') ?></div>
-            </div>
-            <div class="rf-card rf-proof-card">
-                <div class="rf-proof-icon">🏆</div>
-                <div class="rf-proof-val">$145.20</div>
-                <div class="rf-proof-lbl"><?= __('Largest Single Payout') ?></div>
-            </div>
+            <?php endforeach; ?>
         </div>
-
-        <!-- Proof table -->
-        <div class="rf-card rf-proof-table">
-            <div class="rf-proof-thead">
+        <div class="rf-proof-tbl">
+            <div class="rf-proof-hd">
                 <span><?= __('Publisher') ?></span>
                 <span><?= __('Amount') ?></span>
                 <span><?= __('Method') ?></span>
@@ -351,7 +268,7 @@ $displayUsers = number_format($showUsers);
             ];
             foreach ($proofs as $i => $p):
             ?>
-            <div class="rf-proof-row<?= $i === 0 ? ' rf-active' : '' ?>">
+            <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
                 <span class="rf-proof-user"><?= $p['c'] ?> <?= $p['u'] ?></span>
                 <span class="rf-proof-amount"><?= $p['a'] ?></span>
                 <span class="rf-proof-method"><?= $p['m'] ?></span>
@@ -359,57 +276,41 @@ $displayUsers = number_format($showUsers);
             </div>
             <?php endforeach; ?>
         </div>
-
         <p class="rf-proof-note">
-            <?= __('Showing recent payments · Usernames partially masked for privacy') ?>
-            &nbsp;·&nbsp;
-            <a href="<?= build_main_domain_url('/page/payment-proof') ?>" class="rf-proof-link">
-                <?= __('View all payments →') ?>
-            </a>
+            <?= __('Showing recent payments · Usernames partially masked for privacy') ?> ·
+            <a href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('View all →') ?></a>
         </p>
     </div>
 </div>
 
-
-<!-- ══════════════════════════════════════
-     TESTIMONIALS (original CakePHP cell)
-══════════════════════════════════════ -->
+<!-- TESTIMONIALS -->
 <?= $this->cell('Testimonial', [], ['cache' => ['config'=>'1day','key'=>'home_t_'.locale_get_default()]]) ?>
 
-
-<!-- ══════════════════════════════════════
-     CONTACT (original element)
-══════════════════════════════════════ -->
+<!-- CONTACT -->
 <section id="contact">
     <div class="container">
         <div class="section-title text-center">
             <h3 class="section-subheading"><?= __('Contact Us') ?></h3>
             <h2 class="section-heading"><?= __('Get in touch!') ?></h2>
         </div>
-        <?= $this->element('contact'); ?>
+        <?= $this->element('contact') ?>
     </div>
 </section>
 
-
-<!-- ══════════════════════════════════════
-     CTA — START EARNING
-══════════════════════════════════════ -->
+<!-- CTA -->
 <div class="rf-cta-wrap">
-    <div class="rf-cta-box">
-        <div class="rf-cta-icon">🚀</div>
-        <h2 class="rf-cta-title"><?= __('Start Earning Today') ?></h2>
-        <p class="rf-cta-sub">
-            <?= __('Join') ?> <?= $displayUsers ?>+
-            <?= __('publishers already earning with') ?> <?= h(get_option('site_name')) ?>.
-            <?= __('Free to join. No hidden fees. Withdraw from') ?> <?= $minWithdraw ?>.
-        </p>
-        <div class="rf-cta-btns">
-            <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary">
-                <?= __('Create Free Account →') ?>
-            </a>
-            <a href="<?= build_main_domain_url('/page/payment-proof') ?>" class="rf-btn-secondary">
-                <?= __('View Rates') ?>
-            </a>
+    <div class="container">
+        <div class="rf-cta-box">
+            <div class="rf-cta-icon">🚀</div>
+            <h2 class="rf-cta-h"><?= __('Start Earning Today') ?></h2>
+            <p class="rf-cta-sub">
+                <?= __('Join') ?> <?= $dU ?>+ <?= __('publishers already earning with') ?> <?= h(get_option('site_name')) ?>.
+                <?= __('Free to join. Withdraw from') ?> <?= $minWith ?>.
+            </p>
+            <div class="rf-cta-btns">
+                <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary"><?= __('Create Free Account →') ?></a>
+                <a href="<?= build_main_domain_url('/page/payment-proof') ?>" class="rf-btn-secondary"><?= __('View Rates') ?></a>
+            </div>
         </div>
     </div>
 </div>

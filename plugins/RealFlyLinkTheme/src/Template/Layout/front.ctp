@@ -1,7 +1,34 @@
 <?php
 /**
- * @var \App\View\AppView $this
+ * RealFlyLink Theme — front.ctp
+ * Bootstrap 3 navbar with PHP-filtered menu (no duplicate login/signup)
+ * Dark/light mode toggle persists via localStorage
  */
+
+function rf_nav_links($name) {
+    $req   = \Cake\Routing\Router::getRequest();
+    $uid   = $req->getSession()->read('Auth.User.id');
+    $tbl   = \Cake\ORM\TableRegistry::getTableLocator()->get('Options')
+                ->addBehavior('Translate', ['fields' => ['value']]);
+    $items = json_decode($tbl->findByName($name)->first()->value);
+    $skip  = ['signin','signup','sign-up','register','login','dashboard'];
+    $html  = '';
+    foreach ($items as $item) {
+        $hide = false;
+        foreach ($skip as $w) {
+            if (stripos($item->link, $w) !== false) { $hide = true; break; }
+        }
+        if ($hide) continue;
+        if (($item->visibility === 'all') ||
+            ($uid  && $item->visibility === 'logged') ||
+            (!$uid && $item->visibility === 'guest')) {
+            $html .= '<li class="' . h($item->class) . '">'
+                   . '<a href="' . build_main_domain_url($item->link) . '">' . h($item->title) . '</a>'
+                   . '</li>';
+        }
+    }
+    return $html;
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
@@ -12,139 +39,90 @@
 <body class="<?= ($this->request->getParam('_name') === 'home') ? 'home' : 'inner-page' ?>">
 <?= get_option('after_body_tag_code'); ?>
 
-<!-- ═══ NAVBAR ═══ -->
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header page-scroll">
+        <div class="navbar-header">
 
-            <!-- Mobile hamburger -->
+            <!-- Bootstrap 3 collapse trigger — bootstrap.min.js handles this automatically -->
             <button type="button" class="navbar-toggle collapsed"
-                    aria-expanded="false" onclick="rfToggleDrawer()">
+                    data-toggle="collapse"
+                    data-target="#rf-nav-collapse"
+                    aria-expanded="false">
                 <span class="sr-only"><?= __('Toggle navigation') ?></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
 
-            <!-- Logo -->
             <?php $logo = get_logo(); ?>
             <?php if ($logo['type'] === 'image'): ?>
-                <a class="navbar-brand logo-image rf-logo-wrap" href="<?= build_main_domain_url('/') ?>">
+                <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
+                    <span class="rf-logo-icon">RF</span>
                     <?= $logo['content'] ?>
                 </a>
             <?php else: ?>
-                <a class="navbar-brand rf-logo-wrap" href="<?= build_main_domain_url('/') ?>">
+                <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
                     <span class="rf-logo-icon">RF</span>
                     <span class="rf-logo-text">Real<span>Fly</span>Link</span>
                 </a>
             <?php endif; ?>
         </div>
 
-        <!-- Desktop nav -->
-        <div class="collapse navbar-collapse" id="rf-navbar-collapse">
+        <!-- Bootstrap collapse panel — opens on mobile hamburger click -->
+        <div class="collapse navbar-collapse" id="rf-nav-collapse">
 
-            <?php
-            // Output menu_main but CSS hides any login/register items already in it
-            // so our styled buttons below don't duplicate
-            menu_display('menu_main', [
-                'ul_class' => 'nav navbar-nav navbar-right rf-menu-main',
-                'li_class' => '',
-                'a_class'  => '',
-            ], true);
-            ?>
+            <!-- Page links only (login/signup filtered out in PHP) -->
+            <ul class="nav navbar-nav navbar-right rf-nav-links">
+                <?= rf_nav_links('menu_main') ?>
+            </ul>
 
-            <!-- Dark toggle + styled auth buttons -->
+            <!-- Auth buttons + dark toggle — always right side -->
             <ul class="nav navbar-nav navbar-right rf-nav-auth">
-                <li>
-                    <button class="rf-dark-toggle" onclick="rfToggleDark()" title="Toggle dark/light">
+                <li class="rf-dark-li">
+                    <button class="rf-dark-btn" onclick="rfToggleDark()" title="Toggle theme">
                         <span id="rf-dark-icon">☀️</span>
                     </button>
                 </li>
                 <?php if ($this->request->getSession()->read('Auth.User.id')): ?>
-                    <li>
-                        <a class="rf-nav-btn-login" href="<?= build_main_domain_url('/member/dashboard') ?>">
+                    <li class="rf-auth-li">
+                        <a class="rf-btn-login" href="<?= build_main_domain_url('/member/dashboard') ?>">
                             <?= __('Dashboard') ?>
                         </a>
                     </li>
                 <?php else: ?>
-                    <li>
-                        <a class="rf-nav-btn-login" href="<?= build_main_domain_url('/login') ?>">
+                    <li class="rf-auth-li">
+                        <a class="rf-btn-login" href="<?= build_main_domain_url('/auth/signin') ?>">
                             <?= __('Login') ?>
                         </a>
                     </li>
-                    <li>
-                        <a class="rf-nav-btn-signup" href="<?= build_main_domain_url('/register') ?>">
+                    <li class="rf-auth-li">
+                        <a class="rf-btn-signup" href="<?= build_main_domain_url('/auth/signup') ?>">
                             <?= __('Sign Up Free') ?>
                         </a>
                     </li>
                 <?php endif; ?>
             </ul>
-        </div>
-    </div>
-</nav>
 
-<!-- ═══ MOBILE DRAWER ═══ -->
-<div id="rf-mobile-drawer" class="rf-mobile-drawer" aria-hidden="true">
-    <a href="<?= build_main_domain_url('/') ?>">🏠 <?= __('Home') ?></a>
-    <a href="<?= build_main_domain_url('/page/rates') ?>">📊 <?= __('Rates') ?></a>
-    <a href="<?= build_main_domain_url('/page/payment-proof') ?>">💵 <?= __('Payment Proof') ?></a>
-    <a href="<?= build_main_domain_url('/blog') ?>">📝 <?= __('Blog') ?></a>
-    <a href="<?= build_main_domain_url('/contact') ?>">✉️ <?= __('Contact') ?></a>
-    <div class="rf-drawer-divider"></div>
-    <?php if ($this->request->getSession()->read('Auth.User.id')): ?>
-        <a href="<?= build_main_domain_url('/member/dashboard') ?>" class="rf-drawer-highlight">
-            📈 <?= __('My Dashboard') ?>
-        </a>
-    <?php else: ?>
-        <a href="<?= build_main_domain_url('/login') ?>" class="rf-drawer-login-btn">
-            <?= __('Login') ?>
-        </a>
-        <a href="<?= build_main_domain_url('/register') ?>" class="rf-drawer-signup-btn">
-            <?= __('Sign Up Free →') ?>
-        </a>
-    <?php endif; ?>
-</div>
-<div id="rf-drawer-backdrop" onclick="rfCloseDrawer()"></div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+</nav>
 
 <?= $this->Flash->render() ?>
 <?= $this->fetch('content') ?>
 <?= $this->element('front_footer'); ?>
 
 <script>
-// ── DARK MODE ─────────────────────────────────────────────────────
-(function(){
-    var isDark = localStorage.getItem('rf-dark') !== 'light';
-    function applyDark(dark) {
-        document.body.classList.toggle('rf-light', !dark);
-        var icon = document.getElementById('rf-dark-icon');
-        if (icon) icon.textContent = dark ? '☀️' : '🌙';
-        localStorage.setItem('rf-dark', dark ? 'dark' : 'light');
+(function () {
+    var dark = localStorage.getItem('rf-dark') !== 'light';
+    function set(d) {
+        document.body.classList.toggle('rf-light', !d);
+        var el = document.getElementById('rf-dark-icon');
+        if (el) el.textContent = d ? '☀️' : '🌙';
+        localStorage.setItem('rf-dark', d ? 'dark' : 'light');
     }
-    applyDark(isDark);
-    window.rfToggleDark = function(){ isDark = !isDark; applyDark(isDark); };
-})();
-
-// ── MOBILE DRAWER ─────────────────────────────────────────────────
-(function(){
-    var drawer   = document.getElementById('rf-mobile-drawer');
-    var backdrop = document.getElementById('rf-drawer-backdrop');
-    var open     = false;
-    window.rfToggleDrawer = function(){ open ? rfCloseDrawer() : rfOpenDrawer(); };
-    function rfOpenDrawer(){
-        open = true;
-        drawer.classList.add('open');
-        backdrop.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-    window.rfCloseDrawer = function(){
-        open = false;
-        drawer.classList.remove('open');
-        backdrop.style.display = 'none';
-        document.body.style.overflow = '';
-    };
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && open) rfCloseDrawer(); });
-    window.addEventListener('resize', function(){ if(window.innerWidth>768 && open) rfCloseDrawer(); });
-})();
+    set(dark);
+    window.rfToggleDark = function () { dark = !dark; set(dark); };
+}());
 </script>
 
 </body>
