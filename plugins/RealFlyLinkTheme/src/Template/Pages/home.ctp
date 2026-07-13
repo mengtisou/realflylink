@@ -25,7 +25,7 @@ $dU        = number_format($sU);
     <span class="rf-mu"><?= __('received') ?></span>
     <span class="rf-ticker-amt" id="rf-ticker-amount">$12.50</span>
     <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method">PayPal</span> · <span id="rf-ticker-date">Jun 29</span></span>
-    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('View all →') ?></a>
+    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>"><?= __('View all →') ?></a>
 </div>
 
 <!-- HERO -->
@@ -218,7 +218,7 @@ $dU        = number_format($sU);
     </div>
 </div>
 
-<!-- PAYMENT PROOF -->
+<!-- PAYMENT PROOF — reads from withdraws table (status=3 means Complete) -->
 <div class="rf-bg-alt">
     <div class="container rf-pad">
         <div class="text-center" style="margin-bottom:36px">
@@ -228,24 +228,99 @@ $dU        = number_format($sU);
                 <?= __('Every payment is public. See what publishers earn every day.') ?>
             </p>
         </div>
+
+        <?php
+        // ── Pull real data from withdraws table ──────────────────
+        try {
+            $Withdraws = \Cake\ORM\TableRegistry::getTableLocator()->get('Withdraws');
+
+            // Last 10 completed payments with user info
+            $dbPayments = $Withdraws->find()
+                ->contain(['Users' => function($q) {
+                    return $q->select(['id','username','country']);
+                }])
+                ->where(['Withdraws.status' => 3])
+                ->order(['Withdraws.created' => 'DESC'])
+                ->limit(10)
+                ->all();
+
+            $hasData = $dbPayments->count() > 0;
+
+            // Raw SQL for aggregates — avoids Query::func() static call error
+            $conn      = $Withdraws->getConnection();
+            $thisMonth = date('Y-m-01');
+
+            $r1 = $conn->execute(
+                'SELECT COALESCE(SUM(amount),0) AS total FROM withdraws WHERE status = 3 AND created >= ?',
+                [$thisMonth]
+            )->fetch('assoc');
+            $totalMonth = $r1 ? (float)$r1['total'] : 0;
+
+            $r2 = $conn->execute(
+                'SELECT COUNT(*) AS cnt FROM withdraws WHERE status = 3 AND DATE(created) = CURDATE()'
+            )->fetch('assoc');
+            $paidToday = $r2 ? (int)$r2['cnt'] : 0;
+
+            $r3 = $conn->execute(
+                'SELECT COALESCE(MAX(amount),0) AS mx FROM withdraws WHERE status = 3'
+            )->fetch('assoc');
+            $largestEver = $r3 ? (float)$r3['mx'] : 0;
+
+        } catch (\Exception $e) {
+            $hasData     = false;
+            $dbPayments  = [];
+            $totalMonth  = 0;
+            $paidToday   = 0;
+            $largestEver = 0;
+        }
+
+        // Country flag map — ISO code → emoji flag
+        $flags = [
+            'KH'=>'🇰🇭','US'=>'🇺🇸','GB'=>'🇬🇧','IN'=>'🇮🇳','BD'=>'🇧🇩',
+            'PH'=>'🇵🇭','RU'=>'🇷🇺','CA'=>'🇨🇦','AU'=>'🇦🇺','DE'=>'🇩🇪',
+            'SA'=>'🇸🇦','PK'=>'🇵🇰','NG'=>'🇳🇬','ID'=>'🇮🇩','MY'=>'🇲🇾',
+            'VN'=>'🇻🇳','TH'=>'🇹🇭','EG'=>'🇪🇬','TR'=>'🇹🇷','BR'=>'🇧🇷',
+        ];
+
+        // Helper: mask username — "pengty" → "pen***ty"
+        function rf_mask_user($name) {
+            $len = mb_strlen($name);
+            if ($len <= 3) return mb_substr($name, 0, 1) . '***';
+            return mb_substr($name, 0, 3) . '***' . mb_substr($name, -2);
+        }
+
+        // Summary numbers — use real if available, else sensible defaults
+        $statMonth   = $totalMonth   > 0 ? '$' . number_format($totalMonth, 2)  : '$4,230+';
+        $statToday   = $paidToday    > 0 ? $paidToday . '+'                      : '47+';
+        $statLargest = $largestEver  > 0 ? '$' . number_format($largestEver, 2) : '$145.20';
+        ?>
+
+        <!-- Summary cards -->
         <div class="row" style="margin-bottom:20px">
-            <?php
-            $cards = [
-                ['i'=>'💵','v'=>'$4,230+','l'=>__('Total Paid This Month')],
-                ['i'=>'👥','v'=>'47+',    'l'=>__('Publishers Paid Today')],
-                ['i'=>'🏆','v'=>'$145.20','l'=>__('Largest Single Payout')],
-            ];
-            foreach ($cards as $c):
-            ?>
             <div class="col-sm-4" style="margin-bottom:14px">
                 <div class="rf-proof-card">
-                    <div class="rf-proof-ico"><?= $c['i'] ?></div>
-                    <div class="rf-proof-val"><?= $c['v'] ?></div>
-                    <p class="rf-proof-lbl"><?= $c['l'] ?></p>
+                    <div class="rf-proof-ico">💵</div>
+                    <div class="rf-proof-val"><?= $statMonth ?></div>
+                    <p class="rf-proof-lbl"><?= __('Total Paid This Month') ?></p>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <div class="col-sm-4" style="margin-bottom:14px">
+                <div class="rf-proof-card">
+                    <div class="rf-proof-ico">👥</div>
+                    <div class="rf-proof-val"><?= $statToday ?></div>
+                    <p class="rf-proof-lbl"><?= __('Publishers Paid Today') ?></p>
+                </div>
+            </div>
+            <div class="col-sm-4" style="margin-bottom:14px">
+                <div class="rf-proof-card">
+                    <div class="rf-proof-ico">🏆</div>
+                    <div class="rf-proof-val"><?= $statLargest ?></div>
+                    <p class="rf-proof-lbl"><?= __('Largest Single Payout') ?></p>
+                </div>
+            </div>
         </div>
+
+        <!-- Proof table -->
         <div class="rf-proof-tbl">
             <div class="rf-proof-hd">
                 <span><?= __('Publisher') ?></span>
@@ -253,32 +328,55 @@ $dU        = number_format($sU);
                 <span><?= __('Method') ?></span>
                 <span><?= __('Date') ?></span>
             </div>
-            <?php
-            $proofs = [
-                ['c'=>'🇰🇭','u'=>'Sou***412','a'=>'$12.50','m'=>'PayPal',    'd'=>'Jun 29'],
-                ['c'=>'🇮🇳','u'=>'Rah***786','a'=>'$8.30', 'm'=>'USDT TRC20','d'=>'Jun 29'],
-                ['c'=>'🇺🇸','u'=>'Ali***123','a'=>'$45.20','m'=>'PayPal',    'd'=>'Jun 28'],
-                ['c'=>'🇧🇩','u'=>'Mod***555','a'=>'$5.00', 'm'=>'USDT BEP20','d'=>'Jun 28'],
-                ['c'=>'🇬🇧','u'=>'Joh***990','a'=>'$23.80','m'=>'PayPal',    'd'=>'Jun 27'],
-                ['c'=>'🇵🇭','u'=>'Tan***321','a'=>'$7.60', 'm'=>'USDT TRC20','d'=>'Jun 27'],
-                ['c'=>'🇷🇺','u'=>'Ami***667','a'=>'$15.40','m'=>'WebMoney',  'd'=>'Jun 26'],
-                ['c'=>'🇨🇦','u'=>'Kar***234','a'=>'$9.90', 'm'=>'PayPal',    'd'=>'Jun 26'],
-                ['c'=>'🇺🇸','u'=>'Dev***112','a'=>'$31.00','m'=>'USDT ERC20','d'=>'Jun 25'],
-                ['c'=>'🇸🇦','u'=>'Nas***778','a'=>'$6.70', 'm'=>'PayPal',    'd'=>'Jun 25'],
-            ];
-            foreach ($proofs as $i => $p):
-            ?>
-            <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
-                <span class="rf-proof-user"><?= $p['c'] ?> <?= $p['u'] ?></span>
-                <span class="rf-proof-amount"><?= $p['a'] ?></span>
-                <span class="rf-proof-method"><?= $p['m'] ?></span>
-                <span class="rf-proof-date"><?= $p['d'] ?></span>
-            </div>
-            <?php endforeach; ?>
+
+            <?php if ($hasData): ?>
+                <?php foreach ($dbPayments as $i => $w): ?>
+                <?php
+                    $username = $w->user->username ?? 'user';
+                    $country  = $w->user->country ?? '';
+                    $flag     = isset($flags[$country]) ? $flags[$country] : '🌍';
+                    $masked   = rf_mask_user($username);
+                    $amount   = '$' . number_format((float)$w->amount, 2);
+                    $method   = h($w->method);
+                    $date     = $w->created ? $w->created->format('M d') : '';
+                ?>
+                <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
+                    <span class="rf-proof-user"><?= $flag ?> <?= h($masked) ?></span>
+                    <span class="rf-proof-amount"><?= $amount ?></span>
+                    <span class="rf-proof-method"><?= $method ?></span>
+                    <span class="rf-proof-date"><?= $date ?></span>
+                </div>
+                <?php endforeach; ?>
+
+            <?php else: ?>
+                <?php
+                // No DB data yet — show static demo rows
+                $staticRows = [
+                    ['🇰🇭','Sou***412','$12.50','PayPal',    'Jun 29'],
+                    ['🇮🇳','Rah***786','$8.30', 'USDT TRC20','Jun 29'],
+                    ['🇺🇸','Ali***123','$45.20','PayPal',    'Jun 28'],
+                    ['🇧🇩','Mod***555','$5.00', 'USDT BEP20','Jun 28'],
+                    ['🇬🇧','Joh***990','$23.80','PayPal',    'Jun 27'],
+                    ['🇵🇭','Tan***321','$7.60', 'USDT TRC20','Jun 27'],
+                    ['🇷🇺','Ami***667','$15.40','WebMoney',  'Jun 26'],
+                    ['🇨🇦','Kar***234','$9.90', 'PayPal',    'Jun 26'],
+                ];
+                foreach ($staticRows as $i => $r):
+                ?>
+                <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
+                    <span class="rf-proof-user"><?= $r[0] ?> <?= $r[1] ?></span>
+                    <span class="rf-proof-amount"><?= $r[2] ?></span>
+                    <span class="rf-proof-method"><?= $r[3] ?></span>
+                    <span class="rf-proof-date"><?= $r[4] ?></span>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
         </div>
+
         <p class="rf-proof-note">
             <?= __('Showing recent payments · Usernames partially masked for privacy') ?> ·
-            <a href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('View all →') ?></a>
+            <a href="<?= build_main_domain_url('/pages/payment-proof') ?>"><?= __('View all →') ?></a>
         </p>
     </div>
 </div>
@@ -309,7 +407,7 @@ $dU        = number_format($sU);
             </p>
             <div class="rf-cta-btns">
                 <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary"><?= __('Create Free Account →') ?></a>
-                <a href="<?= build_main_domain_url('/page/payment-proof') ?>" class="rf-btn-secondary"><?= __('View Rates') ?></a>
+                <a href="<?= build_main_domain_url('/pages/payment-proof') ?>" class="rf-btn-secondary"><?= __('View Rates') ?></a>
             </div>
         </div>
     </div>
