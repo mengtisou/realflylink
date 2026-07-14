@@ -11,10 +11,8 @@ $minWith   = '$' . number_format((float)get_option('minimum_withdrawal_amount'),
 $realU     = isset($totalUsers)  ? (int)$totalUsers  : 0;
 $realC     = isset($totalClicks) ? (int)str_replace([',',' '], '', (string)$totalClicks) : 0;
 $realL     = isset($totalLinks)  ? (int)str_replace([',',' '], '', (string)$totalLinks)  : 0;
-$sU        = max($realU, 1000);
-$sC        = max($realC, 1240567);
-$sL        = max($realL, 48230);
-$dU        = number_format($sU);
+$realP     = isset($totalPaid)   ? (float)$totalPaid : 0;
+$dU        = number_format($realU);
 ?>
 
 <!-- TICKER -->
@@ -79,19 +77,19 @@ $dU        = number_format($sU);
     <div class="container">
         <div class="row text-center">
             <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $sC ?>" data-suffix="+">0+</div>
+                <div class="rf-stat-num rf-count-up" data-target="<?= $realC ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Total Clicks') ?></div>
             </div></div>
             <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $sL ?>" data-suffix="+">0+</div>
+                <div class="rf-stat-num rf-count-up" data-target="<?= $realL ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Links Created') ?></div>
             </div></div>
             <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $sU ?>" data-suffix="+">0+</div>
+                <div class="rf-stat-num rf-count-up" data-target="<?= $realU ?>" data-suffix="+">0+</div>
                 <div class="rf-stat-lbl"><?= __('Publishers') ?></div>
             </div></div>
             <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="45230" data-prefix="$" data-suffix="+">$0+</div>
+                <div class="rf-stat-num rf-count-up" data-target="<?= round($realP) ?>" data-prefix="$" data-suffix="+">$0+</div>
                 <div class="rf-stat-lbl"><?= __('Total Paid Out') ?></div>
             </div></div>
         </div>
