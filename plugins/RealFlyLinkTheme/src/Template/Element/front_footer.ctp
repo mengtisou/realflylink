@@ -26,7 +26,7 @@
                     <div class="rf-fcol">
                         <span class="rf-fcol-ttl"><?= __('Platform') ?></span>
                         <a href="<?= build_main_domain_url('/') ?>"><?= __('Home') ?></a>
-                        <a href="<?= build_main_domain_url('/page/rates') ?>"><?= __('Publisher Rates') ?></a>
+                        <a href="<?= build_main_domain_url('/page/payout-rates') ?>"><?= __('Publisher Rates') ?></a>
                         <a href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('Payment Proof') ?></a>
                         <a href="<?= build_main_domain_url('/blog') ?>"><?= __('Blog') ?></a>
                         <a href="<?= build_main_domain_url('/page/api') ?>"><?= __('API Docs') ?></a>

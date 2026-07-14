@@ -336,7 +336,7 @@ $dU        = number_format($realU);
                     $masked   = rf_mask_user($username);
                     $amount   = '$' . number_format((float)$w->amount, 2);
                     $method   = h($w->method);
-                    $date     = $w->created ? $w->created->format('M d') : '';
+                    $date     = $w->created ? $w->created->format('M d, Y, g:i A') : '';
                 ?>
                 <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
                     <span class="rf-proof-user"><?= $flag ?> <?= h($masked) ?></span>

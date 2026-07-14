@@ -246,17 +246,17 @@ body.rf-light .rf-t3{background:rgba(0,0,0,.06)}
 .rf-proof-lbl{font-size:12px;color:var(--muted);margin:0}
 .rf-proof-tbl{background:var(--card);border:1px solid var(--border);border-radius:var(--rad);overflow:hidden}
 .rf-proof-hd{background:rgba(0,212,255,.07);border-bottom:1px solid var(--border);
-  display:grid;grid-template-columns:1fr 90px 120px 76px;padding:10px 18px;
+  display:grid;grid-template-columns:1fr 100px 250px 170px;padding:10px 18px;
   font-size:10px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px}
 body.rf-light .rf-proof-hd{background:rgba(0,100,200,.07)}
-.rf-proof-row{display:grid;grid-template-columns:1fr 90px 120px 76px;padding:12px 18px;
+.rf-proof-row{display:grid;grid-template-columns:1fr 100px 250px 170px;padding:12px 18px;
   border-bottom:1px solid var(--border);background:var(--card);align-items:center;transition:background .3s}
 .rf-proof-row:last-child{border-bottom:none}
 .rf-proof-row.rf-active{background:rgba(0,255,136,.04)}
-.rf-proof-user{font-size:13px;color:var(--text);font-weight:500}
+.rf-proof-user{font-size:13px;color:var(--text);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rf-proof-amount{font-size:14px;font-weight:900;color:var(--green)}
-.rf-proof-method{font-size:12px;color:var(--muted)}
-.rf-proof-date{font-size:11px;color:var(--muted)}
+.rf-proof-method{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rf-proof-date{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rf-proof-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
 .rf-proof-note a{color:var(--cyan)}
 @media(max-width:767px){
