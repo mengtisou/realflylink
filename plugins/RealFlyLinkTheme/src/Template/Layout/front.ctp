@@ -57,12 +57,12 @@ function rf_nav_links($name) {
             <?php $logo = get_logo(); ?>
             <?php if ($logo['type'] === 'image'): ?>
                 <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
-                    <span class="rf-logo-icon">RF</span>
+                    <span class="rf-logo-icon"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalf"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGrad)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalf)"/></g></svg></span>
                     <?= $logo['content'] ?>
                 </a>
             <?php else: ?>
                 <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
-                    <span class="rf-logo-icon">RF</span>
+                    <span class="rf-logo-icon"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGrad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalf2"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGrad2)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalf2)"/></g></svg></span>
                     <span class="rf-logo-text">Real<span>Fly</span>Link</span>
                 </a>
             <?php endif; ?>

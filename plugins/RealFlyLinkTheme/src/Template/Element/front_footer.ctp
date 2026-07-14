@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-sm-4 col-md-3" style="margin-bottom:28px">
                     <a class="rf-brand" href="<?= build_main_domain_url('/') ?>" style="height:auto;line-height:1;display:inline-flex;margin-bottom:0">
-                        <span class="rf-logo-icon" style="width:28px;height:28px;font-size:11px">RF</span>
+                        <span class="rf-logo-icon" style="width:28px;height:28px"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGradF" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalfF"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGradF)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalfF)"/></g></svg></span>
                         <span class="rf-logo-text" style="font-size:15px">Real<span>Fly</span>Link</span>
                     </a>
                     <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:200px">
