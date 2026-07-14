@@ -22,7 +22,7 @@ return [
             'port' => '3306',
             'username' => 'root',
             'password' => '',
-            'database' => 'realflylink',
+            'database' => 'realflylink1',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'flags' => [],
