@@ -78,7 +78,6 @@ body.rf-light .rf-dark-btn{background:rgba(0,0,0,.06)}
 #mainNav .navbar-toggle:focus{outline:none}
 #mainNav .navbar-collapse{border-top:none!important;box-shadow:none!important;padding:0}
 
-/* Mobile collapsed */
 @media(max-width:767px){
   body{padding-top:52px!important}
   #mainNav.navbar-default{min-height:52px!important}
@@ -133,28 +132,89 @@ body.rf-light .rf-badge{background:rgba(0,100,200,.08)}
 .rf-hero-sub{font-size:18px;color:var(--muted);max-width:500px;margin:0 auto 40px;line-height:1.65}
 .rf-url-hint{font-size:12px;color:var(--muted)}
 
-/* URL box */
+/* ═══ URL BOX — neutralise ALL legacy shorten rules then restyle ═══ */
+
+/* Step 1: kill every legacy rule that targets #shorten or its children */
+.rf-url-box #shorten,
+.shorten #shorten,
+#shorten{position:static!important}
+
+.rf-url-box #shorten button,
+.shorten #shorten button,
+#shorten button{
+  position:static!important;top:auto!important;right:auto!important;
+  left:auto!important;bottom:auto!important;
+  background-color:transparent!important;border:none!important;padding:0!important;
+}
+
+.rf-url-box #shorten input.input-lg,
+#shorten input.input-lg{
+  background-color:transparent!important;border:none!important;
+  border-radius:0!important;height:auto!important;padding-right:0!important;
+}
+
+/* Step 2: restyle the container */
 .rf-url-box{max-width:580px;margin:0 auto 12px}
 .rf-url-box #shorten,.rf-url-box form{
   display:flex!important;flex-direction:row!important;align-items:stretch!important;
-  background:rgba(255,255,255,.05);border:1.5px solid rgba(0,212,255,.3);
-  border-radius:14px;overflow:hidden;box-shadow:0 0 40px rgba(0,212,255,.14);width:100%;
+  background:rgba(255,255,255,.05)!important;
+  border:1.5px solid rgba(0,212,255,.3)!important;
+  border-radius:999px!important;
+  overflow:visible!important;
+  box-shadow:0 0 40px rgba(0,212,255,.14)!important;
+  width:100%!important;position:relative!important;
 }
-body.rf-light .rf-url-box #shorten,body.rf-light .rf-url-box form{background:rgba(0,0,0,.04);border-color:rgba(0,100,200,.22);box-shadow:0 4px 20px rgba(0,0,0,.08)}
-.rf-url-box .form-group{flex:1!important;margin:0!important;display:flex!important;align-items:stretch!important}
-.rf-url-box .form-control,.rf-url-box input[type=text]{flex:1!important;background:transparent!important;
-  border:none!important;box-shadow:none!important;padding:18px 20px!important;font-size:15px!important;
-  color:var(--text)!important;font-family:'Inter',sans-serif;outline:none!important;border-radius:0!important;height:auto!important;min-width:0}
+body.rf-light .rf-url-box #shorten,body.rf-light .rf-url-box form{
+  background:rgba(0,0,0,.04)!important;border-color:rgba(0,100,200,.22)!important;
+  box-shadow:0 4px 20px rgba(0,0,0,.08)!important}
+
+/* Input area */
+.rf-url-box .form-group{
+  flex:1!important;margin:0!important;display:flex!important;
+  align-items:stretch!important;position:relative!important;min-width:0!important;
+}
+.rf-url-box .form-group::before{
+  content:'🔗';font-size:15px;position:absolute;left:20px;top:50%;
+  transform:translateY(-50%);pointer-events:none;opacity:.55;z-index:1}
+.rf-url-box .form-control,.rf-url-box input[type=text]{
+  flex:1!important;background:transparent!important;
+  border:none!important;box-shadow:none!important;
+  padding:18px 20px 18px 46px!important;font-size:15px!important;
+  color:var(--text)!important;font-family:'Inter',sans-serif;
+  outline:none!important;border-radius:999px 0 0 999px!important;
+  height:auto!important;min-width:0!important;width:100%!important;
+}
 .rf-url-box .form-control::placeholder,.rf-url-box input::placeholder{color:var(--muted)}
+
+/* Button — completely self-contained, no dependence on overflow:hidden */
 .rf-url-box .btn-captcha,.rf-url-box button[type=submit],.rf-url-box button{
-  flex-shrink:0!important;background:var(--grad)!important;border:none!important;border-radius:0!important;
-  padding:0 32px!important;font-weight:800!important;font-size:15px!important;color:#070d14!important;
-  cursor:pointer!important;height:auto!important;line-height:normal!important;font-family:'Inter',sans-serif;white-space:nowrap}
-.rf-url-box .btn-captcha img{display:none!important}
-.rf-url-box .btn-captcha::after{content:'Shorten →'}
-.shorten.add-link-result,.add-link-result{background:var(--card)!important;border:1px solid var(--border)!important;
+  flex-shrink:0!important;
+  width:56px!important;height:56px!important;
+  background:var(--grad)!important;border:none!important;
+  border-radius:50%!important;
+  margin:6px 6px 6px 0!important;padding:0!important;
+  cursor:pointer!important;
+  position:static!important;top:auto!important;right:auto!important;
+  left:auto!important;bottom:auto!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  box-shadow:0 0 18px rgba(0,212,255,.35)!important;
+  transition:transform .15s,box-shadow .15s!important;
+  align-self:center!important;
+}
+.rf-url-box .btn-captcha:hover,.rf-url-box button[type=submit]:hover,.rf-url-box button:hover{
+  transform:scale(1.06)!important;box-shadow:0 0 28px rgba(0,212,255,.5)!important}
+.rf-url-box .btn-captcha img,.rf-url-box button img{display:none!important}
+.rf-url-box .btn-captcha::after,.rf-url-box button[type=submit]::after,.rf-url-box button::after{
+  content:'→'!important;font-size:22px!important;font-weight:900!important;
+  color:#070d14!important;line-height:1!important;display:block!important;}
+
+/* Result box */
+.shorten.add-link-result,.add-link-result{
+  background:var(--card)!important;border:1px solid var(--border)!important;
   border-radius:10px!important;padding:14px 18px!important;margin-top:12px!important;
   max-width:580px;margin-left:auto;margin-right:auto;color:var(--text)!important}
+.shorten.add-link-result:empty,.add-link-result:empty{
+  display:none!important;padding:0!important;margin:0!important;border:none!important}
 
 .rf-trust-row{display:flex;gap:22px;justify-content:center;margin-top:30px;flex-wrap:wrap}
 .rf-trust-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
@@ -163,11 +223,14 @@ body.rf-light .rf-url-box #shorten,body.rf-light .rf-url-box form{background:rgb
   header.shorten{padding:48px 0 44px!important}
   .intro-heading{font-size:32px!important;letter-spacing:-1.5px!important;margin-bottom:14px!important}
   .rf-hero-sub{font-size:14px;margin-bottom:22px}
-  .rf-url-box #shorten,.rf-url-box form{flex-direction:column!important}
-  .rf-url-box .form-control,.rf-url-box input[type=text]{padding:15px 16px!important}
-  .rf-url-box .btn-captcha,.rf-url-box button{padding:14px 20px!important;width:100%!important;text-align:center!important}
+  .rf-url-box #shorten,.rf-url-box form{border-radius:20px!important}
+  .rf-url-box .form-control,.rf-url-box input[type=text]{
+    padding:15px 16px 15px 42px!important;border-radius:20px 0 0 20px!important}
+  .rf-url-box .btn-captcha,.rf-url-box button{
+    width:48px!important;height:48px!important;margin:6px 6px 6px 0!important}
   .rf-trust-row{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
-  .rf-trust-item{background:rgba(255,255,255,.04);border:1px solid rgba(0,212,255,.08);border-radius:8px;padding:8px 10px;font-size:12px;justify-content:center}
+  .rf-trust-item{background:rgba(255,255,255,.04);border:1px solid rgba(0,212,255,.08);
+    border-radius:8px;padding:8px 10px;font-size:12px;justify-content:center}
 }
 @media(max-width:479px){.intro-heading{font-size:26px!important;letter-spacing:-1px!important}}
 

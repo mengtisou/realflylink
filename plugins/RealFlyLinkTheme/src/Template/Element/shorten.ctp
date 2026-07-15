@@ -46,7 +46,7 @@ $this->Form->setTemplates([
 
     <?= $this->Form->hidden('ad_type', ['value' => $ad_type]); ?>
 
-    <?= $this->Form->button($this->Assets->image('right-arrow.png'), [
+    <?= $this->Form->button('', [
         'class' => 'btn-captcha',
         'id' => 'invisibleCaptchaShort',
     ]); ?>
