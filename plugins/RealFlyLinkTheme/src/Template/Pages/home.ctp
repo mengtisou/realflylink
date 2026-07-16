@@ -13,6 +13,25 @@ $realC     = isset($totalClicks) ? (int)str_replace([',',' '], '', (string)$tota
 $realL     = isset($totalLinks)  ? (int)str_replace([',',' '], '', (string)$totalLinks)  : 0;
 $realP     = isset($totalPaid)   ? (float)$totalPaid : 0;
 $dU        = number_format($realU);
+
+// Highest real CPM rate for the hero badge (from the same admin options)
+$topCpm = 0;
+try {
+    $bMode   = get_option('earning_mode');
+    $bOpts   = ($bMode === 'campaign')
+        ? ['banner_price', 'interstitial_price', 'popup_price']
+        : ['payout_rates_banner', 'payout_rates_interstitial', 'payout_rates_popup'];
+    foreach ($bOpts as $bOpt) {
+        $bData = get_option($bOpt, []);
+        if (empty($bData) || !is_array($bData)) continue;
+        foreach ($bData as $bV) {
+            $bDesk = ($bMode === 'campaign') ? ($bV[2]['publisher'] ?? 0) : ($bV[2] ?? 0);
+            $bMob  = ($bMode === 'campaign') ? ($bV[3]['publisher'] ?? 0) : ($bV[3] ?? 0);
+            $topCpm = max($topCpm, (float)$bDesk, (float)$bMob);
+        }
+    }
+} catch (\Throwable $e) { $topCpm = 0; }
+$badgeCpm = $topCpm > 0 ? '$' . number_format($topCpm, 2) : '$8';
 ?>
 
 <!-- TICKER (self-contained: own data, styles, and script) -->
@@ -69,10 +88,10 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 <div class="rf-ticker" style="display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 20px;font-size:13px;background:rgba(0,212,255,.06);border-bottom:1px solid rgba(0,212,255,.15);position:relative;z-index:5;visibility:visible!important;opacity:1!important">
     <div class="rf-dot" style="width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;flex-shrink:0"></div>
     <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
-    <span class="rf-ticker-user" id="rf-ticker-user" style="font-weight:700"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
-    <span class="rf-mu"><?= __('received') ?></span>
+    <span class="rf-ticker-user" id="rf-ticker-user" style="font-weight:700;color:var(--text,#fff)"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
+    <span style="color:var(--text,#fff)"><?= __('received') ?></span>
     <span class="rf-ticker-amt" id="rf-ticker-amount" style="font-weight:900;color:#00e676"><?= $tk0['a'] ?></span>
-    <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method"><?= $tk0['m'] ?></span> · <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span>
+    <span style="color:var(--text,#fff)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:700"><?= $tk0['m'] ?></span> <span style="color:var(--muted,rgba(255,255,255,.55))">· <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span></span>
     <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#00d4ff;font-size:12px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
 </div>
 <script data-cfasync="false">
@@ -117,12 +136,12 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 
                     <span class="rf-badge">
                         <span class="rf-badge-dot"></span>
-                        <?= __('Earn up to $8 per 1,000 clicks · Join') ?> <?= $dU ?>+ <?= __('publishers') ?>
+                        <?= __('Earn up to') ?> <?= $badgeCpm ?> <?= __('per 1,000 clicks · Join') ?> <?= $dU ?>+ <?= __('publishers') ?>
                     </span>
 
                     <h1 class="intro-heading">
                         <span class="rf-wh"><?= __('Shorten Links.') ?></span>
-                        <span class="rf-gr"><?= __('Earn Money Daily.') ?></span>
+                        <span class="rf-gr" style="margin-top:10px"><?= __('Earn Money Daily.') ?></span>
                     </h1>
 
                     <p class="rf-hero-sub">
