@@ -121,7 +121,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
                     </span>
 
                     <h1 class="intro-heading">
-                        <span class="rf-wh"><?= __('Shorten Links.') ?></span><br>
+                        <span class="rf-wh"><?= __('Shorten Links.') ?></span>
                         <span class="rf-gr"><?= __('Earn Money Daily.') ?></span>
                     </h1>
 

@@ -384,6 +384,7 @@ body.rf-light .rf-dark-btn {
 
 /* ═══ TICKER ═══ */
 .rf-ticker {
+  font-weight: bolder;
   background: rgba(0, 212, 255, .06);
   border-bottom: 1px solid var(--border);
   padding: 8px 20px;
@@ -1642,4 +1643,108 @@ section.stats,
 .separator,
 .wow {
   display: none !important
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE UPGRADES (appended — wins the cascade)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Global safety: nothing overflows the viewport ── */
+img, svg, video, iframe { max-width: 100%; height: auto; }
+html, body { overflow-x: hidden; }
+
+/* ── Tablet 768–1099px: navbar gets tight — shrink links so
+      logo · links · buttons never collide or wrap ── */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .rf-nav-links > li > a {
+    padding: 0 8px !important;
+    font-size: 12.5px !important;
+  }
+  #mainNav .navbar-brand { font-size: 17px !important; }
+  .rf-btn-login, .rf-btn-signup {
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ── Ticker: mobile refinements (must out-rank its inline styles) ── */
+@media (max-width: 575px) {
+  .rf-ticker {
+    font-size: 11px !important;
+    gap: 5px !important;
+    padding: 7px 10px !important;
+  }
+  /* keep one clean line on phones: hide date + view-all link */
+  #rf-ticker-date, .rf-ticker-lnk { display: none !important; }
+}
+
+/* ── Hero: badge and trust row wrap nicely on phones ── */
+@media (max-width: 575px) {
+  .rf-badge {
+    font-size: 10px !important;
+    padding: 5px 12px !important;
+    white-space: normal !important;
+    line-height: 1.5 !important;
+  }
+  .rf-trust-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 8px 14px !important;
+  }
+  .rf-hero-sub { padding: 0 8px; }
+}
+
+/* ── Stats bar: 2×2 grid on phones instead of 4 cramped columns ── */
+@media (max-width: 575px) {
+  .rf-stats-bar .row { display: flex; flex-wrap: wrap; margin: 0 -4px; }
+  .rf-stats-bar .row > [class*="col-"] {
+    width: 50% !important;
+    flex: 0 0 50%;
+    padding: 0 4px;
+    float: none;
+  }
+  .rf-stat-wrap { padding: 12px 0; }
+  .rf-stat-num { font-size: 24px; }
+  .rf-stat-lbl { font-size: 9px; letter-spacing: 1px; }
+}
+
+/* ── CPM rates table: compact but readable on phones ── */
+@media (max-width: 575px) {
+  .rf-rates-hd { font-size: 9px; padding: 10px 12px; }
+  .rf-rate-row { padding: 10px 12px !important; font-size: 13px; }
+  .rf-rate-c .flag-icon { width: 18px; margin-right: 6px; }
+}
+@media (max-width: 400px) {
+  .rf-rate-row .rf-tier-badge, .rf-rates-hd .rf-th-tier { display: none; }
+}
+
+/* ── Section paddings: less empty space on phones ── */
+@media (max-width: 767px) {
+  .rf-section, .rf-bg-main .container, .rf-bg-alt .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* ── Touch targets: comfortable tap sizes on mobile menu ── */
+@media (max-width: 767px) {
+  #mainNav .navbar-collapse {
+    background: var(--nav);
+    border-top: 1px solid var(--border);
+    max-height: calc(100vh - 70px);
+    overflow-y: auto !important;
+  }
+  .rf-nav-links > li > a {
+    padding: 13px 20px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    font-size: 15px !important;
+  }
+  .rf-nav-auth { padding: 10px 20px 16px; display: flex; align-items: center; gap: 10px; }
+  .rf-btn-login, .rf-btn-signup {
+    display: inline-block;
+    padding: 11px 20px !important;
+    font-size: 14px !important;
+  }
 }
