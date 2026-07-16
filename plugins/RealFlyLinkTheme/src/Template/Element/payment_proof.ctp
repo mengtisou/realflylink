@@ -8,12 +8,14 @@
  * @var \App\Model\Entity\Withdraw[]|\Cake\Collection\CollectionInterface $withdraws
  */
 
-$flags = [
-    'KH'=>'🇰🇭','US'=>'🇺🇸','GB'=>'🇬🇧','IN'=>'🇮🇳','BD'=>'🇧🇩',
-    'PH'=>'🇵🇭','RU'=>'🇷🇺','CA'=>'🇨🇦','AU'=>'🇦🇺','DE'=>'🇩🇪',
-    'SA'=>'🇸🇦','PK'=>'🇵🇰','NG'=>'🇳🇬','ID'=>'🇮🇩','MY'=>'🇲🇾',
-    'VN'=>'🇻🇳','TH'=>'🇹🇭','EG'=>'🇪🇬','TR'=>'🇹🇷','BR'=>'🇧🇷',
-];
+// Country flag image (flag-icon-css) — globe icon fallback
+$rfProofFlag = function ($cc) {
+    $cc = strtoupper((string)$cc);
+    if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
+        return '<i class="fa fa-globe" style="color:var(--cyan);font-size:14px" aria-hidden="true"></i>';
+    }
+    return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span>';
+};
 
 $withdrawal_methods = array_column_polyfill(get_withdrawal_methods(), 'name', 'id');
 
@@ -26,6 +28,7 @@ function rf_mask_user($name) {
 }
 ?>
 
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/lipis/flag-icon-css@3.3.0/css/flag-icon.min.css"/>
 <style>
 .rf-proof-pager{ display:flex; justify-content:center; margin-top:16px }
 .rf-proof-pager ul.pagination{ display:flex !important; gap:5px; list-style:none; padding:0; margin:0; flex-wrap:wrap }
@@ -85,7 +88,7 @@ function rf_mask_user($name) {
             <?php
             $username = isset($w->user->username) ? $w->user->username : 'user';
             $country  = isset($w->user->country) ? $w->user->country : '';
-            $flag     = isset($flags[$country]) ? $flags[$country] : '🌍';
+            $flag     = $rfProofFlag($country);
             $masked   = rf_mask_user($username);
             $amount   = '$' . number_format((float)$w->amount, 2);
             $method   = isset($withdrawal_methods[$w->method]) ? $withdrawal_methods[$w->method] : h($w->method);

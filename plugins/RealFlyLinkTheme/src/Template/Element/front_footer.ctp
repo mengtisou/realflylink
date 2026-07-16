@@ -87,35 +87,8 @@ if ((bool)get_option('combine_minify_css_js', false)) {
 <script>
 (function(){
     'use strict';
-    var PAYS=[
-        {c:'🇰🇭',u:'Sou***412',a:'$12.50',m:'PayPal',    d:'Jun 29'},
-        {c:'🇮🇳',u:'Rah***786',a:'$8.30', m:'USDT TRC20',d:'Jun 29'},
-        {c:'🇺🇸',u:'Ali***123',a:'$45.20',m:'PayPal',    d:'Jun 28'},
-        {c:'🇧🇩',u:'Mod***555',a:'$5.00', m:'USDT BEP20',d:'Jun 28'},
-        {c:'🇬🇧',u:'Joh***990',a:'$23.80',m:'PayPal',    d:'Jun 27'},
-        {c:'🇵🇭',u:'Tan***321',a:'$7.60', m:'USDT TRC20',d:'Jun 27'},
-        {c:'🇷🇺',u:'Ami***667',a:'$15.40',m:'WebMoney',  d:'Jun 26'},
-        {c:'🇨🇦',u:'Kar***234',a:'$9.90', m:'PayPal',    d:'Jun 26'},
-        {c:'🇺🇸',u:'Dev***112',a:'$31.00',m:'USDT ERC20',d:'Jun 25'},
-        {c:'🇸🇦',u:'Nas***778',a:'$6.70', m:'PayPal',    d:'Jun 25'},
-    ];
-    var ti=0;
-    function tick(){
-        var p=PAYS[ti];
-        var u=document.getElementById('rf-ticker-user'),
-            a=document.getElementById('rf-ticker-amount'),
-            m=document.getElementById('rf-ticker-method'),
-            d=document.getElementById('rf-ticker-date');
-        if(u)u.textContent=p.c+' '+p.u;
-        if(a)a.textContent=p.a;
-        if(m)m.textContent=p.m;
-        if(d)d.textContent=p.d;
-        for(var i=0;i<10;i++){var r=document.getElementById('rfpr'+i);if(r)r.classList.toggle('rf-active',i===ti%10);}
-        ti=(ti+1)%PAYS.length;
-    }
-    setInterval(tick,3000);
-
-    function countUp(el,target,dur){
+    // Ticker now lives in home.ctp (self-contained)
+function countUp(el,target,dur){
         var s=null,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
         function step(ts){
             if(!s)s=ts;

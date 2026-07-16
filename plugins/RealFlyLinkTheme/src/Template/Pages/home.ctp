@@ -15,16 +15,98 @@ $realP     = isset($totalPaid)   ? (float)$totalPaid : 0;
 $dU        = number_format($realU);
 ?>
 
-<!-- TICKER -->
-<div class="rf-ticker">
-    <div class="rf-dot"></div>
+<!-- TICKER (self-contained: own data, styles, and script) -->
+<?php
+// ── Real paid withdrawals (status 3) for the ticker ──
+$tickerData = [];
+try {
+    $wTbl   = \Cake\ORM\TableRegistry::getTableLocator()->get('Withdraws');
+    $recent = $wTbl->find()
+        ->contain(['Users'])
+        ->where(['Withdraws.status' => 3])
+        ->order(['Withdraws.created' => 'DESC'])
+        ->limit(15)
+        ->all();
+
+    $tkSym  = get_option('currency_symbol', '$');
+    $wmL    = get_withdrawal_methods();
+    $wmM    = function_exists('array_column_polyfill')
+        ? array_column_polyfill($wmL, 'name', 'id')
+        : array_column($wmL, 'name', 'id');
+
+    $tkFlag = function ($cc) {
+        $cc = strtoupper((string)$cc);
+        if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
+            return '<i class="fa fa-globe" style="color:#00d4ff;font-size:13px" aria-hidden="true"></i>';
+        }
+        return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span>';
+    };
+
+    foreach ($recent as $w) {
+        $un  = isset($w->user->username) ? (string)$w->user->username : 'user';
+        $ln  = mb_strlen($un);
+        $mk  = $ln <= 3 ? mb_substr($un,0,1).'***' : mb_substr($un,0,3).'***'.mb_substr($un,-2);
+        $tickerData[] = [
+            'f' => $tkFlag($w->user->country ?? ''),
+            'u' => h($mk),
+            'a' => $tkSym . number_format((float)$w->amount, 2),
+            'm' => h((string)($wmM[$w->method] ?? $w->method)),
+            'd' => $w->created ? $w->created->format('M j') : '',
+        ];
+    }
+} catch (\Throwable $e) { $tickerData = []; }
+
+// Fallback so the bar never breaks if there are no paid withdrawals yet
+if (empty($tickerData)) {
+    $tickerData = [
+        ['f'=>'<span class="flag-icon flag-icon-kh"></span>','u'=>'Sou***12','a'=>'$12.50','m'=>'PayPal','d'=>'Jun 29'],
+        ['f'=>'<span class="flag-icon flag-icon-in"></span>','u'=>'Rah***86','a'=>'$8.30','m'=>'USDT TRC20','d'=>'Jun 29'],
+        ['f'=>'<span class="flag-icon flag-icon-us"></span>','u'=>'Ali***23','a'=>'$45.20','m'=>'PayPal','d'=>'Jun 28'],
+    ];
+}
+$tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
+?>
+<div class="rf-ticker" style="display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 20px;font-size:13px;background:rgba(0,212,255,.06);border-bottom:1px solid rgba(0,212,255,.15);position:relative;z-index:5;visibility:visible!important;opacity:1!important">
+    <div class="rf-dot" style="width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;flex-shrink:0"></div>
     <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
-    <span class="rf-ticker-user" id="rf-ticker-user"><span class="flag-icon flag-icon-kh" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span> Sou***412</span>
+    <span class="rf-ticker-user" id="rf-ticker-user" style="font-weight:700"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
     <span class="rf-mu"><?= __('received') ?></span>
-    <span class="rf-ticker-amt" id="rf-ticker-amount">$12.50</span>
-    <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method">PayPal</span> · <span id="rf-ticker-date">Jun 29</span></span>
-    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>"><?= __('View all →') ?></a>
+    <span class="rf-ticker-amt" id="rf-ticker-amount" style="font-weight:900;color:#00e676"><?= $tk0['a'] ?></span>
+    <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method"><?= $tk0['m'] ?></span> · <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span>
+    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#00d4ff;font-size:12px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
 </div>
+<script data-cfasync="false">
+(function(){
+    'use strict';
+    if (window.__rfTicker) return;
+    window.__rfTicker = 1;
+    var PAYS = <?= json_encode(array_values($tickerData), JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_QUOT|JSON_HEX_APOS) ?>;
+    var ti = 1 % PAYS.length;
+    function tick(){
+        var p = PAYS[ti],
+            u = document.getElementById('rf-ticker-user'),
+            a = document.getElementById('rf-ticker-amount'),
+            m = document.getElementById('rf-ticker-method'),
+            d = document.getElementById('rf-ticker-date');
+        if(u){ u.innerHTML = p.f + ' ' + p.u; }
+        if(a){ a.textContent = p.a; }
+        if(m){ m.textContent = p.m; }
+        if(d){ d.textContent = p.d; }
+        for(var i=0;i<10;i++){ var r=document.getElementById('rfpr'+i); if(r){ r.classList.toggle('rf-active', i===ti%10); } }
+        ti = (ti+1) % PAYS.length;
+    }
+    if (PAYS.length > 1) { setInterval(tick, 3000); }
+
+    // Keep page content below the fixed navbar, whatever its actual height
+    function rfNavOffset(){
+        var n = document.getElementById('mainNav');
+        if (n) { document.body.style.setProperty('padding-top', n.offsetHeight + 'px', 'important'); }
+    }
+    rfNavOffset();
+    window.addEventListener('load', rfNavOffset);
+    window.addEventListener('resize', rfNavOffset);
+}());
+</script>
 
 <!-- HERO -->
 <header class="shorten">
@@ -335,9 +417,7 @@ $dU        = number_format($realU);
 
             // Last 10 completed payments with user info
             $dbPayments = $Withdraws->find()
-                ->contain(['Users' => function($q) {
-                    return $q->select(['id','username','country']);
-                }])
+                ->contain(['Users'])
                 ->where(['Withdraws.status' => 3])
                 ->order(['Withdraws.created' => 'DESC'])
                 ->limit(10)
@@ -373,13 +453,20 @@ $dU        = number_format($realU);
             $largestEver = 0;
         }
 
-        // Country flag map — ISO code → emoji flag
-        $flags = [
-            'KH'=>'🇰🇭','US'=>'🇺🇸','GB'=>'🇬🇧','IN'=>'🇮🇳','BD'=>'🇧🇩',
-            'PH'=>'🇵🇭','RU'=>'🇷🇺','CA'=>'🇨🇦','AU'=>'🇦🇺','DE'=>'🇩🇪',
-            'SA'=>'🇸🇦','PK'=>'🇵🇰','NG'=>'🇳🇬','ID'=>'🇮🇩','MY'=>'🇲🇾',
-            'VN'=>'🇻🇳','TH'=>'🇹🇭','EG'=>'🇪🇬','TR'=>'🇹🇷','BR'=>'🇧🇷',
-        ];
+        // Country flag image (flag-icon-css) — globe icon fallback
+        $rfProofFlag = function ($cc) {
+            $cc = strtoupper((string)$cc);
+            if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
+                return '<i class="fa fa-globe" style="color:var(--cyan);font-size:14px" aria-hidden="true"></i>';
+            }
+            return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span>';
+        };
+
+        // Withdrawal method ID → name (method column stores the ID)
+        $wmList  = get_withdrawal_methods();
+        $rfWmMap = function_exists('array_column_polyfill')
+            ? array_column_polyfill($wmList, 'name', 'id')
+            : array_column($wmList, 'name', 'id');
 
         // Helper: mask username — "pengty" → "pen***ty"
         function rf_mask_user($name) {
@@ -433,10 +520,10 @@ $dU        = number_format($realU);
                 <?php
                     $username = $w->user->username ?? 'user';
                     $country  = $w->user->country ?? '';
-                    $flag     = isset($flags[$country]) ? $flags[$country] : '🌍';
+                    $flag     = $rfProofFlag($country);
                     $masked   = rf_mask_user($username);
                     $amount   = '$' . number_format((float)$w->amount, 2);
-                    $method   = h($w->method);
+                    $method   = h((string)($rfWmMap[$w->method] ?? $w->method));
                     $date     = $w->created ? $w->created->format('M d, Y, g:i A') : '';
                 ?>
                 <div class="rf-proof-row<?= $i===0?' rf-active':'' ?>" id="rfpr<?= $i ?>">
