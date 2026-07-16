@@ -6,6 +6,19 @@
  */
 $lang = locale_get_default();
 $countries = get_countries(true);
+
+// Flag image for real countries, globe icon for worldwide/ALL entries
+$rfFlag = function ($cc) {
+    $cc = (string)$cc;
+    if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
+        return '<i class="fa fa-globe rf-flag-globe" aria-hidden="true"></i>';
+    }
+    return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '"></span>';
+};
+
+// Clean money format: $2.00 instead of $2.000000
+$rfCur   = get_option('currency_symbol', '$');
+$rfMoney = fn($v) => $rfCur . number_format((float)$v, 2);
 ?>
 <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/lipis/flag-icon-css@3.3.0/css/flag-icon.min.css"/>
 
@@ -60,6 +73,10 @@ $countries = get_countries(true);
 .rf-rates-wrap .flag-icon{
     margin-right:8px; border-radius:3px; box-shadow:0 0 0 1px rgba(255,255,255,.1);
 }
+.rf-rates-wrap .rf-flag-globe{
+    width:19px; margin-right:8px; display:inline-block; text-align:center;
+    color:var(--cyan); font-size:14px;
+}
 @media(max-width:600px){
     .rf-rates-wrap .nav-tabs{ flex-wrap:wrap }
     .rf-rates-wrap table th, .rf-rates-wrap table td{ padding:10px 12px; font-size:12px }
@@ -105,9 +122,9 @@ $countries = get_countries(true);
                         <?php foreach ($banner_price as $key => $value) : ?>
                             <?php if (empty($value[2]) && empty($value[3])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -135,9 +152,9 @@ $countries = get_countries(true);
                         <?php foreach ($interstitial_price as $key => $value) : ?>
                             <?php if (empty($value[2]) && empty($value[3])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -165,9 +182,9 @@ $countries = get_countries(true);
                         <?php foreach ($popup_price as $key => $value) : ?>
                             <?php if (empty($value[2]) && empty($value[3])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -214,9 +231,9 @@ $countries = get_countries(true);
                         <?php foreach ($banner_price as $key => $value) : ?>
                             <?php if (empty($value[2]['publisher']) && empty($value[3]['publisher'])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]['publisher']) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]['publisher']) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2]["publisher"] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3]["publisher"] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -244,9 +261,9 @@ $countries = get_countries(true);
                         <?php foreach ($interstitial_price as $key => $value) : ?>
                             <?php if (empty($value[2]['publisher']) && empty($value[3]['publisher'])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]['publisher']) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]['publisher']) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2]["publisher"] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3]["publisher"] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -274,9 +291,9 @@ $countries = get_countries(true);
                         <?php foreach ($popup_price as $key => $value) : ?>
                             <?php if (empty($value[2]['publisher']) && empty($value[3]['publisher'])) continue; ?>
                             <tr>
-                                <td><span class="flag-icon flag-icon-<?= strtolower($key) ?>"></span> <?= $countries[$key] ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[2]['publisher']) ?></td>
-                                <td style="text-align:center"><?= display_price_currency($value[3]['publisher']) ?></td>
+                                <td><?= $rfFlag($key) ?> <?= $countries[$key] ?? strtoupper($key) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[2]["publisher"] ?? 0) ?></td>
+                                <td style="text-align:center"><?= $rfMoney($value[3]["publisher"] ?? 0) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

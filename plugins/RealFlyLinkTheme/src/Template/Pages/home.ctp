@@ -19,7 +19,7 @@ $dU        = number_format($realU);
 <div class="rf-ticker">
     <div class="rf-dot"></div>
     <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
-    <span class="rf-ticker-user" id="rf-ticker-user">🇰🇭 Sou***412</span>
+    <span class="rf-ticker-user" id="rf-ticker-user"><span class="flag-icon flag-icon-kh" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span> Sou***412</span>
     <span class="rf-mu"><?= __('received') ?></span>
     <span class="rf-ticker-amt" id="rf-ticker-amount">$12.50</span>
     <span class="rf-mu"><?= __('via') ?> <span id="rf-ticker-method">PayPal</span> · <span id="rf-ticker-date">Jun 29</span></span>
@@ -164,6 +164,17 @@ $dU        = number_format($realU);
 </div>
 
 <!-- CPM RATES -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/lipis/flag-icon-css@3.3.0/css/flag-icon.min.css"/>
+<style>
+.rf-rate-c .flag-icon{
+    width:22px; line-height:16px; margin-right:9px; border-radius:3px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.12); vertical-align:-2px;
+}
+.rf-rate-c .rf-flag-globe{
+    width:22px; margin-right:9px; text-align:center;
+    color:var(--cyan); font-size:15px; vertical-align:-1px;
+}
+</style>
 <div class="rf-bg-main">
     <div class="container rf-pad">
         <div class="row">
@@ -193,19 +204,109 @@ $dU        = number_format($realU);
                         <span><?= __('CPM Rate') ?></span>
                     </div>
                     <?php
-                    $rates = [
-                        ['f'=>'🇺🇸','n'=>__('United States'), 'r'=>'$8.00','t'=>1],
-                        ['f'=>'🇬🇧','n'=>__('United Kingdom'),'r'=>'$6.00','t'=>1],
-                        ['f'=>'🇨🇦','n'=>__('Canada'),         'r'=>'$5.00','t'=>1],
-                        ['f'=>'🇦🇺','n'=>__('Australia'),      'r'=>'$4.00','t'=>1],
-                        ['f'=>'🇩🇪','n'=>__('Germany'),        'r'=>'$3.00','t'=>2],
-                        ['f'=>'🌏', 'n'=>__('SE Asia'),        'r'=>'$1.00','t'=>3],
-                        ['f'=>'🌍', 'n'=>__('Rest of World'),  'r'=>'$0.50','t'=>3],
-                    ];
+                    // ── Dynamic CPM rates from DB (same options the admin panel edits) ──
+                    $rates = [];
+                    try {
+                        $mode = get_option('earning_mode');
+                        $raw  = [];
+
+                        // Collect rates from all enabled ad types, keep the highest per country
+                        $optMap = ($mode === 'campaign')
+                            ? ['banner_price', 'interstitial_price', 'popup_price']
+                            : ['payout_rates_banner', 'payout_rates_interstitial', 'payout_rates_popup'];
+
+                        foreach ($optMap as $opt) {
+                            $data = get_option($opt, []);
+                            if (empty($data) || !is_array($data)) continue;
+                            foreach ($data as $cc => $v) {
+                                if ($mode === 'campaign') {
+                                    $desktop = $v[2]['publisher'] ?? 0;
+                                    $mobile  = $v[3]['publisher'] ?? 0;
+                                } else {
+                                    $desktop = $v[2] ?? 0;
+                                    $mobile  = $v[3] ?? 0;
+                                }
+                                $best = max((float)$desktop, (float)$mobile);
+                                if ($best <= 0) continue;
+                                $cc = strtoupper($cc);
+                                if (!isset($raw[$cc]) || $best > $raw[$cc]) {
+                                    $raw[$cc] = $best;
+                                }
+                            }
+                        }
+
+                        if (!empty($raw)) {
+                            // Separate worldwide/ALL entries from real countries
+                            $worldwide = null;
+                            foreach ($raw as $cc => $cpm) {
+                                if (strlen($cc) !== 2 || !ctype_alpha($cc)
+                                    || in_array($cc, ['WW'], true)) {
+                                    if ($worldwide === null || $cpm > $worldwide) {
+                                        $worldwide = $cpm;
+                                    }
+                                    unset($raw[$cc]);
+                                }
+                            }
+
+                            arsort($raw); // highest CPM first
+                            $countriesList = get_countries(true);
+                            $top    = array_slice($raw, 0, 6, true); // top 6 countries
+                            $maxCpm = !empty($raw) ? max($raw) : ($worldwide ?? 0);
+
+                            // Clean money format: $2.00 not $2.000000
+                            $curSym = get_option('currency_symbol', '$');
+                            $money  = fn($v) => $curSym . number_format((float)$v, 2);
+
+                            // ISO code → flag image (same flag-icon-css as payout rates)
+                            $ccFlag = function ($cc) {
+                                if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
+                                    return '<i class="fa fa-globe rf-flag-globe" aria-hidden="true"></i>';
+                                }
+                                return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '"></span>';
+                            };
+
+                            foreach ($top as $cc => $cpm) {
+                                // Tier relative to the top rate
+                                $t = ($cpm >= $maxCpm * 0.5) ? 1 : (($cpm >= $maxCpm * 0.2) ? 2 : 3);
+                                $rates[] = [
+                                    'f' => $ccFlag($cc),
+                                    'n' => $countriesList[$cc] ?? $cc,
+                                    'r' => $money($cpm),
+                                    't' => $t,
+                                ];
+                            }
+                            // "Rest of World" = your worldwide/ALL rate, else lowest country rate
+                            $rowRate = $worldwide ?? (!empty($raw) ? min($raw) : null);
+                            if ($rowRate !== null) {
+                                $rates[] = [
+                                    'f' => '<i class="fa fa-globe rf-flag-globe" aria-hidden="true"></i>',
+                                    'n' => __('Rest of World'),
+                                    'r' => $money($rowRate),
+                                    't' => 3,
+                                ];
+                            }
+                        }
+                    } catch (\Throwable $e) {
+                        $rates = []; // fall through to static fallback below
+                    }
+
+                    // Fallback if options are empty or something failed — page never breaks
+                    if (empty($rates)) {
+                        $g = '<i class="fa fa-globe rf-flag-globe" aria-hidden="true"></i>';
+                        $rates = [
+                            ['f'=>'<span class="flag-icon flag-icon-us"></span>','n'=>__('United States'), 'r'=>'$8.00','t'=>1],
+                            ['f'=>'<span class="flag-icon flag-icon-gb"></span>','n'=>__('United Kingdom'),'r'=>'$6.00','t'=>1],
+                            ['f'=>'<span class="flag-icon flag-icon-ca"></span>','n'=>__('Canada'),        'r'=>'$5.00','t'=>1],
+                            ['f'=>'<span class="flag-icon flag-icon-au"></span>','n'=>__('Australia'),     'r'=>'$4.00','t'=>1],
+                            ['f'=>'<span class="flag-icon flag-icon-de"></span>','n'=>__('Germany'),       'r'=>'$3.00','t'=>2],
+                            ['f'=>$g,'n'=>__('SE Asia'),       'r'=>'$1.00','t'=>3],
+                            ['f'=>$g,'n'=>__('Rest of World'), 'r'=>'$0.50','t'=>3],
+                        ];
+                    }
                     foreach ($rates as $r):
                     ?>
                     <div class="rf-rate-row">
-                        <span class="rf-rate-c"><?= $r['f'] ?> <?= $r['n'] ?></span>
+                        <span class="rf-rate-c"><?php echo $r['f']; ?> <?= h($r['n']) ?></span>
                         <span class="rf-tier rf-t<?= $r['t'] ?>">Tier <?= $r['t'] ?></span>
                         <span class="rf-cpm"><?= $r['r'] ?></span>
                     </div>

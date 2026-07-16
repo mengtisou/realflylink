@@ -38,9 +38,26 @@ a{transition:color .2s}
 .rf-logo-text{font-size:18px!important;font-weight:900!important;color:var(--text)!important;letter-spacing:-.5px;line-height:1}
 .rf-logo-text span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
+/* ── Desktop layout: logo left · links centered · auth right ── */
+@media(min-width:768px){
+  #mainNav .container{position:relative;display:flex;align-items:center}
+  #mainNav .navbar-header{flex-shrink:0;float:none!important}
+  #mainNav .navbar-collapse{flex:1;display:flex!important;align-items:center;
+    float:none!important;padding:0!important;overflow:visible!important}
+  .rf-nav-links{float:none!important;display:flex!important;align-items:center;
+    margin:0 auto!important}
+  .rf-nav-auth{float:none!important;display:flex!important;align-items:center;
+    margin:0 0 0 auto!important;gap:4px}
+}
+/* True page-center for links on wide screens (like production) */
+@media(min-width:1200px){
+  .rf-nav-links{position:absolute;left:50%;transform:translateX(-50%);margin:0!important}
+}
+
 /* Nav links */
 .rf-nav-links>li>a{
-  color:var(--muted)!important;font-size:13px!important;font-weight:500!important;
+  color:var(--muted)!important;font-size:14px!important;font-weight:600!important;
+  text-transform:none!important;letter-spacing:0!important;
   padding:0 14px!important;height:var(--nh)!important;line-height:var(--nh)!important;
   display:flex!important;align-items:center!important;
   border-bottom:2px solid transparent;border-top:2px solid transparent;
