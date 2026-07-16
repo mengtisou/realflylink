@@ -26,8 +26,8 @@
                     <div class="rf-fcol">
                         <span class="rf-fcol-ttl"><?= __('Platform') ?></span>
                         <a href="<?= build_main_domain_url('/') ?>"><?= __('Home') ?></a>
-                        <a href="<?= build_main_domain_url('/page/payout-rates') ?>"><?= __('Publisher Rates') ?></a>
-                        <a href="<?= build_main_domain_url('/page/payment-proof') ?>"><?= __('Payment Proof') ?></a>
+                        <a href="<?= build_main_domain_url('/payout-rates') ?>"><?= __('Publisher Rates') ?></a>
+                        <a href="<?= build_main_domain_url('/pages/payment-proof') ?>"><?= __('Payment Proof') ?></a>
                         <a href="<?= build_main_domain_url('/blog') ?>"><?= __('Blog') ?></a>
                         <a href="<?= build_main_domain_url('/page/api') ?>"><?= __('API Docs') ?></a>
                     </div>
@@ -35,8 +35,8 @@
                 <div class="col-xs-6 col-sm-2 col-md-3" style="margin-bottom:20px">
                     <div class="rf-fcol">
                         <span class="rf-fcol-ttl"><?= __('Account') ?></span>
-                        <a href="<?= build_main_domain_url('/register') ?>"><?= __('Sign Up') ?></a>
-                        <a href="<?= build_main_domain_url('/login') ?>"><?= __('Login') ?></a>
+                        <a href="<?= build_main_domain_url('/auth/signup') ?>"><?= __('Sign Up') ?></a>
+                        <a href="<?= build_main_domain_url('/auth/signin') ?>"><?= __('Login') ?></a>
                         <a href="<?= build_main_domain_url('/member/dashboard') ?>"><?= __('Dashboard') ?></a>
                         <a href="<?= build_main_domain_url('/member/withdraw') ?>"><?= __('Withdraw') ?></a>
                         <a href="<?= build_main_domain_url('/member/referrals') ?>"><?= __('Referrals') ?></a>
