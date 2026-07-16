@@ -1748,3 +1748,74 @@ html, body { overflow-x: hidden; }
     font-size: 14px !important;
   }
 }
+
+
+/* ── Equal-height card grids (fixes Bootstrap float wrapping holes) ── */
+.rf-eq-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.rf-eq-row > [class*="col-"] {
+  display: flex;
+  float: none;
+}
+.rf-eq-row .rf-card,
+.rf-eq-row .rf-proof-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+/* col-sm-* has no width below 768px — force full row on phones */
+@media (max-width: 767px) {
+  .rf-eq-row > [class*="col-sm-"] { width: 100%; flex: 0 0 100%; }
+  /* col-xs-6 keeps its half width */
+  .rf-eq-row > .col-xs-6 { width: 50%; flex: 0 0 50%; }
+}
+
+
+/* ── Light mode polish ── */
+/* Stat numbers: darker gradient for contrast on white */
+body.rf-light .rf-stat-num,
+body.rf-light .rf-proof-val {
+  background: linear-gradient(135deg, #0066cc, #009960);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+/* Ticker dot: calmer green, no neon glow on white */
+body.rf-light .rf-ticker .rf-dot {
+  background: #009960 !important;
+  box-shadow: 0 0 4px rgba(0, 153, 96, .5) !important;
+}
+/* CPM amounts in rates table: darker green for light bg */
+body.rf-light .rf-cpm { color: #009960 !important; }
+/* Proof table amounts too */
+body.rf-light .rf-proof-amount { color: #009960 !important; }
+
+
+/* ── Light mode: step cards readability (dark mode untouched) ── */
+body.rf-light .rf-step-n {
+  color: rgba(0, 102, 204, .22) !important;  /* 01/02/03 clearly visible */
+}
+body.rf-light .rf-step-d,
+body.rf-light .rf-step-d a {
+  color: var(--muted) !important;  /* consistent gray descriptions */
+}
+
+
+/* ── Payment table: bolder, whiter, bigger method & date text ── */
+.rf-proof-method {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+}
+.rf-proof-date {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+}
+@media (max-width: 767px) {
+  .rf-proof-method { font-size: 13px !important; }
+  .rf-proof-date   { font-size: 12px !important; }
+}

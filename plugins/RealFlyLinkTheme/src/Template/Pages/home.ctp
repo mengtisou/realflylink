@@ -56,7 +56,7 @@ try {
     $tkFlag = function ($cc) {
         $cc = strtoupper((string)$cc);
         if (strlen($cc) !== 2 || !ctype_alpha($cc)) {
-            return '<i class="fa fa-globe" style="color:#00d4ff;font-size:13px" aria-hidden="true"></i>';
+            return '<i class="fa fa-globe" style="color:var(--cyan,#00d4ff);font-size:13px" aria-hidden="true"></i>';
         }
         return '<span class="flag-icon flag-icon-' . strtolower(h($cc)) . '" style="border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15)"></span>';
     };
@@ -90,9 +90,9 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
     <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
     <span class="rf-ticker-user" id="rf-ticker-user" style="font-weight:700;color:var(--text,#fff)"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
     <span style="color:var(--text,#fff)"><?= __('received') ?></span>
-    <span class="rf-ticker-amt" id="rf-ticker-amount" style="font-weight:900;color:#00e676"><?= $tk0['a'] ?></span>
+    <span class="rf-ticker-amt" id="rf-ticker-amount" style="font-weight:900;color:var(--green,#00e676)"><?= $tk0['a'] ?></span>
     <span style="color:var(--text,#fff)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:700"><?= $tk0['m'] ?></span> <span style="color:var(--muted,rgba(255,255,255,.55))">· <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span></span>
-    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#00d4ff;font-size:12px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
+    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:var(--cyan,#00d4ff);font-size:12px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
 </div>
 <script data-cfasync="false">
 (function(){
@@ -203,7 +203,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
     <div class="container rf-pad text-center">
         <span class="rf-eyebrow"><?= __('How it works') ?></span>
         <h2 class="rf-sec-h"><?= __('3 steps to start earning') ?></h2>
-        <div class="row" style="margin-top:32px">
+        <div class="row rf-eq-row" style="margin-top:32px">
             <?php
             $steps = [
                 ['n'=>'01','i'=>'👤','t'=>__('Create Account'),     'd'=>__('Sign up free in 30 seconds. No credit card needed.'),'b'=>'a'],
@@ -231,7 +231,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
     <div class="container rf-pad text-center">
         <span class="rf-eyebrow"><?= __('Features') ?></span>
         <h2 class="rf-sec-h"><?= __('Why join') ?> <?= h(get_option('site_name')) ?>?</h2>
-        <div class="row" style="margin-top:32px">
+        <div class="row rf-eq-row" style="margin-top:32px">
             <?php
             $feats = [
                 ['i'=>'⚡','t'=>__('Instant Payouts'),    'd'=>__('Withdraw daily via PayPal or USDT. Minimum just') . ' ' . $minWith . '.'],
@@ -534,7 +534,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         ?>
 
         <!-- Summary cards -->
-        <div class="row" style="margin-bottom:20px">
+        <div class="row rf-eq-row" style="margin-bottom:20px">
             <div class="col-sm-4" style="margin-bottom:14px">
                 <div class="rf-proof-card">
                     <div class="rf-proof-ico">💵</div>
