@@ -436,9 +436,21 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
             $totalMonth = $r1 ? (float)$r1['total'] : 0;
 
             $r2 = $conn->execute(
-                'SELECT COUNT(*) AS cnt FROM withdraws WHERE status = 3 AND DATE(created) = CURDATE()'
+                'SELECT COUNT(DISTINCT user_id) AS cnt FROM withdraws WHERE status = 3 AND DATE(created) = CURDATE()'
             )->fetch('assoc');
             $paidToday = $r2 ? (int)$r2['cnt'] : 0;
+
+            $r2m = $conn->execute(
+                'SELECT COUNT(DISTINCT user_id) AS cnt FROM withdraws WHERE status = 3 AND created >= ?',
+                [$thisMonth]
+            )->fetch('assoc');
+            $paidMonthCnt = $r2m ? (int)$r2m['cnt'] : 0;
+
+            $rAll = $conn->execute(
+                'SELECT COALESCE(SUM(amount),0) AS total, COUNT(DISTINCT user_id) AS cnt FROM withdraws WHERE status = 3'
+            )->fetch('assoc');
+            $totalAll   = $rAll ? (float)$rAll['total'] : 0;
+            $paidAllCnt = $rAll ? (int)$rAll['cnt'] : 0;
 
             $r3 = $conn->execute(
                 'SELECT COALESCE(MAX(amount),0) AS mx FROM withdraws WHERE status = 3'
@@ -446,11 +458,14 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
             $largestEver = $r3 ? (float)$r3['mx'] : 0;
 
         } catch (\Exception $e) {
-            $hasData     = false;
-            $dbPayments  = [];
-            $totalMonth  = 0;
-            $paidToday   = 0;
-            $largestEver = 0;
+            $hasData      = false;
+            $dbPayments   = [];
+            $totalMonth   = 0;
+            $paidToday    = 0;
+            $largestEver  = 0;
+            $paidMonthCnt = 0;
+            $totalAll     = 0;
+            $paidAllCnt   = 0;
         }
 
         // Country flag image (flag-icon-css) — globe icon fallback
@@ -475,10 +490,28 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
             return mb_substr($name, 0, 3) . '***' . mb_substr($name, -2);
         }
 
-        // Summary numbers — use real if available, else sensible defaults
-        $statMonth   = $totalMonth   > 0 ? '$' . number_format($totalMonth, 2)  : '$4,230+';
-        $statToday   = $paidToday    > 0 ? $paidToday . '+'                      : '47+';
-        $statLargest = $largestEver  > 0 ? '$' . number_format($largestEver, 2) : '$145.20';
+        // Summary numbers — always REAL data; if a narrow time window is
+        // empty, widen the window and adjust the label (never fake numbers)
+        if ($totalMonth > 0) {
+            $statMonth    = '$' . number_format($totalMonth, 2);
+            $statMonthLbl = __('Total Paid This Month');
+        } else {
+            $statMonth    = '$' . number_format($totalAll, 2);
+            $statMonthLbl = __('Total Paid Out');
+        }
+
+        if ($paidToday > 0) {
+            $statToday    = $paidToday;
+            $statTodayLbl = __('Publishers Paid Today');
+        } elseif ($paidMonthCnt > 0) {
+            $statToday    = $paidMonthCnt;
+            $statTodayLbl = __('Publishers Paid This Month');
+        } else {
+            $statToday    = $paidAllCnt;
+            $statTodayLbl = __('Publishers Paid');
+        }
+
+        $statLargest = '$' . number_format($largestEver, 2);
         ?>
 
         <!-- Summary cards -->
@@ -487,14 +520,14 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
                 <div class="rf-proof-card">
                     <div class="rf-proof-ico">💵</div>
                     <div class="rf-proof-val"><?= $statMonth ?></div>
-                    <p class="rf-proof-lbl"><?= __('Total Paid This Month') ?></p>
+                    <p class="rf-proof-lbl"><?= $statMonthLbl ?></p>
                 </div>
             </div>
             <div class="col-sm-4" style="margin-bottom:14px">
                 <div class="rf-proof-card">
                     <div class="rf-proof-ico">👥</div>
                     <div class="rf-proof-val"><?= $statToday ?></div>
-                    <p class="rf-proof-lbl"><?= __('Publishers Paid Today') ?></p>
+                    <p class="rf-proof-lbl"><?= $statTodayLbl ?></p>
                 </div>
             </div>
             <div class="col-sm-4" style="margin-bottom:14px">
