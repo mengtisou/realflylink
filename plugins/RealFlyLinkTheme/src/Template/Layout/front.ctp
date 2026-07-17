@@ -57,13 +57,13 @@ function rf_nav_links($name) {
             <?php $logo = get_logo(); ?>
             <?php if ($logo['type'] === 'image'): ?>
                 <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
-                    <span class="rf-logo-icon"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalf"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGrad)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalf)"/></g></svg></span>
+                    <span class="rf-logo-icon"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pin" width="30" height="30"><g transform="translate(60,60)"><g transform="rotate(-38)"><ellipse cx="30" cy="0" rx="27" ry="12" fill="#9054D8"/></g><g transform="rotate(176)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#00B4E4"/></g><g transform="rotate(50)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#E448C0"/></g><g transform="rotate(118)"><ellipse cx="21" cy="0" rx="18" ry="9" fill="#CC30C0"/></g><circle r="6" fill="#fff" class="rf-pin-dot"/></g></svg></span>
                     <?= $logo['content'] ?>
                 </a>
             <?php else: ?>
                 <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
-                    <span class="rf-logo-icon"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGrad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalf2"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGrad2)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalf2)"/></g></svg></span>
-                    <span class="rf-logo-text">Real<span>Fly</span>Link</span>
+                    <span class="rf-logo-icon"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pin" width="30" height="30"><g transform="translate(60,60)"><g transform="rotate(-38)"><ellipse cx="30" cy="0" rx="27" ry="12" fill="#9054D8"/></g><g transform="rotate(176)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#00B4E4"/></g><g transform="rotate(50)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#E448C0"/></g><g transform="rotate(118)"><ellipse cx="21" cy="0" rx="18" ry="9" fill="#CC30C0"/></g><circle r="6" fill="#fff" class="rf-pin-dot"/></g></svg></span>
+                    <span class="rf-logo-text">Real<span>Fly</span><span class="rf-logo-link">Link<span class="rf-logo-dot">.com</span></span></span>
                 </a>
             <?php endif; ?>
         </div>

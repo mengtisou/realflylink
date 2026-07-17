@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-sm-4 col-md-3" style="margin-bottom:28px">
                     <a class="rf-brand" href="<?= build_main_domain_url('/') ?>" style="height:auto;line-height:1;display:inline-flex;margin-bottom:0">
-                        <span class="rf-logo-icon" style="width:28px;height:28px"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pill"><defs><linearGradient id="rfPillGradF" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#00FF88"/></linearGradient><clipPath id="rfPillLeftHalfF"><rect x="0" y="0" width="17" height="16"/></clipPath></defs><g transform="translate(0,9) rotate(-35 17 8)"><rect x="0" y="0" width="34" height="16" rx="8" fill="url(#rfPillGradF)"/><rect x="0" y="0" width="34" height="16" rx="8" fill="#0d1520" clip-path="url(#rfPillLeftHalfF)"/></g></svg></span>
+                        <span class="rf-logo-icon" style="width:28px;height:28px"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pin"><g transform="translate(60,60)"><g transform="rotate(-38)"><ellipse cx="30" cy="0" rx="27" ry="12" fill="#9054D8"/></g><g transform="rotate(176)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#00B4E4"/></g><g transform="rotate(50)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#E448C0"/></g><g transform="rotate(118)"><ellipse cx="21" cy="0" rx="18" ry="9" fill="#CC30C0"/></g><circle r="6" fill="#fff" class="rf-pin-dot"/></g></svg></span>
                         <span class="rf-logo-text" style="font-size:15px">Real<span>Fly</span>Link</span>
                     </a>
                     <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:200px">

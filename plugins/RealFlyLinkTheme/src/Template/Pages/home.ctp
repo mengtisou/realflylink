@@ -85,14 +85,14 @@ if (empty($tickerData)) {
 }
 $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 ?>
-<div class="rf-ticker" style="display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 20px;font-size:13px;background:rgba(0,212,255,.06);border-bottom:1px solid rgba(0,212,255,.15);position:relative;z-index:5;visibility:visible!important;opacity:1!important">
-    <div class="rf-dot" style="width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;flex-shrink:0"></div>
-    <span class="rf-mu">🎉 <?= __('Just paid:') ?></span>
-    <span class="rf-ticker-user" id="rf-ticker-user" style="font-weight:700;color:var(--text,#fff)"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
-    <span style="color:var(--text,#fff)"><?= __('received') ?></span>
-    <span class="rf-ticker-amt" id="rf-ticker-amount" style="font-weight:900;color:var(--green,#00e676)"><?= $tk0['a'] ?></span>
-    <span style="color:var(--text,#fff)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:700"><?= $tk0['m'] ?></span> <span style="color:var(--muted,rgba(255,255,255,.55))">· <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span></span>
-    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:var(--cyan,#00d4ff);font-size:12px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
+<div class="rf-ticker" style="display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;padding:9px;font-size:12px;background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);position:relative;z-index:3;visibility:visible!important;opacity:1!important">
+    <span class="rf-dot" style="width:6px;height:6px;border-radius:50%;background:#cf3f96;box-shadow:0 0 8px #cf3f96;flex-shrink:0;display:inline-block"></span>
+    <span style="color:rgba(255,255,255,.5)">🎉 <?= __('Just paid:') ?></span>
+    <span id="rf-ticker-user" style="font-weight:500;color:#fff"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
+    <span style="color:rgba(255,255,255,.85)"><?= __('received') ?></span>
+    <span id="rf-ticker-amount" style="font-weight:700;background:linear-gradient(105deg,#d8b8f5,#f5c8b0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent"><?= $tk0['a'] ?></span>
+    <span style="color:rgba(255,255,255,.85)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:600"><?= $tk0['m'] ?></span> · <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span>
+    <a href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#c9a8ec;font-size:11px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
 </div>
 <script data-cfasync="false">
 (function(){
@@ -128,71 +128,62 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 </script>
 
 <!-- HERO -->
-<header class="shorten">
-    <div class="section-inner">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+<!-- HERO (matches realflylink_full_aurora_clean.html exactly) -->
+<header class="shorten" style="position:relative;text-align:center;padding:60px 20px 110px;overflow:hidden;background:#0b0a0d">
+    <div class="glow" style="position:absolute;left:-15%;top:6%;width:55%;height:92%;background:radial-gradient(ellipse at 30% 40%,rgba(96,118,170,.55),rgba(70,80,140,.25) 45%,transparent 72%);filter:blur(30px);pointer-events:none"></div>
+    <div class="glow" style="position:absolute;left:20%;bottom:-30%;width:64%;height:110%;background:radial-gradient(ellipse at 45% 75%,rgba(140,62,205,.62),rgba(190,55,170,.34) 50%,transparent 75%);filter:blur(34px);pointer-events:none"></div>
+    <div class="glow" style="position:absolute;right:-18%;top:18%;width:60%;height:104%;background:radial-gradient(ellipse at 65% 55%,rgba(226,122,54,.6),rgba(200,90,60,.28) 52%,transparent 76%);filter:blur(34px);pointer-events:none"></div>
+    <div class="glow" style="position:absolute;left:43%;bottom:-14%;width:24%;height:40%;background:radial-gradient(ellipse,rgba(150,225,255,.55),rgba(120,180,255,.22) 55%,transparent 78%);filter:blur(20px);pointer-events:none"></div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 1200 600" preserveAspectRatio="none"><path d="M-40 420 Q320 120 820 260 T1300 180" stroke="rgba(255,255,255,.09)" stroke-width="1" fill="none"/><path d="M-60 540 Q420 300 980 420" stroke="rgba(255,255,255,.06)" stroke-width="1" fill="none"/></svg>
+    <div class="orb" style="position:absolute;left:6%;top:14%;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 30% 28%,#46536e,#0e1017 72%);pointer-events:none"></div>
+    <div class="orb" style="position:absolute;right:8%;top:8%;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#3a2a24,#120d0b 74%);pointer-events:none"></div>
+    <div class="orb" style="position:absolute;right:22%;bottom:8%;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#8a5aa8,#241531 76%);pointer-events:none"></div>
+    <div class="orb" style="position:absolute;left:16%;bottom:2%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 65% 70%,#e8b48c,#7a5a9a 45%,#1c1424 78%);pointer-events:none"></div>
 
-                    <span class="rf-badge">
-                        <span class="rf-badge-dot"></span>
-                        <?= __('Earn up to') ?> <?= $badgeCpm ?> <?= __('per 1,000 clicks · Join') ?> <?= $dU ?>+ <?= __('publishers') ?>
-                    </span>
+    <div style="position:relative;z-index:3;max-width:760px;margin:0 auto">
+        <div style="font-size:12px;letter-spacing:4px;color:rgba(255,255,255,.55);font-weight:500;margin-bottom:22px"><?= __('WELCOME TO REALFLYLINK') ?></div>
 
-                    <h1 class="intro-heading">
-                        <span class="rf-wh"><?= __('Shorten Links.') ?></span>
-                        <span class="rf-gr" style="margin-top:10px"><?= __('Earn Money Daily.') ?></span>
-                    </h1>
+        <div style="font-weight:800;font-size:54px;letter-spacing:-2px;line-height:1.04;background:linear-gradient(105deg,#ffffff 25%,#ecd9f6 55%,#f2d9e2 75%,#f6dcc4 96%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">
+            <?= __('Shorten Links.') ?><br><?= __('Earn Money Daily.') ?>
+        </div>
 
-                    <p class="rf-hero-sub">
-                        <?= __("The world's most trusted monetized URL shortener.") ?><br>
-                        <?= __('Get paid for every click — PayPal, USDT, and more.') ?>
-                    </p>
+        <div style="color:rgba(255,255,255,.72);font-size:16px;margin:24px auto 0;max-width:440px;line-height:1.65">
+            <?= __('Get paid for every click — PayPal, USDT, and more. Built for publishers worldwide.') ?>
+        </div>
 
-                    <?php if (get_option('home_shortening') == 'yes'): ?>
-                    <div class="rf-url-box">
-                        <?= $this->element('shorten') ?>
-                    </div>
-                    <p class="rf-url-hint"><?= __('Free forever · No signup required to try') ?></p>
-                    <?php endif; ?>
+        <?php if (get_option('home_shortening') == 'yes'): ?>
+        <div class="rf-url-box" style="max-width:440px;margin:30px auto 0;display:flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:32px;padding:6px 6px 6px 22px">
+            <?= $this->element('shorten') ?>
+        </div>
+        <p style="color:rgba(255,255,255,.5);font-size:12px;margin-top:12px"><?= __('Free forever · No signup required to try') ?></p>
+        <?php endif; ?>
 
-                    <div class="rf-trust-row">
-                        <div class="rf-trust-item">💵 <?= __('Daily Payouts') ?></div>
-                        <div class="rf-trust-item">🔒 <?= __('SSL Secured') ?></div>
-                        <div class="rf-trust-item">🌍 <?= __('200+ Countries') ?></div>
-                        <div class="rf-trust-item">⚡ <?= __('Instant Redirect') ?></div>
-                        <?php if ((bool)get_option('enable_referrals', 1)): ?>
-                        <div class="rf-trust-item">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('Referral') ?></div>
-                        <?php endif; ?>
-                    </div>
-
-                </div>
-            </div>
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
+            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">💵 <?= __('Daily payouts') ?></span>
+            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🔒 <?= __('SSL secured') ?></span>
+            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🌍 <?= __('200+ countries') ?></span>
+            <?php if ((bool)get_option('enable_referrals', 1)): ?>
+            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('referral') ?></span>
+            <?php endif; ?>
         </div>
     </div>
 </header>
 
-<!-- STATS -->
+<!-- STATS: 3 glass cards floating over the aurora (matches uploaded file exactly) -->
 <?php if ((bool)get_option('display_home_stats', 1)): ?>
-<div class="rf-stats-bar">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $realC ?>" data-suffix="+">0+</div>
-                <div class="rf-stat-lbl"><?= __('Total Clicks') ?></div>
-            </div></div>
-            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $realL ?>" data-suffix="+">0+</div>
-                <div class="rf-stat-lbl"><?= __('Links Created') ?></div>
-            </div></div>
-            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= $realU ?>" data-suffix="+">0+</div>
-                <div class="rf-stat-lbl"><?= __('Publishers') ?></div>
-            </div></div>
-            <div class="col-xs-6 col-sm-3"><div class="rf-stat-wrap">
-                <div class="rf-stat-num rf-count-up" data-target="<?= round($realP) ?>" data-prefix="$" data-suffix="+">$0+</div>
-                <div class="rf-stat-lbl"><?= __('Total Paid Out') ?></div>
-            </div></div>
+<div style="position:relative;margin-top:-56px;z-index:4">
+    <div class="container" style="display:flex;justify-content:center;gap:14px;padding:0 20px 44px;flex-wrap:wrap">
+        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+            <div class="rf-count-up" data-target="<?= $realC ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('TOTAL CLICKS') ?></div>
+        </div>
+        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+            <div class="rf-count-up" data-target="<?= $realU ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('PUBLISHERS') ?></div>
+        </div>
+        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+            <div class="rf-count-up" data-target="<?= round($realP) ?>" data-prefix="$" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#f2d4b8,#f2c0c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">$0+</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('PAID OUT') ?></div>
         </div>
     </div>
 </div>
@@ -200,6 +191,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 
 <!-- HOW IT WORKS -->
 <div class="rf-bg-main">
+
     <div class="container rf-pad text-center">
         <span class="rf-eyebrow"><?= __('How it works') ?></span>
         <h2 class="rf-sec-h"><?= __('3 steps to start earning') ?></h2>
