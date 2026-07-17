@@ -2,6 +2,7 @@
 
 /vendor/*
 /config/app.php
+/config/configure.php
 
 /tmp/cache/models/*
 !/tmp/cache/models/empty
@@ -23,3 +24,4 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+queue.lock

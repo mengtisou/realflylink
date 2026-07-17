@@ -124,6 +124,29 @@ class PagesController extends FrontController
         } else {
             $this->set('totalUsers', 0);
         }
+
+        if ((bool)get_option('display_home_stats', 1)) {
+            if (($totalPaid = Cache::read('home_totalPaid_' . $lang, '1hour')) === false) {
+                $totalPaid = 0;
+                try {
+                    $conn = $this->Users->Links->getConnection();
+                    $r = $conn->execute('SELECT COALESCE(SUM(amount),0) AS t FROM withdraws WHERE status = 3')->fetch('assoc');
+                    $totalPaid = $r ? (float)$r['t'] : 0;
+                } catch (\Exception $e) {
+                    $totalPaid = 0;
+                }
+
+                // Optional admin-configurable padding, same pattern as fake_links/fake_clicks/fake_users
+                $totalPaid += (float)get_option('fake_paid', 0);
+
+                if (get_option('cache_home_counters', 1)) {
+                    Cache::write('home_totalPaid_' . $lang, $totalPaid, '1hour');
+                }
+            }
+            $this->set('totalPaid', $totalPaid);
+        } else {
+            $this->set('totalPaid', 0);
+        }
     }
 
     public function view($slug = null)
@@ -158,7 +181,7 @@ class PagesController extends FrontController
             $query = $withdrawsTable->find()
                 ->contain([
                     'Users' => [
-                        'fields' => ['id', 'username'],
+                        'fields' => ['id', 'username', 'country'],
                     ],
                 ])
                 ->select([
