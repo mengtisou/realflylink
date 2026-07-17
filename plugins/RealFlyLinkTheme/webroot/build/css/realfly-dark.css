@@ -16,7 +16,7 @@
   --grad: linear-gradient(105deg, #9054D8, #CC30C0);
   --gradr: linear-gradient(105deg, #E448C0, #9054D8);
   --rad: 14px;
-  --nh: 64px;
+  --nh: 56px;
   /* logo colors — original, never change */
   --logo-purple: #9054D8; --logo-magenta: #CC30C0; --logo-pink: #E448C0; --logo-cyan: #00B4E4;
   /* aurora money-text gradient */
@@ -72,9 +72,13 @@ a {
   border-radius: 0 !important;
   box-shadow: 0 2px 20px rgba(0, 0, 0, .25) !important;
   margin: 0 !important;
+  padding: 0 !important;
   min-height: var(--nh) !important;
+  text-transform: none !important;
   transition: background .3s;
 }
+
+#mainNav .container { padding-top: 0 !important; padding-bottom: 0 !important; }
 
 /* Logo */
 .rf-brand {
@@ -121,7 +125,7 @@ a {
   line-height: 1
 }
 
-.rf-logo-text span {
+.rf-logo-text > span:not(.rf-logo-link) {
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -246,11 +250,11 @@ body.rf-light .rf-dark-btn {
 .rf-btn-login {
   display: inline-flex !important;
   align-items: center !important;
-  height: 32px !important;
+  height: 30px !important;
   padding: 0 16px !important;
-  border: 1px solid rgba(0, 212, 255, .3) !important;
-  border-radius: 8px !important;
-  color: var(--cyan) !important;
+  border: 1px solid rgba(255, 255, 255, .28) !important;
+  border-radius: 20px !important;
+  color: #fff !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   background: transparent !important;
@@ -262,33 +266,42 @@ body.rf-light .rf-dark-btn {
 }
 
 .rf-btn-login:hover {
-  background: rgba(0, 212, 255, .08) !important;
-  border-color: var(--cyan) !important;
-  color: var(--cyan) !important
+  background: rgba(255, 255, 255, .08) !important;
+  border-color: rgba(255, 255, 255, .5) !important;
+  color: #fff !important
 }
 
 .rf-btn-signup {
   display: inline-flex !important;
   align-items: center !important;
-  height: 32px !important;
+  height: 30px !important;
   padding: 0 18px !important;
-  background: var(--grad) !important;
+  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
   border: none !important;
-  border-radius: 8px !important;
-  color: #070d14 !important;
+  border-radius: 20px !important;
+  color: #fff !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   text-decoration: none !important;
   line-height: 1 !important;
-  box-shadow: 0 3px 10px rgba(0, 212, 255, .28);
-  transition: opacity .2s;
+  box-shadow: 0 3px 12px rgba(204, 48, 192, .3);
+  transition: opacity .2s, transform .15s;
   margin-left: 2px;
   white-space: nowrap
 }
 
 .rf-btn-signup:hover {
-  opacity: .88 !important;
-  color: #070d14 !important
+  opacity: .92 !important;
+  transform: scale(1.02);
+  color: #fff !important
+}
+
+body.rf-light .rf-btn-login {
+  color: #1a1226 !important;
+  border-color: rgba(120, 60, 190, .35) !important;
+}
+body.rf-light .rf-btn-login:hover {
+  background: rgba(123, 60, 190, .08) !important;
 }
 
 /* Hamburger */
@@ -860,12 +873,12 @@ body.rf-light .rf-bg-alt {
 }
 
 .rf-sec-h {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 900;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
   color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1.1
+  margin-bottom: 10px;
+  line-height: 1.15
 }
 
 .rf-sec-sub {
@@ -896,7 +909,7 @@ body.rf-light .rf-bg-alt {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--rad);
-  padding: 22px;
+  padding: 18px 16px;
   height: 100%;
   transition: border-color .2s, transform .2s, box-shadow .2s
 }
@@ -992,21 +1005,21 @@ body.rf-light .rf-step-ico {
 
 /* Features */
 .rf-feat-ico {
-  font-size: 26px;
-  margin-bottom: 10px
+  font-size: 22px;
+  margin-bottom: 8px
 }
 
 .rf-feat-t {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 6px
+  margin-bottom: 5px
 }
 
 .rf-feat-d {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.55;
   margin: 0
 }
 
@@ -1649,11 +1662,19 @@ section.stats,
 /* ── Logo: pinwheel + Option D wordmark ── */
 .rf-logo-pin { display:block; }
 .rf-brand { display:flex; align-items:center; gap:9px; }
-.rf-logo-text { font-weight:900; font-size:20px; letter-spacing:-.5px; color:var(--text); }
-.rf-logo-text > span { color:#B57CE8; }               /* "Fly" */
-.rf-logo-link { font-weight:500; font-size:15px; color:var(--muted); letter-spacing:0; }
+.rf-logo-icon .rf-logo-pin { display:block; width:24px; height:24px; }
+.rf-logo-text > span:not(.rf-logo-link) {
+  color: #c9a8ec;
+  background: none; -webkit-background-clip: initial; background-clip: initial;
+  -webkit-text-fill-color: #c9a8ec;
+}               /* "Fly" — solid light purple, matches realflylink_full_aurora_clean.html */
+.rf-logo-link { font-weight: 400; font-size: 14px; color: rgba(255,255,255,.6); letter-spacing: 0; }  /* "Link" — lighter weight, muted, matches reference file */
+
+body.rf-light .rf-logo-text > span:not(.rf-logo-link) {
+  color: #7B3CBE; -webkit-text-fill-color: #7B3CBE;
+}
+body.rf-light .rf-logo-link { color: rgba(26,18,38,.6); }
 .rf-logo-dot  { color:#CC30C0; }                       /* ".com" */
-body.rf-light .rf-logo-text > span { color:#7B3CBE; }
 body.rf-light .rf-pin-dot { fill:#1a1226; }
 
 /* ── Glass cards everywhere ── */
@@ -1702,3 +1723,201 @@ body.rf-light .rf-bg-alt { background:#ece7f6 !important; }
 /* Ticker dot → magenta */
 .rf-ticker .rf-dot { background:#E448C0 !important; box-shadow:0 0 8px #E448C0 !important; }
 
+
+/* ── Equal-height card grids (restored — fixes uneven Feature/Step/Proof cards) ── */
+.rf-eq-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.rf-eq-row > [class*="col-"] {
+  display: flex;
+  float: none;
+}
+.rf-eq-row .rf-card,
+.rf-eq-row .rf-proof-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+@media (max-width: 767px) {
+  .rf-eq-row > [class*="col-sm-"] { width: 100%; flex: 0 0 100%; }
+  .rf-eq-row > .col-xs-6 { width: 50%; flex: 0 0 50%; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE UPGRADES — restored & updated for aurora hero
+   ═══════════════════════════════════════════════════════════ */
+
+/* Global safety: nothing overflows the viewport */
+img, svg, video, iframe { max-width: 100%; height: auto; }
+html, body { overflow-x: hidden; }
+
+/* ── Tablet 768–1099px: navbar gets tight — shrink links/buttons ── */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .rf-nav-links > li > a { padding: 0 8px !important; font-size: 12.5px !important; }
+  #mainNav .navbar-brand, .rf-logo-text { font-size: 16px !important; }
+  .rf-btn-login, .rf-btn-signup { padding: 0 14px !important; font-size: 12px !important; }
+}
+
+/* ── Ticker: compact on phones ── */
+@media (max-width: 575px) {
+  .rf-ticker { font-size: 11px !important; gap: 5px !important; padding: 7px 10px !important; }
+  #rf-ticker-date, .rf-ticker-lnk { display: none !important; }
+}
+
+/* ── Hero: scale everything down on phones/tablets ── */
+@media (max-width: 767px) {
+  .rf-hero-title { font-size: 34px !important; letter-spacing: -1px !important; }
+  .rf-hero-subtext { font-size: 14px !important; padding: 0 10px; }
+  .rf-hero-eyebrow { font-size: 10px !important; letter-spacing: 3px !important; }
+  .rf-url-box { max-width: 92% !important; }
+}
+@media (max-width: 480px) {
+  .rf-hero-title { font-size: 27px !important; }
+  .rf-trust-pill { font-size: 10px !important; padding: 4px 9px !important; }
+}
+
+/* ── Stats: wrap to 2-up then 1-up gracefully, stay glass ── */
+@media (max-width: 575px) {
+  .rf-stats-float { margin-top: -30px !important; }
+  .rf-stats-row { gap: 8px !important; }
+  .rf-stat-card { min-width: 44% !important; padding: 14px 8px !important; }
+  .rf-stat-card [class*="rf-count-up"] { font-size: 19px !important; }
+}
+
+/* ── CPM rates table: compact but readable on phones ── */
+@media (max-width: 575px) {
+  .rf-rates-hd { font-size: 9px; padding: 10px 12px; }
+  .rf-rate-row { padding: 10px 12px !important; font-size: 13px; }
+  .rf-rate-c .flag-icon { width: 18px; margin-right: 6px; }
+}
+@media (max-width: 400px) {
+  .rf-rate-row .rf-tier, .rf-rates-hd span:nth-child(2) { display: none; }
+}
+
+/* ── Section paddings: tighter on phones ── */
+@media (max-width: 767px) {
+  .rf-section, .rf-bg-main .container, .rf-bg-alt .container { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ── Mobile nav menu: solid dropdown, comfortable tap targets ── */
+@media (max-width: 767px) {
+  #mainNav .navbar-collapse {
+    background: var(--nav);
+    border-top: 1px solid var(--border);
+    max-height: calc(100vh - 70px);
+    overflow-y: auto !important;
+  }
+  .rf-nav-links > li > a {
+    padding: 13px 20px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    font-size: 15px !important;
+  }
+  .rf-nav-auth { padding: 10px 20px 16px; display: flex; align-items: center; gap: 10px; }
+  .rf-btn-login, .rf-btn-signup { display: inline-flex; padding: 0 20px !important; height: 40px !important; font-size: 14px !important; }
+}
+
+/* ── Contain section width: prevents the "nearly full screen" feel
+      on very wide monitors, closer to competitor proportions ── */
+.rf-bg-main .container.rf-pad,
+.rf-bg-alt .container.rf-pad {
+  max-width: 980px !important;
+  width: 92% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+/* slightly larger gap between cards so they read as separate tiles, not a solid block */
+.rf-eq-row { row-gap: 4px; }
+.rf-eq-row > [class*="col-sm-4"] { padding-left: 12px; padding-right: 12px; }
+
+/* Tighten section heading + intro further */
+.rf-sec-h { font-size: 27px !important; }
+.rf-sec-sub { font-size: 14px !important; margin-bottom: 32px !important; }
+.rf-eyebrow { font-size: 10px !important; }
+
+/* ── Kill inherited UPPERCASE from base theme's .navbar-default (root cause
+      of the navbar looking oversized — uppercase reads visually heavier) ── */
+.rf-logo-text, .rf-logo-link, .rf-nav-links > li > a,
+.rf-btn-login, .rf-btn-signup {
+  text-transform: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE FIX for aurora hero + stats + ticker
+   (hero markup uses inline styles copied from the dark-only
+   reference file, so every piece needs an explicit override
+   here — inline styles otherwise never adapt to the toggle)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Hero background + glows: much softer, tinted for white bg */
+body.rf-light header.shorten { background: #f4f1fa !important; }
+body.rf-light header.shorten .glow:nth-of-type(1) {
+  background: radial-gradient(ellipse at 35% 45%, rgba(96,118,170,.16), transparent 68%) !important;
+}
+body.rf-light header.shorten .glow:nth-of-type(2) {
+  background: radial-gradient(ellipse at 45% 75%, rgba(144,84,216,.18), rgba(204,48,192,.08) 45%, transparent 70%) !important;
+}
+body.rf-light header.shorten .glow:nth-of-type(3) {
+  background: radial-gradient(ellipse at 65% 55%, rgba(226,122,54,.16), transparent 70%) !important;
+}
+body.rf-light header.shorten .glow:nth-of-type(4) {
+  background: radial-gradient(ellipse, rgba(80,150,220,.14), transparent 74%) !important;
+}
+/* Orbs: light, soft grey spheres instead of near-black */
+body.rf-light header.shorten .orb {
+  background: radial-gradient(circle at 30% 30%, #e4ddf2, #c9bfe0 75%) !important;
+  opacity: .5;
+}
+
+/* Hero text: dark, readable on light background */
+body.rf-light .rf-hero-eyebrow { color: rgba(26,18,38,.5) !important; }
+body.rf-light .rf-hero-title {
+  background: linear-gradient(105deg, #1a1226 20%, #5a3a7a 60%, #7a3a5a 96%) !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.rf-light .rf-hero-subtext { color: rgba(26,18,38,.68) !important; }
+body.rf-light .rf-trust-pill {
+  border-color: rgba(120,60,190,.22) !important;
+  background: rgba(120,60,190,.05) !important;
+  color: rgba(26,18,38,.7) !important;
+}
+body.rf-light [style*="Free forever"] { color: rgba(26,18,38,.5) !important; }
+body.rf-light .rf-url-box {
+  background: rgba(120,60,190,.05) !important;
+  border-color: rgba(120,60,190,.2) !important;
+}
+
+/* Ticker: dark readable text on light bg */
+body.rf-light .rf-ticker {
+  background: rgba(120,60,190,.05) !important;
+  border-color: rgba(120,60,190,.13) !important;
+}
+body.rf-light .rf-tk-mu { color: rgba(26,18,38,.5) !important; }
+body.rf-light .rf-tk-text { color: rgba(26,18,38,.82) !important; }
+body.rf-light #rf-ticker-user { color: #1a1226 !important; }
+body.rf-light #rf-ticker-amount {
+  background: linear-gradient(105deg,#7B3CBE,#B0289E) !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.rf-light .rf-ticker-lnk { color: #7B3CBE !important; }
+
+/* Stats: readable numbers + labels, softened glow, light cards */
+body.rf-light .rf-stats-float::before,
+body.rf-light .rf-stats-row::before { background: none !important; }
+body.rf-light .rf-stat-card {
+  background: #fff !important;
+  border-color: rgba(120,60,190,.13) !important;
+  box-shadow: 0 4px 14px rgba(123,60,190,.07) !important;
+}
+body.rf-light .rf-stat-card [class*="rf-count-up"],
+body.rf-light .rf-stat-card div[style*="background:linear-gradient"] {
+  background: linear-gradient(105deg,#7B3CBE,#B0289E) !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.rf-light .rf-stat-card div[style*="letter-spacing:2px"] { color: rgba(26,18,38,.5) !important; }

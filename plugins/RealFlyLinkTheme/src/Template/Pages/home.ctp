@@ -87,12 +87,12 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 ?>
 <div class="rf-ticker" style="display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;padding:9px;font-size:12px;background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);position:relative;z-index:3;visibility:visible!important;opacity:1!important">
     <span class="rf-dot" style="width:6px;height:6px;border-radius:50%;background:#cf3f96;box-shadow:0 0 8px #cf3f96;flex-shrink:0;display:inline-block"></span>
-    <span style="color:rgba(255,255,255,.5)">🎉 <?= __('Just paid:') ?></span>
-    <span id="rf-ticker-user" style="font-weight:500;color:#fff"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
-    <span style="color:rgba(255,255,255,.85)"><?= __('received') ?></span>
+    <span class="rf-tk-mu" style="color:rgba(255,255,255,.5)">🎉 <?= __('Just paid:') ?></span>
+    <span id="rf-ticker-user" class="rf-tk-text" style="font-weight:500;color:#fff"><?php echo $tk0['f']; ?> <?= $tk0['u'] ?></span>
+    <span class="rf-tk-text" style="color:rgba(255,255,255,.85)"><?= __('received') ?></span>
     <span id="rf-ticker-amount" style="font-weight:700;background:linear-gradient(105deg,#d8b8f5,#f5c8b0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent"><?= $tk0['a'] ?></span>
-    <span style="color:rgba(255,255,255,.85)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:600"><?= $tk0['m'] ?></span> · <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span>
-    <a href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#c9a8ec;font-size:11px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
+    <span class="rf-tk-text" style="color:rgba(255,255,255,.85)"><?= __('via') ?> <span id="rf-ticker-method" style="font-weight:600"><?= $tk0['m'] ?></span> · <span id="rf-ticker-date"><?= $tk0['d'] ?></span></span>
+    <a class="rf-ticker-lnk" href="<?= build_main_domain_url('/pages/payment-proof') ?>" style="color:#c9a8ec;font-size:11px;text-decoration:underline;margin-left:4px"><?= __('View all →') ?></a>
 </div>
 <script data-cfasync="false">
 (function(){
@@ -141,13 +141,13 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
     <div class="orb" style="position:absolute;left:16%;bottom:2%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 65% 70%,#e8b48c,#7a5a9a 45%,#1c1424 78%);pointer-events:none"></div>
 
     <div style="position:relative;z-index:3;max-width:760px;margin:0 auto">
-        <div style="font-size:12px;letter-spacing:4px;color:rgba(255,255,255,.55);font-weight:500;margin-bottom:22px"><?= __('WELCOME TO REALFLYLINK') ?></div>
+        <div class="rf-hero-eyebrow" style="font-size:12px;letter-spacing:4px;color:rgba(255,255,255,.55);font-weight:500;margin-bottom:22px"><?= __('WELCOME TO REALFLYLINK') ?></div>
 
-        <div style="font-weight:800;font-size:54px;letter-spacing:-2px;line-height:1.04;background:linear-gradient(105deg,#ffffff 25%,#ecd9f6 55%,#f2d9e2 75%,#f6dcc4 96%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">
+        <div class="rf-hero-title" style="font-weight:800;font-size:54px;letter-spacing:-2px;line-height:1.04;background:linear-gradient(105deg,#ffffff 25%,#ecd9f6 55%,#f2d9e2 75%,#f6dcc4 96%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">
             <?= __('Shorten Links.') ?><br><?= __('Earn Money Daily.') ?>
         </div>
 
-        <div style="color:rgba(255,255,255,.72);font-size:16px;margin:24px auto 0;max-width:440px;line-height:1.65">
+        <div class="rf-hero-subtext" style="color:rgba(255,255,255,.72);font-size:16px;margin:24px auto 0;max-width:440px;line-height:1.65">
             <?= __('Get paid for every click — PayPal, USDT, and more. Built for publishers worldwide.') ?>
         </div>
 
@@ -158,12 +158,12 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         <p style="color:rgba(255,255,255,.5);font-size:12px;margin-top:12px"><?= __('Free forever · No signup required to try') ?></p>
         <?php endif; ?>
 
-        <div style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
-            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">💵 <?= __('Daily payouts') ?></span>
-            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🔒 <?= __('SSL secured') ?></span>
-            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🌍 <?= __('200+ countries') ?></span>
+        <div class="rf-trust-row" style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">💵 <?= __('Daily payouts') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🔒 <?= __('SSL secured') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🌍 <?= __('200+ countries') ?></span>
             <?php if ((bool)get_option('enable_referrals', 1)): ?>
-            <span style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('referral') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('referral') ?></span>
             <?php endif; ?>
         </div>
     </div>
@@ -171,17 +171,17 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
 
 <!-- STATS: 3 glass cards floating over the aurora (matches uploaded file exactly) -->
 <?php if ((bool)get_option('display_home_stats', 1)): ?>
-<div style="position:relative;margin-top:-56px;z-index:4">
-    <div class="container" style="display:flex;justify-content:center;gap:14px;padding:0 20px 44px;flex-wrap:wrap">
-        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+<div class="rf-stats-float" style="position:relative;margin-top:-56px;z-index:4">
+    <div class="container rf-stats-row" style="display:flex;justify-content:center;gap:14px;padding:0 20px 44px;flex-wrap:wrap">
+        <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
             <div class="rf-count-up" data-target="<?= $realC ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
             <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('TOTAL CLICKS') ?></div>
         </div>
-        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+        <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
             <div class="rf-count-up" data-target="<?= $realU ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
             <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('PUBLISHERS') ?></div>
         </div>
-        <div style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+        <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
             <div class="rf-count-up" data-target="<?= round($realP) ?>" data-prefix="$" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#f2d4b8,#f2c0c8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">$0+</div>
             <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('PAID OUT') ?></div>
         </div>

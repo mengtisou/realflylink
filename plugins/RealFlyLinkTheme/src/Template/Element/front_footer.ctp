@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-sm-4 col-md-3" style="margin-bottom:28px">
                     <a class="rf-brand" href="<?= build_main_domain_url('/') ?>" style="height:auto;line-height:1;display:inline-flex;margin-bottom:0">
-                        <span class="rf-logo-icon" style="width:28px;height:28px"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="rf-logo-pin"><g transform="translate(60,60)"><g transform="rotate(-38)"><ellipse cx="30" cy="0" rx="27" ry="12" fill="#9054D8"/></g><g transform="rotate(176)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#00B4E4"/></g><g transform="rotate(50)"><ellipse cx="24" cy="0" rx="21" ry="10" fill="#E448C0"/></g><g transform="rotate(118)"><ellipse cx="21" cy="0" rx="18" ry="9" fill="#CC30C0"/></g><circle r="6" fill="#fff" class="rf-pin-dot"/></g></svg></span>
+                        <span class="rf-logo-icon" style="width:22px;height:22px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="rf-logo-pin" width="22" height="22"><path d="M10 55 C 30 40, 45 40, 58 55 C 45 58, 30 62, 10 55 Z" fill="#4FA8E0"/><path d="M58 55 C 70 20, 95 8, 112 15 C 100 30, 90 45, 66 58 Z" fill="#8B5FD6"/><path d="M58 55 C 75 55, 90 65, 95 85 C 78 82, 64 74, 55 62 Z" fill="#B24FCB"/><path d="M55 62 C 60 78, 55 95, 42 108 C 40 92, 42 76, 50 62 Z" fill="#D14FA8"/><circle cx="60" cy="52" r="4.5" fill="#FFFFFF" class="rf-pin-dot"/></svg></span>
                         <span class="rf-logo-text" style="font-size:15px">Real<span>Fly</span>Link</span>
                     </a>
                     <p style="font-size:13px;color:var(--muted);margin-top:10px;line-height:1.7;max-width:200px">
