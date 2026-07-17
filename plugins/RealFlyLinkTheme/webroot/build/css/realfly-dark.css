@@ -1662,7 +1662,7 @@ section.stats,
 /* ── Logo: pinwheel + Option D wordmark ── */
 .rf-logo-pin { display:block; }
 .rf-brand { display:flex; align-items:center; gap:9px; }
-.rf-logo-icon .rf-logo-pin { display:block; width:24px; height:24px; }
+.rf-logo-icon .rf-logo-pin { display:block; width:34px; height:34px; }
 .rf-logo-text > span:not(.rf-logo-link) {
   color: #c9a8ec;
   background: none; -webkit-background-clip: initial; background-clip: initial;
