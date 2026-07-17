@@ -909,7 +909,7 @@ body.rf-light .rf-bg-alt {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--rad);
-  padding: 18px 16px;
+  padding: 24px 22px;
   height: 100%;
   transition: border-color .2s, transform .2s, box-shadow .2s
 }
@@ -1005,21 +1005,21 @@ body.rf-light .rf-step-ico {
 
 /* Features */
 .rf-feat-ico {
-  font-size: 22px;
-  margin-bottom: 8px
+  font-size: 48px;
+  margin-bottom: 10px
 }
 
 .rf-feat-t {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 5px
+  margin-bottom: 6px
 }
 
 .rf-feat-d {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0
 }
 
@@ -1824,8 +1824,8 @@ html, body { overflow-x: hidden; }
       on very wide monitors, closer to competitor proportions ── */
 .rf-bg-main .container.rf-pad,
 .rf-bg-alt .container.rf-pad {
-  max-width: 980px !important;
-  width: 92% !important;
+  max-width: 1140px !important;
+  width: 90% !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -1833,10 +1833,10 @@ html, body { overflow-x: hidden; }
 .rf-eq-row { row-gap: 4px; }
 .rf-eq-row > [class*="col-sm-4"] { padding-left: 12px; padding-right: 12px; }
 
-/* Tighten section heading + intro further */
-.rf-sec-h { font-size: 27px !important; }
-.rf-sec-sub { font-size: 14px !important; margin-bottom: 32px !important; }
-.rf-eyebrow { font-size: 10px !important; }
+/* Restore a bit more breathing room in headings/cards — was too cramped */
+.rf-sec-h { font-size: 32px !important; }
+.rf-sec-sub { font-size: 15px !important; margin-bottom: 36px !important; }
+.rf-eyebrow { font-size: 11px !important; }
 
 /* ── Kill inherited UPPERCASE from base theme's .navbar-default (root cause
       of the navbar looking oversized — uppercase reads visually heavier) ── */
@@ -1921,3 +1921,11 @@ body.rf-light .rf-stat-card div[style*="background:linear-gradient"] {
   -webkit-text-fill-color: transparent !important;
 }
 body.rf-light .rf-stat-card div[style*="letter-spacing:2px"] { color: rgba(26,18,38,.5) !important; }
+
+/* ── Signup bonus badge: light-mode readable ── */
+body.rf-light .rf-bonus-pill {
+  border-color: rgba(224,98,60,.35) !important;
+  background: linear-gradient(105deg,rgba(123,60,190,.12),rgba(224,98,60,.12)) !important;
+  color: #1a1226 !important;
+}
+body.rf-light .rf-cta-sub strong { color: #1a1226 !important; }

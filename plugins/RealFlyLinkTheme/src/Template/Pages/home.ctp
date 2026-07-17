@@ -32,6 +32,10 @@ try {
     }
 } catch (\Throwable $e) { $topCpm = 0; }
 $badgeCpm = $topCpm > 0 ? '$' . number_format($topCpm, 2) : '$8';
+
+// Real signup bonus from admin settings (Admin → Options → signup_bonus)
+$signupBonus    = (float)get_option('signup_bonus', 0);
+$signupBonusTxt = $signupBonus > 0 ? get_option('currency_symbol', '$') . number_format($signupBonus, 2) : '';
 ?>
 
 <!-- TICKER (self-contained: own data, styles, and script) -->
@@ -159,6 +163,9 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         <?php endif; ?>
 
         <div class="rf-trust-row" style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
+            <?php if ($signupBonus > 0): ?>
+            <span class="rf-trust-pill rf-bonus-pill" style="border:1px solid rgba(224,98,60,.5);border-radius:16px;padding:5px 12px;background:linear-gradient(105deg,rgba(144,84,216,.25),rgba(224,98,60,.25));color:#fff;font-weight:700">🎁 <?= __('Get') ?> <?= $signupBonusTxt ?> <?= __('free on signup') ?></span>
+            <?php endif; ?>
             <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">💵 <?= __('Daily payouts') ?></span>
             <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🔒 <?= __('SSL secured') ?></span>
             <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🌍 <?= __('200+ countries') ?></span>
@@ -634,6 +641,9 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
             <p class="rf-cta-sub">
                 <?= __('Join') ?> <?= $dU ?>+ <?= __('publishers already earning with') ?> <?= h(get_option('site_name')) ?>.
                 <?= __('Free to join. Withdraw from') ?> <?= $minWith ?>.
+                <?php if ($signupBonus > 0): ?>
+                <br><strong style="color:#fff">🎁 <?= __('Sign up today and get') ?> <?= $signupBonusTxt ?> <?= __('added to your balance instantly.') ?></strong>
+                <?php endif; ?>
             </p>
             <div class="rf-cta-btns">
                 <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary"><?= __('Create Free Account →') ?></a>
