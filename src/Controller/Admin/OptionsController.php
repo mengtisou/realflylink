@@ -227,20 +227,12 @@ class OptionsController extends AppAdminController
         }
 
         if ($this->getRequest()->is(['post', 'put'])) {
-            // foreach ($this->getRequest()->getData('Options') as $key => $optionData) {
-            //     if (is_array($optionData['value'])) {
-            //         $optionData['value'] = serialize($optionData['value']);
-            //     }
-            //     $option = $this->Options->newEntity();
-            //     $option->id = $key;
-            //     $option = $this->Options->patchEntity($option, $optionData);
-            //     $this->Options->save($option);
-            // }
             foreach ($this->getRequest()->getData('Options') as $key => $optionData) {
                 if (is_array($optionData['value'])) {
                     $optionData['value'] = serialize($optionData['value']);
                 }
-                $option = $this->Options->get($key);              // load the EXISTING row properly
+                $option = $this->Options->newEntity();
+                $option->id = $key;
                 $option = $this->Options->patchEntity($option, $optionData);
                 $this->Options->save($option);
             }
