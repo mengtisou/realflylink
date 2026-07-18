@@ -52,10 +52,19 @@ $this->Form->button(__('Please Wait 10s'), [
     <?= $this->Form->end(); ?>
 <?php endif; ?>
 
+
 <?php $this->start('scriptBottom'); ?>
-<?php if (mt_rand(0, 1) === 0): ?>
+<?php
+$rand = mt_rand(1, 10);
+if ($rand <= 5):
+?>
+<!-- Monetag 50% — highest CPM -->
+<script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<?php elseif ($rand <= 7): ?>
+<!-- Adsterra 20% -->
 <script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
 <?php else: ?>
-<script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<!-- HilltopAds 30% -->
+<script async="async" src="https://villainoussession.com/b/3_Vx0.PK3Wp/v/b/mDV/JZZ_D/0/3GMej/MZ2fMITaAexCLLTWcMyoM_z/YjxJM/DIUl"></script>
 <?php endif; ?>
 <?php $this->end(); ?>
