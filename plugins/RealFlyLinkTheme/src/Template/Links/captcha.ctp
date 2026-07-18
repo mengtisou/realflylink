@@ -15,10 +15,10 @@ $this->assign('og_image', $link->image);
 </script>
 <?php $this->end(); ?>
 
-<div class="box-main">
+<div class="box-main rf-verify-box">
 
     <?php if (!empty($ad_captcha_above)) : ?>
-        <div class="banner banner-captcha">
+        <div class="banner banner-captcha rf-verify-ad">
             <div class="banner-inner">
                 <?= $ad_captcha_above; ?>
             </div>
@@ -70,30 +70,32 @@ $this->assign('og_image', $link->image);
 
             <?= $this->Flash->render() ?>
 
-            <?= $this->Form->create(null, ['id' => 'link-view']); ?>
-            <?= $this->Form->hidden('action', ['value' => 'captcha']); ?>
+            <div class="rf-verify-card">
+                <?= $this->Form->create(null, ['id' => 'link-view']); ?>
+                <?= $this->Form->hidden('action', ['value' => 'captcha']); ?>
 
-            <p style="font-size: 17px;">
-                <?= __('Please check the captcha box to proceed to the destination page.') ?>
-            </p>
+                <p class="rf-verify-text">
+                    <?= __('Please check the captcha box to proceed to the destination page.') ?>
+                </p>
 
-            <?= $this->Form->hidden('f_n', ['value' => 'slc']); ?>
+                <?= $this->Form->hidden('f_n', ['value' => 'slc']); ?>
 
-            <div class="form-group text-center">
-                <div id="captchaShortlink" style="display: inline-block;"></div>
+                <div class="form-group text-center">
+                    <div id="captchaShortlink" style="display: inline-block;"></div>
+                </div>
+
+                <?= $this->Form->button(__('Click here to continue'), [
+                    'class' => 'btn btn-primary btn-captcha rf-verify-btn',
+                    'id' => 'invisibleCaptchaShortlink',
+                ]); ?>
+
+                <?= $this->Form->end() ?>
             </div>
-
-            <?= $this->Form->button(__('Click here to continue'), [
-                'class' => 'btn btn-primary btn-captcha',
-                'id' => 'invisibleCaptchaShortlink',
-            ]); ?>
-
-            <?= $this->Form->end() ?>
         </div>
     </div>
 
     <?php if (!empty($ad_captcha_below)) : ?>
-        <div class="banner banner-captcha">
+        <div class="banner banner-captcha rf-verify-ad">
             <div class="banner-inner">
                 <?= $ad_captcha_below; ?>
             </div>
@@ -102,7 +104,7 @@ $this->assign('og_image', $link->image);
 
 </div>
 
-<div class="text-left">
+<div class="text-left rf-verify-info">
 
     <h3><?= __('What is {0}?', h(get_option('site_name'))) ?></h3>
     <p><?= __(

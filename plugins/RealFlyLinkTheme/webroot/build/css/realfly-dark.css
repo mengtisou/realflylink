@@ -1929,3 +1929,86 @@ body.rf-light .rf-bonus-pill {
   color: #1a1226 !important;
 }
 body.rf-light .rf-cta-sub strong { color: #1a1226 !important; }
+
+/* ═══════════════════════════════════════════════════════════
+   VERIFICATION / CAPTCHA PAGE (link redirect gate) — aurora
+   ═══════════════════════════════════════════════════════════ */
+
+body.rf-verify-page {
+  background: #0b0a0d !important;
+  min-height: 100vh;
+}
+body.rf-verify-page.rf-light { background: #f4f1fa !important; }
+
+/* Soft aurora wash behind the whole page content */
+body.rf-verify-page::before {
+  content: "";
+  position: fixed;
+  left: 15%; top: 10%;
+  width: 70%; height: 60%;
+  background: radial-gradient(ellipse at 45% 40%, rgba(150,88,222,.16), rgba(210,52,198,.08) 45%, transparent 72%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+body.rf-verify-page.rf-light::before { opacity: .5; }
+body.rf-verify-page .container { position: relative; z-index: 1; }
+
+/* Ad slots: transparent frames instead of default white boxes */
+.rf-verify-ad { text-align: center; margin: 18px 0; }
+.rf-verify-ad .banner-inner {
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* The captcha card itself: glass panel matching the rest of the site */
+.rf-verify-card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  max-width: 480px;
+  margin: 24px auto;
+  backdrop-filter: blur(6px);
+}
+body.rf-light .rf-verify-card {
+  background: #fff;
+  border-color: rgba(120,60,190,.13);
+  box-shadow: 0 4px 14px rgba(123,60,190,.07);
+}
+
+.rf-verify-text {
+  font-size: 15px !important;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+/* Google's own reCAPTCHA widget keeps its native look —
+   we only style the button beneath it */
+.rf-verify-btn.btn-captcha {
+  background: linear-gradient(105deg,#9054D8,#CC30C0,#E0623C) !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 12px 28px !important;
+  border-radius: 24px !important;
+  margin-top: 16px;
+  box-shadow: none !important;
+  transition: transform .15s;
+}
+.rf-verify-btn.btn-captcha:hover { transform: scale(1.03); }
+
+/* "What is RealFlyLink?" info section below the card */
+.rf-verify-info { color: var(--muted); padding: 24px 4px 40px; }
+.rf-verify-info h3 { color: var(--text); font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+.rf-verify-info p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 22px; }
+
+/* Countdown / "Please Wait" text on banner + interstitial pages */
+.captcha-page #mainNav .navbar-header + div,
+.banner-page .skip-ad, .interstitial-page .skip-ad {
+  color: var(--muted);
+}
+.timer, #timer { color: #c9a8ec !important; font-weight: 700; }
