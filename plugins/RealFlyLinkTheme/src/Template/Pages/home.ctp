@@ -156,11 +156,39 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         </div>
 
         <?php if (get_option('home_shortening') == 'yes'): ?>
-        <div class="rf-url-box" style="max-width:440px;margin:30px auto 0;display:flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:32px;padding:6px 6px 6px 22px">
-            <?= $this->element('shorten') ?>
+        <div class="rf-shorten-wrap">
+            <div class="rf-url-box" id="rfUrlBox">
+                <?= $this->element('shorten') ?>
+            </div>
+            <div class="shorten add-link-result" id="rfShortenResult"></div>
         </div>
-        <p style="color:rgba(255,255,255,.5);font-size:12px;margin-top:12px"><?= __('Free forever · No signup required to try') ?></p>
+        <p class="rf-shorten-tagline"><?= __('Free forever · No signup required to try') ?></p>
         <?php endif; ?>
+
+        <script>
+        // Hide the input box when result appears; show it again on reshort
+        (function waitForJQ() {
+            if (typeof jQuery === 'undefined') { setTimeout(waitForJQ, 50); return; }
+            var $ = jQuery;
+            // Watch for result being populated
+            var obs = new MutationObserver(function() {
+                var $result = $('#rfShortenResult');
+                var $box    = $('#rfUrlBox');
+                if ($result.children().length > 0) {
+                    $box.slideUp(200);
+                } else {
+                    $box.slideDown(200);
+                }
+            });
+            var el = document.getElementById('rfShortenResult');
+            if (el) obs.observe(el, { childList: true });
+            // Reshort click: clear result, show box
+            $(document).on('click', '.reshort', function() {
+                $('#rfShortenResult').empty();
+                $('#rfUrlBox').slideDown(200);
+            });
+        })();
+        </script>
 
         <div class="rf-trust-row" style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
             <?php if ($signupBonus > 0): ?>
@@ -183,6 +211,10 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
             <div class="rf-count-up" data-target="<?= $realC ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
             <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('TOTAL CLICKS') ?></div>
+        </div>
+        <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
+            <div class="rf-count-up" data-target="<?= $realL ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;margin-top:5px"><?= __('TOTAL LINKS') ?></div>
         </div>
         <div class="rf-stat-card" style="flex:1;max-width:230px;min-width:160px;padding:20px 14px;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;backdrop-filter:blur(6px)">
             <div class="rf-count-up" data-target="<?= $realU ?>" data-suffix="+" style="font-weight:900;font-size:26px;background:linear-gradient(105deg,#d8c4f2,#f2c8d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">0+</div>

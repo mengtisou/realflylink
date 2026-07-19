@@ -70,5 +70,3 @@ if (!$this->request->getSession()->read('Auth.User.id') &&
 <?php endif; ?>
 
 <?= $this->Form->end(); ?>
-
-<div class="shorten add-link-result"></div>

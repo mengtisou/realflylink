@@ -575,6 +575,30 @@ body.rf-light .rf-badge {
   color: var(--muted)
 }
 
+/* ═══ SHORTEN WRAP + URL BOX ═══ */
+
+.rf-shorten-wrap {
+  max-width: 580px !important;
+  margin: 30px auto 0 !important;
+}
+
+.rf-url-box {
+  display: flex !important;
+  align-items: center !important;
+  background: rgba(255,255,255,.07) !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  border-radius: 32px !important;
+  padding: 6px 6px 6px 22px !important;
+  width: 100% !important;
+}
+
+.rf-shorten-tagline {
+  color: rgba(255,255,255,.5) !important;
+  font-size: 12px !important;
+  margin-top: 12px !important;
+  text-align: center !important;
+}
+
 /* ═══ URL BOX — neutralise ALL legacy shorten rules then restyle ═══ */
 
 /* Step 1: kill every legacy rule that targets #shorten or its children */
@@ -608,9 +632,6 @@ body.rf-light .rf-badge {
 }
 
 /* Step 2: restyle the container */
-.rf-url-box {
-  /* sizing now controlled by inline style on the wrapper in home.ctp */
-}
 
 .rf-url-box #shorten,
 .rf-url-box form {
@@ -717,27 +738,122 @@ body.rf-light .rf-url-box form {
   white-space: nowrap !important;
 }
 
-/* Result box */
+/* ── Shorten result box ── */
 .shorten.add-link-result,
 .add-link-result {
-  background: var(--card) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 10px !important;
-  padding: 14px 18px !important;
-  margin-top: 12px !important;
-  max-width: 580px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--text) !important
+  max-width: 580px !important;
+  margin: 12px auto 0 !important;
 }
-
 .shorten.add-link-result:empty,
 .add-link-result:empty {
   display: none !important;
   padding: 0 !important;
   margin: 0 !important;
-  border: none !important
 }
+
+/* The Bootstrap input-group the JS builds */
+.add-link-result .form-group { margin: 0 !important; }
+.add-link-result .input-group {
+  display: flex !important;
+  align-items: center !important;
+  background: rgba(255,255,255,.07) !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  border-radius: 32px !important;
+  overflow: hidden !important;
+  padding: 6px 6px 6px 22px !important;
+  gap: 8px !important;
+}
+
+/* The short URL read-only input */
+.add-link-result .input-group .form-control,
+.add-link-result .input-group input {
+  flex: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #c9a8ec !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 8px 0 !important;
+  height: auto !important;
+  outline: none !important;
+  min-width: 0 !important;
+}
+
+/* Copy button */
+.add-link-result .input-group-addon.copy-it {
+  flex-shrink: 0 !important;
+  background: linear-gradient(105deg, #9054D8, #CC30C0) !important;
+  border: none !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  padding: 0 20px !important;
+  height: 40px !important;
+  min-width: 80px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: opacity .2s !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+.add-link-result .input-group-addon.copy-it .fa {
+  font-size: 13px !important;
+  color: #fff !important;
+  display: inline !important;
+  line-height: 1 !important;
+}
+/* Replace fa-clone icon with "COPY" text using data trick */
+.add-link-result .input-group-addon.copy-it .fa-clone::before {
+  content: 'COPY' !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: .5px !important;
+  font-style: normal !important;
+}
+.add-link-result .input-group-addon.copy-it:hover { opacity: .85 !important; }
+
+/* Reshort button */
+.add-link-result .input-group-addon.reshort {
+  flex-shrink: 0 !important;
+  background: rgba(255,255,255,.1) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  color: rgba(255,255,255,.7) !important;
+  cursor: pointer !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  transition: background .2s !important;
+  margin-right: 2px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+.add-link-result .input-group-addon.reshort .fa-refresh::before {
+  content: '↺' !important;
+  font-size: 16px !important;
+  font-family: sans-serif !important;
+}
+.add-link-result .input-group-addon.reshort:hover {
+  background: rgba(255,255,255,.18) !important;
+}
+
+/* "Copied!" tooltip */
+.tooltip-inner {
+  background: #9054D8 !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  padding: 5px 12px !important;
+}
+.tooltip.bottom .tooltip-arrow { border-bottom-color: #9054D8 !important; }
+.tooltip.top .tooltip-arrow    { border-top-color: #9054D8 !important; }
 
 .rf-trust-row {
   display: flex;
@@ -2548,7 +2664,7 @@ a.get-link:not(.disabled):hover {
     rgba(144,84,216,.2), transparent 60%),
     var(--bg) !important;
   border-bottom: 1px solid var(--border) !important;
-  padding: 30px 0 20px !important;
+  padding: 72px 0 52px !important;
 }
 
 /* ── Hero layout: text left, search right ── */
@@ -2669,7 +2785,7 @@ body.rf-light .rf-search-icon { color: rgba(26,18,38,.35) !important; }
 }
 
 .rf-blog-hero-title {
-  font-size: 28px !important;
+  font-size: 38px !important;
   font-weight: 900 !important;
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
@@ -3390,4 +3506,32 @@ body.rf-light .rf-post-footer    { border-color: #e8e2f5 !important; }
   opacity: .88 !important;
   transform: scale(1.03) !important;
   color: #fff !important;
+}
+
+/* ── Shorten box + result responsive ── */
+@media (max-width: 640px) {
+  .rf-shorten-wrap     { max-width: 100% !important; padding: 0 16px !important; }
+  .rf-url-box          { border-radius: 20px !important; padding: 5px 5px 5px 16px !important; }
+  .rf-url-box .form-control,
+  .rf-url-box input[type=text] { font-size: 13px !important; }
+  .rf-url-box .btn-captcha::after,
+  .rf-url-box button[type=submit]::after { content: 'Go →' !important; }
+  .rf-url-box .btn-captcha,
+  .rf-url-box button[type=submit],
+  .rf-url-box button   { min-width: 70px !important; padding: 10px 14px !important; }
+
+  .add-link-result .input-group { border-radius: 20px !important; padding: 5px 5px 5px 14px !important; }
+  .add-link-result .input-group .form-control,
+  .add-link-result .input-group input { font-size: 13px !important; }
+  .add-link-result .input-group-addon.copy-it { padding: 9px 14px !important; }
+  .add-link-result .input-group-addon.copy-it::before { content: '📋' !important; font-size: 14px !important; }
+  .add-link-result .input-group-addon.reshort { width: 34px !important; height: 34px !important; }
+}
+
+@media (max-width: 400px) {
+  .rf-url-box .btn-captcha::after,
+  .rf-url-box button[type=submit]::after { content: '→' !important; }
+  .rf-url-box .btn-captcha,
+  .rf-url-box button[type=submit],
+  .rf-url-box button   { min-width: 44px !important; padding: 10px 12px !important; }
 }
