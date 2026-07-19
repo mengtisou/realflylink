@@ -2012,3 +2012,261 @@ body.rf-light .rf-verify-card {
   color: var(--muted);
 }
 .timer, #timer { color: #c9a8ec !important; font-weight: 700; }
+
+/* ═══════════════════════════════════════════════════════════
+   VERIFICATION / CAPTCHA PAGE — box-main override
+   front.css gives .box-main a white bg + blue border.
+   These rules kill that and apply aurora glass instead.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Kill the legacy white card entirely */
+.box-main,
+.rf-verify-box,
+.captcha-page .box-main {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-top: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 32px 0 !important;
+  text-align: center;
+  margin-bottom: 0 !important;
+}
+
+/* Bootstrap .btn-primary used by captcha "Click here to continue" button
+   — override with aurora gradient to match .rf-btn-signup */
+.captcha-page .btn.btn-primary,
+.captcha-page .btn-captcha,
+.captcha-page button.btn-primary,
+.rf-verify-page .btn.btn-primary,
+.rf-verify-page .btn-captcha,
+.rf-verify-page button[type=submit] {
+  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  border: none !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 12px 28px !important;
+  box-shadow: 0 4px 16px rgba(144, 84, 216, .35) !important;
+  transition: transform .15s, opacity .2s !important;
+  margin-top: 14px !important;
+}
+.rf-verify-page .btn.btn-primary:hover,
+.rf-verify-page .btn-captcha:hover,
+.rf-verify-page button[type=submit]:hover {
+  opacity: .9 !important;
+  transform: scale(1.03) !important;
+}
+
+/* "WHAT IS REALFLYLINK?" / "SHORTEN URLS AND EARN MONEY" section headings
+   — front.css or Bootstrap leaves these as default blue/dark.
+   Force aurora violet heading + gradient text */
+.rf-verify-info h3,
+.captcha-page .rf-verify-info h3 {
+  background: linear-gradient(105deg, #c9a8ec, #f2b8e0) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  letter-spacing: -.5px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 10px !important;
+}
+.rf-verify-info p,
+.captcha-page .rf-verify-info p {
+  color: rgba(255, 255, 255, .5) !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+}
+
+/* Light mode overrides for verify-info */
+body.rf-light .rf-verify-info h3 {
+  background: linear-gradient(105deg, #7B3CBE, #B0289E) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.rf-light .rf-verify-info p { color: rgba(26, 18, 38, .6) !important; }
+
+/* ── Progress bar / countdown on interstitial/banner pages ── */
+/* Bootstrap progress bar: make it aurora gradient */
+.progress {
+  background: rgba(255, 255, 255, .07) !important;
+  border-radius: 99px !important;
+  box-shadow: none !important;
+  height: 4px !important;
+  margin-bottom: 16px !important;
+}
+.progress-bar,
+.progress-bar-success {
+  background: linear-gradient(90deg, #9054D8, #CC30C0, #E0623C) !important;
+  box-shadow: none !important;
+  border-radius: 99px !important;
+}
+
+/* "Please Wait" / skip-ad text + counter */
+.interstitial-page .skip-ad span,
+.banner-page .skip-ad span {
+  color: rgba(255, 255, 255, .55) !important;
+  font-size: 12px !important;
+}
+.interstitial-page .skip-ad .counter,
+.banner-page .skip-ad .counter,
+.counter, .captcha-page .counter {
+  color: #c9a8ec !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+}
+.interstitial-page .skip-ad a,
+.banner-page .skip-ad a {
+  background: linear-gradient(105deg, #9054D8, #CC30C0) !important;
+  color: #fff !important;
+  border-radius: 20px !important;
+  padding: 10px 40px 10px 18px !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  background-image: none !important; /* kill the legacy skip-ad.png arrow bg */
+}
+.interstitial-page .skip-ad a:hover,
+.banner-page .skip-ad a:hover {
+  opacity: .9 !important;
+}
+
+/* Interstitial page navbar: match aurora nav */
+.interstitial-page #mainNav.navbar-default,
+.banner-page #mainNav.navbar-default {
+  background: rgba(11, 10, 13, .95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .08) !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,.3) !important;
+}
+.interstitial-page #mainNav .navbar-brand {
+  color: var(--text) !important;
+}
+
+/* Panel inside .box-main: kill Bootstrap white panel */
+.rf-verify-page .panel,
+.rf-verify-page .panel-default,
+.captcha-page .panel,
+.captcha-page .panel-default {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.rf-verify-page .panel-body,
+.captcha-page .panel-body {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Blog post preview on captcha page */
+.captcha-page .blog-content,
+.captcha-page .blog-item h3,
+.captcha-page .page-header h3 {
+  color: var(--muted) !important;
+}
+.captcha-page .blog-item .page-header {
+  border-bottom: 1px solid rgba(255,255,255,.07) !important;
+}
+.captcha-page .blog-item a {
+  color: #c9a8ec !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTERSTITIAL / COUNTDOWN PAGE
+   Targets elements injected by ads.js:
+   .countdown circle, .countdown .timer, #go-submit button,
+   and the "YOUR LINK IS ALMOST READY" heading
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Countdown circle: simple box-shadow ring (works in all browsers) ── */
+.countdown {
+  /* Kill the legacy grey border */
+  border: 3px solid transparent !important;
+  /* Aurora gradient ring via box-shadow */
+  box-shadow:
+    0 0 0 3px #9054D8,
+    0 0 0 4px #CC30C0,
+    0 0 18px rgba(144, 84, 216, .45) !important;
+  border-radius: 50% !important;
+  background: rgba(144, 84, 216, .07) !important;
+  color: #fff !important;
+  width: 110px !important;
+  height: 110px !important;
+  margin: 28px auto !important;
+  padding: 26px 0 0 !important;
+  display: block !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+}
+
+.countdown .timer {
+  font-size: 30px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  line-height: 1 !important;
+  display: block !important;
+}
+
+/* "Seconds" text */
+.countdown br + span,
+.countdown span:not(.timer) {
+  font-size: 11px !important;
+  color: rgba(255,255,255,.5) !important;
+  letter-spacing: .5px !important;
+  text-transform: uppercase !important;
+}
+
+/* "YOUR LINK IS ALMOST READY." — injected by ads.js as a <p> or <h2> */
+.interstitial-page > div > p strong,
+.interstitial-page > div > h2,
+.interstitial-page > div > h3,
+.interstitial-page #go-link + p,
+.interstitial-page p.text-center strong {
+  color: #c9a8ec !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  letter-spacing: .5px !important;
+  text-transform: uppercase !important;
+}
+
+/* "Please wait..." / "Get Link" button — #go-submit */
+#go-submit {
+  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  border: none !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  padding: 12px 32px !important;
+  box-shadow: 0 4px 18px rgba(144,84,216,.35) !important;
+  transition: opacity .2s, transform .15s !important;
+  display: inline-block !important;
+  margin: 8px auto 0 !important;
+}
+#go-submit:hover:not([disabled]) {
+  opacity: .88 !important;
+  transform: scale(1.03) !important;
+}
+#go-submit[disabled],
+#go-submit.disabled {
+  background: rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.35) !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Centre the countdown + button area */
+.interstitial-page > div {
+  text-align: center !important;
+}
+
+/* Nav brand on interstitial */
+.rf-interstitial-page #mainNav .rf-brand,
+.interstitial-page #mainNav .rf-brand {
+  color: var(--text) !important;
+}

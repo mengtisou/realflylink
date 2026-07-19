@@ -37,19 +37,11 @@ $this->assign('og_image', $link->image);
     <?php endif; ?>
 
     <?php
-    $col_num = 6;
-    $table_row = 'is-table-row';
-    $hidden_class = '';
-    if (empty($link->image) && empty($link->title) && empty($link->description)) {
-        $col_num = 12;
-        $table_row = '';
-        $hidden_class = 'hidden';
-    }
-    if (get_option('short_link_content', 'no') === 'no') {
-        $col_num = 12;
-        $table_row = '';
-        $hidden_class = 'hidden';
-    }
+    $show_split = (get_option('short_link_content', 'no') === 'yes')
+        && (!empty($link->image) || !empty($link->title) || !empty($link->description));
+    $col_num      = $show_split ? 6  : 12;
+    $table_row    = $show_split ? 'is-table-row' : '';
+    $hidden_class = $show_split ? '' : 'hidden';
     ?>
 
     <div class="row <?= $table_row ?>">
@@ -86,7 +78,7 @@ $this->assign('og_image', $link->image);
 
                 <?= $this->Form->button(__('Click here to continue'), [
                     'class' => 'btn btn-primary btn-captcha rf-verify-btn',
-                    'id' => 'invisibleCaptchaShortlink',
+                    'id'    => 'invisibleCaptchaShortlink',
                 ]); ?>
 
                 <?= $this->Form->end() ?>
