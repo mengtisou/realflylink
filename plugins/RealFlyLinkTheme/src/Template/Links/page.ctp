@@ -93,7 +93,7 @@ $hidden_class = $show_split ? '' : 'hidden';
             <?= $this->Form->button(
                 $page >= $totalPages
                     ? __('Continue to Verification →')
-                    : __('Click here to continue ({0}/{1}) →', $page, $totalPages),
+                    : __('Continue ({0}/{1}) →', $page, $totalPages),
                 ['class' => 'btn btn-primary btn-captcha rf-verify-btn']
             ); ?>
             <?= $this->Form->end() ?>
@@ -110,18 +110,51 @@ $hidden_class = $show_split ? '' : 'hidden';
 
 </div>
 
-<div class="text-left rf-verify-info">
+<div class="rf-verify-info rf-trust-section">
 
-    <h3><?= __('What is {0}?', h(get_option('site_name'))) ?></h3>
-    <p><?= __(
-            '{0} is a completely free tool where you can create short links, which apart from being free, ' .
-            'you get paid! So, now you can make money from home, when managing and protecting your links. ' .
-            'Register now!',
-            h(get_option('site_name'))
-        ) ?></p>
+    <p class="rf-trust-why"><?= __('WHY THIS EXTRA STEP') ?></p>
+    <h3 class="rf-trust-title"><?= __('A protected redirect, not just a link') ?></h3>
+    <div class="rf-trust-divider"></div>
 
-    <h3><?= __('Shorten URLs and earn money') ?></h3>
-    <p><?= __("Signup for an account in just 2 minutes. Once you've completed your registration just start " .
-            "creating short URLs and sharing the links with your family and friends.") ?></p>
+    <div class="rf-trust-cards">
+        <div class="rf-trust-card">
+            <div class="rf-trust-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h4><?= __('Bot-protected') ?></h4>
+            <p><?= __('Multi-layer verification blocks bots and scrapers.') ?></p>
+        </div>
+        <div class="rf-trust-card">
+            <div class="rf-trust-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </div>
+            <h4><?= __('Privacy-first') ?></h4>
+            <p><?= __('No-referrer policy keeps your destination anonymous.') ?></p>
+        </div>
+        <div class="rf-trust-card">
+            <div class="rf-trust-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h4><?= __('Encrypted') ?></h4>
+            <p><?= __('End-to-end SSL across every step of the flow.') ?></p>
+        </div>
+    </div>
+
+    <div class="rf-trust-stats">
+        <div class="rf-trust-stat">
+            <strong><?= __('Real publishers') ?></strong>
+            <span><?= __('Get paid on time, every time.') ?></span>
+        </div>
+        <div class="rf-trust-dot">•</div>
+        <div class="rf-trust-stat">
+            <strong><?= __('Top CPM rates') ?></strong>
+            <span><?= __('Among the highest in the industry.') ?></span>
+        </div>
+        <div class="rf-trust-dot">•</div>
+        <div class="rf-trust-stat">
+            <strong><?= __('Global reach') ?></strong>
+            <span><?= __('Links work in 190+ countries.') ?></span>
+        </div>
+    </div>
 
 </div>

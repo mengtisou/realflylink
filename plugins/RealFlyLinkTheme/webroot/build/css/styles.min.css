@@ -2235,23 +2235,35 @@ body.rf-light .rf-verify-info p { color: rgba(26, 18, 38, .6) !important; }
   text-transform: uppercase !important;
 }
 
-/* "YOUR LINK IS ALMOST READY." — injected by ads.js as a <p> or <h2> */
-.interstitial-page > div > p strong,
-.interstitial-page > div > h2,
-.interstitial-page > div > h3,
-.interstitial-page #go-link + p,
-.interstitial-page p.text-center strong {
+/* "YOUR LINK IS ALMOST READY." — front.css sets h1-h6 to #00aeef (cyan).
+   Override ALL headings on interstitial page to aurora purple. */
+body.interstitial-page h1,
+body.interstitial-page h2,
+body.interstitial-page h3,
+body.interstitial-page h4,
+body.interstitial-page h5,
+body.interstitial-page h6 {
   color: #c9a8ec !important;
-  font-size: 18px !important;
-  font-weight: 900 !important;
-  letter-spacing: .5px !important;
-  text-transform: uppercase !important;
+  -webkit-text-fill-color: #c9a8ec !important;
 }
 
-/* "Please wait..." / "Get Link" button — #go-submit */
-#go-submit {
+/* "Please wait..." button — JS swaps class to btn-success (green) after countdown.
+   Override every possible Bootstrap state with ID specificity. */
+#go-submit,
+#go-submit.btn-default,
+#go-submit.btn-success,
+#go-submit.btn-primary,
+#go-submit:focus,
+#go-submit.btn-default:focus,
+#go-submit.btn-success:focus,
+#go-submit.btn-default:hover,
+#go-submit.btn-success:hover,
+#go-submit.btn-default:active,
+#go-submit.btn-success:active {
   background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  background-color: #9054D8 !important; /* fallback */
   border: none !important;
+  border-color: transparent !important;
   border-radius: 24px !important;
   color: #fff !important;
   font-weight: 700 !important;
@@ -2261,18 +2273,25 @@ body.rf-light .rf-verify-info p { color: rgba(26, 18, 38, .6) !important; }
   transition: opacity .2s, transform .15s !important;
   display: inline-block !important;
   margin: 8px auto 0 !important;
+  opacity: 1 !important;
 }
-#go-submit:hover:not([disabled]) {
+#go-submit:hover:not([disabled]),
+#go-submit.btn-success:hover:not([disabled]),
+#go-submit.btn-default:hover:not([disabled]) {
   opacity: .88 !important;
   transform: scale(1.03) !important;
 }
 #go-submit[disabled],
-#go-submit.disabled {
+#go-submit.disabled,
+#go-submit.btn-success[disabled],
+#go-submit.btn-default[disabled] {
   background: rgba(255,255,255,.08) !important;
+  background-color: rgba(255,255,255,.08) !important;
   color: rgba(255,255,255,.35) !important;
   box-shadow: none !important;
   cursor: not-allowed !important;
   transform: none !important;
+  opacity: 1 !important;
 }
 
 /* Centre the countdown + button area */
@@ -2284,4 +2303,236 @@ body.rf-light .rf-verify-info p { color: rgba(26, 18, 38, .6) !important; }
 .rf-interstitial-page #mainNav .rf-brand,
 .interstitial-page #mainNav .rf-brand {
   color: var(--text) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRUST / FEATURE SECTION (below captcha + step pages)
+   Inspired by shrtslug-style feature cards
+   ═══════════════════════════════════════════════════════════ */
+
+.rf-trust-section {
+  text-align: center !important;
+  padding: 48px 16px 32px !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+}
+
+.rf-trust-why {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,.35) !important;
+  margin-bottom: 10px !important;
+}
+
+.rf-trust-title {
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: none !important;
+  letter-spacing: -.4px !important;
+  margin-bottom: 14px !important;
+  text-transform: none !important;
+}
+
+.rf-trust-divider {
+  width: 40px !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, #9054D8, #CC30C0) !important;
+  border-radius: 99px !important;
+  margin: 0 auto 36px !important;
+}
+
+/* Feature cards row */
+.rf-trust-cards {
+  display: flex !important;
+  gap: 16px !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 36px !important;
+}
+
+.rf-trust-card {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 16px !important;
+  padding: 28px 20px !important;
+  flex: 1 1 180px !important;
+  max-width: 220px !important;
+  text-align: center !important;
+  transition: border-color .2s !important;
+}
+.rf-trust-card:hover {
+  border-color: rgba(144,84,216,.35) !important;
+}
+
+.rf-trust-icon {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 14px !important;
+  background: rgba(144,84,216,.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 14px !important;
+  color: #c9a8ec !important;
+}
+
+.rf-trust-card h4 {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: none !important;
+  margin: 0 0 8px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.rf-trust-card p {
+  font-size: 12px !important;
+  color: rgba(255,255,255,.45) !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+/* Stats row */
+.rf-trust-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px 0 !important;
+  padding: 20px 0 !important;
+  border-top: 1px solid rgba(255,255,255,.07) !important;
+}
+
+.rf-trust-stat {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 0 20px !important;
+}
+
+.rf-trust-stat strong {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #c9a8ec !important;
+  display: block !important;
+}
+
+.rf-trust-stat span {
+  font-size: 11px !important;
+  color: rgba(255,255,255,.4) !important;
+  margin-top: 2px !important;
+}
+
+.rf-trust-dot {
+  color: rgba(255,255,255,.2) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 576px) {
+  .rf-trust-cards { flex-direction: column !important; align-items: center !important; }
+  .rf-trust-card { max-width: 100% !important; }
+  .rf-trust-dot { display: none !important; }
+  .rf-trust-stats { flex-direction: column !important; gap: 12px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SVG ARC COUNTDOWN (view_banner + interstitial)
+   ═══════════════════════════════════════════════════════════ */
+
+.rf-arc-wrap {
+  position: relative !important;
+  width: 100px !important;
+  height: 100px !important;
+  margin: 16px auto 14px !important;
+}
+
+.rf-arc-svg {
+  transform: rotate(-90deg) !important;
+  width: 100px !important;
+  height: 100px !important;
+  overflow: visible !important;
+}
+
+/* Background track ring */
+.rf-arc-track {
+  fill: none !important;
+  stroke: rgba(255,255,255,.08) !important;
+  stroke-width: 5 !important;
+}
+
+/* Animated arc fill */
+.rf-arc-fill {
+  fill: none !important;
+  stroke: url(#rfArcGrad) !important;
+  stroke-width: 5 !important;
+  stroke-linecap: round !important;
+  transition: stroke-dashoffset .95s linear !important;
+}
+
+/* Number + label centered inside the ring */
+.rf-arc-inner {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.rf-arc-num {
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  line-height: 1 !important;
+  display: block !important;
+}
+
+.rf-arc-label {
+  font-size: 9px !important;
+  color: rgba(255,255,255,.45) !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  margin-top: 2px !important;
+}
+
+/* "Your link is almost ready." heading on banner page */
+.rf-almost-ready {
+  color: #c9a8ec !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+  margin-bottom: 0 !important;
+}
+
+/* "Please wait..." / "Get Link" button on banner page */
+a.get-link,
+a.get-link.btn-success,
+a.get-link.btn-lg {
+  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  border: none !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  padding: 12px 32px !important;
+  box-shadow: 0 4px 18px rgba(144,84,216,.35) !important;
+  opacity: 1 !important;
+  transition: opacity .2s, transform .15s !important;
+}
+a.get-link.disabled {
+  opacity: .45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+a.get-link:not(.disabled):hover {
+  opacity: .88 !important;
+  transform: scale(1.03) !important;
 }
