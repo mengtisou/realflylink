@@ -47,9 +47,7 @@ function rf_mask_user($name) {
 }
 .rf-proof-pager .pagination>.disabled>span{ opacity:.3; cursor:default }
 
-/* Column width fix for this full-page listing — the shared homepage-preview
-   widths (1fr 90px 120px 76px) are too cramped here since Method/Date text
-   can be much longer on this page. Scoped to .rf-proof-full only. */
+/* Column width fix for this full-page listing */
 .rf-proof-full .rf-proof-hd,
 .rf-proof-full .rf-proof-row{
     grid-template-columns: 1fr 100px 250px 170px !important;
@@ -62,16 +60,48 @@ function rf_mask_user($name) {
     .rf-proof-full .rf-proof-date{ display:none !important }
 }
 @media(max-width:479px){
-    .rf-proof-full .rf-proof-hd,
+    /* Card layout — show all 4 fields */
+    .rf-proof-full .rf-proof-hd{ display:none !important }
     .rf-proof-full .rf-proof-row{
-        grid-template-columns: 1fr 90px !important;
+        display:flex !important;
+        flex-direction:column !important;
+        gap:6px !important;
+        padding:12px 14px !important;
+        position:relative !important;
     }
-    .rf-proof-full .rf-proof-method{ display:none !important }
-}
-.rf-proof-full .rf-proof-user,
-.rf-proof-full .rf-proof-method,
-.rf-proof-full .rf-proof-date{
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    .rf-proof-full .rf-proof-user{
+        font-size:13px !important;
+        font-weight:600 !important;
+        text-align:left !important;
+        padding-right:70px !important;
+        white-space:nowrap !important;
+        overflow:hidden !important;
+        text-overflow:ellipsis !important;
+    }
+    .rf-proof-full .rf-proof-amount{
+        position:absolute !important;
+        top:12px !important;
+        right:14px !important;
+        font-size:14px !important;
+    }
+    .rf-proof-full .rf-proof-method{
+        display:inline-block !important;
+        font-size:11px !important;
+        background:rgba(255,255,255,.06) !important;
+        border:1px solid rgba(255,255,255,.1) !important;
+        border-radius:6px !important;
+        padding:2px 8px !important;
+        width:fit-content !important;
+        white-space:nowrap !important;
+        overflow:hidden !important;
+        text-overflow:ellipsis !important;
+    }
+    .rf-proof-full .rf-proof-date{
+        display:block !important;
+        font-size:10px !important;
+        color:rgba(255,255,255,.35) !important;
+        margin-top:2px !important;
+    }
 }
 </style>
 

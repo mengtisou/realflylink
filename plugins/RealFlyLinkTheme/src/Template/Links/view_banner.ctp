@@ -18,6 +18,7 @@ $this->assign('content_title', get_option('site_name'));
 $this->assign('og_title', $link->title);
 $this->assign('og_description', $link->description);
 $this->assign('og_image', $link->image);
+$timerSeconds = (int)($link_user_plan->timer ?? 5);
 ?>
 
 <?php $this->start('scriptTop'); ?>
@@ -28,12 +29,10 @@ $this->assign('og_image', $link->image);
 </script>
 <?php $this->end(); ?>
 
-<div class="box-main">
+<div class="box-main rf-verify-box">
     <?php if (!empty($banner_728x90)) : ?>
         <div class="banner banner-728x90">
-            <div class="banner-inner">
-                <?= $banner_728x90; ?>
-            </div>
+            <div class="banner-inner"><?= $banner_728x90; ?></div>
         </div>
     <?php endif; ?>
 
@@ -48,19 +47,37 @@ $this->assign('og_image', $link->image);
         </div>
     <?php endif; ?>
 
-    <h4><?= __('Your link is almost ready.') ?></h4>
+    <h4 class="rf-almost-ready"><?= __('Your link is almost ready.') ?></h4>
 
-    <span id="countdown" class="countdown">
-        <span id="timer" class="timer">
-            <?= $link_user_plan->timer ?? 5 ?>
-        </span><br><?= __('Seconds') ?>
+    <!-- Aurora SVG arc countdown -->
+    <div class="rf-arc-wrap" id="rfArcWrap">
+        <svg class="rf-arc-svg" viewBox="0 0 120 120" width="100" height="100">
+            <defs>
+                <linearGradient id="rfArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="#9054D8"/>
+                    <stop offset="50%"  stop-color="#CC30C0"/>
+                    <stop offset="100%" stop-color="#E0623C"/>
+                </linearGradient>
+            </defs>
+            <circle class="rf-arc-track" cx="60" cy="60" r="52" />
+            <circle class="rf-arc-fill" id="rfArcFill" cx="60" cy="60" r="52"
+                stroke-dasharray="326.7"
+                stroke-dashoffset="0" />
+        </svg>
+        <div class="rf-arc-inner">
+            <span class="rf-arc-num" id="rfArcNum"><?= $timerSeconds ?></span>
+            <span class="rf-arc-label"><?= __('Seconds') ?></span>
+        </div>
+    </div>
+
+    <!-- Hidden original countdown (required by ads.js) -->
+    <span id="countdown" class="countdown" style="display:none!important;visibility:hidden!important;position:absolute!important;">
+        <span id="timer" class="timer"><?= $timerSeconds ?></span><br><?= __('Seconds') ?>
     </span>
 
     <?php if (!empty($banner_468x60)) : ?>
         <div class="banner banner-468x60">
-            <div class="banner-inner">
-                <?= $banner_468x60; ?>
-            </div>
+            <div class="banner-inner"><?= $banner_468x60; ?></div>
         </div>
     <?php endif; ?>
 
@@ -70,7 +87,6 @@ $this->assign('og_image', $link->image);
         $hidden_class = 'hidden';
     }
     ?>
-
     <?php if (get_option('short_link_content', 'no') === 'yes') : ?>
         <div class="link-details <?= $hidden_class ?>">
             <div class="panel panel-default">
@@ -83,22 +99,18 @@ $this->assign('og_image', $link->image);
         </div>
     <?php endif; ?>
 
-    <div style="margin-bottom: 10px;">
-        <a href="javascript: void(0)" class="btn btn-success btn-lg get-link disabled">
+    <div style="margin-bottom:10px;">
+        <a href="javascript: void(0)" class="btn btn-success btn-lg get-link disabled" id="rfGetLink">
             <?= __('Please wait...') ?>
         </a>
     </div>
 
     <?php if (!empty($banner_336x280)) : ?>
         <div class="banner banner-336x280">
-            <div class="banner-inner">
-                <?= $banner_336x280; ?>
-            </div>
+            <div class="banner-inner"><?= $banner_336x280; ?></div>
         </div>
     <?php endif; ?>
-
 </div>
-
 
 <?=
 $this->Form->create(null, [
@@ -107,16 +119,13 @@ $this->Form->create(null, [
     'class' => 'hidden',
 ]);
 ?>
-
 <?= $this->Form->hidden('ad_form_data', ['value' => $ad_form_data]); ?>
-
 <?=
 $this->Form->button(__('Submit'), [
     'id' => 'go-submit',
     'class' => 'hidden',
 ]);
 ?>
-
 <?= $this->Form->end(); ?>
 
 <?php if (get_option('enable_popup', 'yes') == 'yes' && $show_pop_ad) : ?>
@@ -128,14 +137,65 @@ $this->Form->button(__('Submit'), [
         'class' => 'hidden',
     ]);
     ?>
-
     <?= $this->Form->hidden('pop_ad', ['value' => $pop_ad]); ?>
-
     <?= $this->Form->end(); ?>
 <?php endif; ?>
 
 
 <?php $this->start('scriptBottom'); ?>
+<script>
+(function() {
+    var total = <?= $timerSeconds ?>;
+    var left  = total;
+    var fill  = document.getElementById('rfArcFill');
+    var num   = document.getElementById('rfArcNum');
+    var btn   = document.getElementById('rfGetLink');
+
+    var circumference = 2 * Math.PI * 52;
+
+    function setArc(seconds, instant) {
+        var pct    = seconds / total;
+        var offset = circumference * (1 - pct);
+        if (fill) {
+            if (instant) fill.style.transition = 'none';
+            fill.style.strokeDasharray  = circumference.toFixed(1);
+            fill.style.strokeDashoffset = offset.toFixed(1);
+            if (instant) { fill.getBoundingClientRect(); fill.style.transition = ''; }
+        }
+        if (num) num.textContent = seconds;
+    }
+
+    // Mirror the ads.js timer — watch #timer for changes
+    var timerEl = document.getElementById('timer');
+    if (timerEl && window.MutationObserver) {
+        var obs = new MutationObserver(function() {
+            var v = parseInt(timerEl.textContent.trim(), 10);
+            if (!isNaN(v)) { left = v; setArc(v, false); }
+            if (v <= 0 && btn) {
+                btn.classList.remove('disabled');
+                btn.textContent = '<?= __('Get Link →') ?>';
+            }
+        });
+        obs.observe(timerEl, { childList: true, characterData: true, subtree: true });
+    } else {
+        // Fallback: run our own timer
+        var iv = setInterval(function() {
+            left--;
+            setArc(Math.max(0, left), false);
+            if (left <= 0) {
+                clearInterval(iv);
+                if (btn) {
+                    btn.classList.remove('disabled');
+                    btn.textContent = '<?= __('Get Link →') ?>';
+                }
+            }
+        }, 1000);
+    }
+
+    // Init — set instantly (no transition) so it starts full
+    setArc(total, true);
+})();
+</script>
 <?php
 $rand = mt_rand(1, 10);
 if ($rand <= 5):

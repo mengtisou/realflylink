@@ -20,6 +20,7 @@
 
 <?php
 if ((bool)get_option('combine_minify_css_js', false)) {
+    // styles.min.css already has realfly-dark.css appended at the end
     echo $this->Assets->css('/build/css/styles.min.css?ver=' . APP_VERSION);
 } else {
     echo $this->Assets->css('/vendor/bootstrap/css/bootstrap.min.css?ver=' . APP_VERSION);
@@ -30,14 +31,13 @@ if ((bool)get_option('combine_minify_css_js', false)) {
     echo $this->Assets->css('/css/front.css?ver=' . APP_VERSION);
     echo $this->Assets->css('/css/app.css?ver=' . APP_VERSION);
     echo $this->Assets->css('/css/spritesheet.css?ver=' . APP_VERSION);
+    // RealFlyLink dark theme — loaded last so it overrides Bootstrap + front.css
+    echo $this->Assets->css('/build/css/realfly-dark.css?ver=' . APP_VERSION);
 }
 echo $this->fetch('meta');
 echo $this->fetch('css');
 echo $this->fetch('script');
 ?>
-
-<!-- RealFlyLink dark theme — loaded last so it overrides Bootstrap -->
-<?= $this->Assets->css('/build/css/realfly-dark.css?ver=' . APP_VERSION); ?>
 
 <?= get_option('head_code'); ?>
 <?= $this->fetch('scriptTop') ?>
