@@ -190,15 +190,15 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
         })();
         </script>
 
-        <div class="rf-trust-row" style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap">
+        <div class="rf-trust-row" style="display:flex;justify-content:center;gap:8px;margin-top:16px;font-size:11px;flex-wrap:wrap">
             <?php if ($signupBonus > 0): ?>
-            <span class="rf-trust-pill rf-bonus-pill" style="border:1px solid rgba(224,98,60,.5);border-radius:16px;padding:5px 12px;background:linear-gradient(105deg,rgba(144,84,216,.25),rgba(224,98,60,.25));color:#fff;font-weight:700">🎁 <?= __('Get') ?> <?= $signupBonusTxt ?> <?= __('free on signup') ?></span>
+            <span class="rf-trust-pill rf-bonus-pill" style="border:1px solid rgba(224,98,60,.5);border-radius:16px;padding:5px 12px;background:linear-gradient(105deg,rgba(176,96,232,.25),rgba(240,112,64,.25));color:#fff;font-weight:700">🎁 <?= __('Get') ?> <?= $signupBonusTxt ?> <?= __('free on signup') ?></span>
             <?php endif; ?>
-            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">💵 <?= __('Daily payouts') ?></span>
-            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🔒 <?= __('SSL secured') ?></span>
-            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">🌍 <?= __('200+ countries') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.07);color:#fff;font-weight:600">💵 <?= __('Daily payouts') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.07);color:#fff;font-weight:600">🔒 <?= __('SSL secured') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.07);color:#fff;font-weight:600">🌍 <?= __('200+ countries') ?></span>
             <?php if ((bool)get_option('enable_referrals', 1)): ?>
-            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.04)">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('referral') ?></span>
+            <span class="rf-trust-pill" style="border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:5px 12px;background:rgba(255,255,255,.07);color:#fff;font-weight:600">👥 <?= h(get_option('referral_percentage')) ?>% <?= __('referral') ?></span>
             <?php endif; ?>
         </div>
     </div>

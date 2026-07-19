@@ -291,7 +291,7 @@ body.rf-light .rf-dark-btn {
   align-items: center !important;
   height: 30px !important;
   padding: 0 18px !important;
-  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  background: linear-gradient(105deg, #B060E8, #E04898, #F07040) !important;
   border: none !important;
   border-radius: 20px !important;
   color: #fff !important;
@@ -1381,38 +1381,69 @@ body.rf-light .rf-proof-hd {
 
 @media(max-width:767px) {
   .rf-proof-hd {
-    grid-template-columns: 1fr 75px 90px;
-    font-size: 9px
+    grid-template-columns: 1fr 70px 80px;
+    font-size: 9px;
+    padding: 8px 12px;
   }
-
   .rf-proof-row {
-    grid-template-columns: 1fr 75px 90px
+    grid-template-columns: 1fr 70px 80px;
+    padding: 10px 12px;
   }
-
-  .rf-proof-date {
-    display: none
-  }
-
-  .rf-proof-val {
-    font-size: 18px
-  }
-
-  .rf-proof-ico {
-    font-size: 20px
-  }
+  .rf-proof-date { display: none; }
+  .rf-proof-val  { font-size: 18px; }
+  .rf-proof-ico  { font-size: 20px; }
 }
 
 @media(max-width:479px) {
-  .rf-proof-hd {
-    grid-template-columns: 1fr 65px
-  }
+  /* Switch to card layout so all 4 fields are visible */
+  .rf-proof-hd { display: none; }
 
   .rf-proof-row {
-    grid-template-columns: 1fr 65px
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding: 12px 14px !important;
+    position: relative !important;
   }
 
+  .rf-proof-user {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    padding-right: 70px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Amount floats top-right */
+  .rf-proof-amount {
+    position: absolute !important;
+    top: 12px !important;
+    right: 14px !important;
+    font-size: 14px !important;
+  }
+
+  /* Method shown as small pill badge */
   .rf-proof-method {
-    display: none
+    display: inline-block !important;
+    font-size: 11px !important;
+    background: rgba(255,255,255,.06) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-radius: 6px !important;
+    padding: 2px 8px !important;
+    width: fit-content !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Date shown below */
+  .rf-proof-date {
+    display: block !important;
+    font-size: 10px !important;
+    color: rgba(255,255,255,.35) !important;
+    margin-top: 2px !important;
   }
 }
 
@@ -1847,7 +1878,7 @@ body.rf-light .rf-bg-alt { background:#ece7f6 !important; }
 
 /* ── Buttons → aurora gradient / white primary ── */
 .rf-btn-signup, .rf-btn-primary {
-  background:linear-gradient(105deg,#9054D8,#CC30C0,#E0623C) !important;
+  background:linear-gradient(105deg,#B060E8,#E04898,#F07040) !important;
   border:none !important; color:#fff !important;
 }
 
@@ -2119,7 +2150,7 @@ body.rf-light .rf-verify-card {
 /* Google's own reCAPTCHA widget keeps its native look —
    we only style the button beneath it */
 .rf-verify-btn.btn-captcha {
-  background: linear-gradient(105deg,#9054D8,#CC30C0,#E0623C) !important;
+  background: linear-gradient(105deg,#B060E8,#E04898,#F07040) !important;
   border: none !important;
   color: #fff !important;
   font-weight: 700 !important;
@@ -2172,14 +2203,14 @@ body.rf-light .rf-verify-card {
 .rf-verify-page .btn.btn-primary,
 .rf-verify-page .btn-captcha,
 .rf-verify-page button[type=submit] {
-  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  background: linear-gradient(105deg, #B060E8, #E04898, #F07040) !important;
   border: none !important;
   border-radius: 24px !important;
   color: #fff !important;
   font-weight: 700 !important;
   font-size: 13px !important;
   padding: 12px 28px !important;
-  box-shadow: 0 4px 16px rgba(144, 84, 216, .35) !important;
+  box-shadow: 0 4px 16px rgba(176, 96, 232, .35) !important;
   transition: transform .15s, opacity .2s !important;
   margin-top: 14px !important;
 }
@@ -2376,7 +2407,7 @@ body.interstitial-page h6 {
 #go-submit.btn-success:hover,
 #go-submit.btn-default:active,
 #go-submit.btn-success:active {
-  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  background: linear-gradient(105deg, #B060E8, #E04898, #F07040) !important;
   background-color: #9054D8 !important; /* fallback */
   border: none !important;
   border-color: transparent !important;
@@ -2385,7 +2416,7 @@ body.interstitial-page h6 {
   font-weight: 700 !important;
   font-size: 14px !important;
   padding: 12px 32px !important;
-  box-shadow: 0 4px 18px rgba(144,84,216,.35) !important;
+  box-shadow: 0 4px 18px rgba(176,96,232,.35) !important;
   transition: opacity .2s, transform .15s !important;
   display: inline-block !important;
   margin: 8px auto 0 !important;
@@ -2481,7 +2512,7 @@ body.interstitial-page h6 {
   transition: border-color .2s !important;
 }
 .rf-trust-card:hover {
-  border-color: rgba(144,84,216,.35) !important;
+  border-color: rgba(176,96,232,.35) !important;
 }
 
 .rf-trust-icon {
@@ -2632,14 +2663,14 @@ body.interstitial-page h6 {
 a.get-link,
 a.get-link.btn-success,
 a.get-link.btn-lg {
-  background: linear-gradient(105deg, #9054D8, #CC30C0, #E0623C) !important;
+  background: linear-gradient(105deg, #B060E8, #E04898, #F07040) !important;
   border: none !important;
   border-radius: 24px !important;
   color: #fff !important;
   font-weight: 700 !important;
   font-size: 14px !important;
   padding: 12px 32px !important;
-  box-shadow: 0 4px 18px rgba(144,84,216,.35) !important;
+  box-shadow: 0 4px 18px rgba(176,96,232,.35) !important;
   opacity: 1 !important;
   transition: opacity .2s, transform .15s !important;
 }
