@@ -7,7 +7,6 @@
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
 
-<meta name="monetag" content="a269f41b5d2fd7c574d0c60467123811">
 <head>
     <?= $this->Html->charset(); ?>
     <title><?= h($this->fetch('title')); ?></title>

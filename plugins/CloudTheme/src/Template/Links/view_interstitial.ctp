@@ -53,9 +53,4 @@ $this->Form->button(__('Please Wait 10s'), [
 <?php endif; ?>
 
 <?php $this->start('scriptBottom'); ?>
-<?php if (mt_rand(0, 1) === 0): ?>
-<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
-<?php else: ?>
-<script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-<?php endif; ?>
 <?php $this->end(); ?>

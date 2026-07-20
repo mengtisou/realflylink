@@ -4,7 +4,7 @@
  */
 ?>
 <?= $this->Html->charset(); ?>
-<meta name="monetag" content="a269f41b5d2fd7c574d0c60467123811"/><title><?= h($this->fetch('title')); ?></title>
+<title><?= h($this->fetch('title')); ?></title>
 <meta name="monetag" content="a269f41b5d2fd7c574d0c60467123811">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">

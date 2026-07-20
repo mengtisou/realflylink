@@ -11,6 +11,7 @@
     <meta name="og:description" content="<?= h($this->fetch('og_description')); ?>">
     <meta property="og:image" content="<?= h($this->fetch('og_image')); ?>"/>
     <?= $this->element('front_head'); ?>
+    
 </head>
 <body class="banner-page">
 <?= get_option('after_body_tag_code'); ?>

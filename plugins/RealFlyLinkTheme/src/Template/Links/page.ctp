@@ -11,7 +11,7 @@ $this->assign('og_title', $link->title);
 $this->assign('og_description', $link->description);
 $this->assign('og_image', $link->image);
 
-// All logic hoisted to top — no mid-HTML PHP blocks
+// All logic hoisted to top â€” no mid-HTML PHP blocks
 $totalPages   = (int)get_option('continue_pages_number', 3);
 $currentPage  = (int)$page;
 
@@ -96,8 +96,8 @@ $hidden_class = $show_split ? '' : 'hidden';
             <?= $this->Form->hidden('page', ['value' => $page + 1]); ?>
             <?= $this->Form->button(
                 $page >= $totalPages
-                    ? __('Final Step: Human Verification ?')
-                    : __('Continue ({0}/{1}) ?', $page, $totalPages),
+                    ? __('Final Step: Human Verification')
+                    : __('Continue ({0}/{1})', $page, $totalPages),
                 ['class' => 'btn btn-primary btn-captcha rf-verify-btn']
             ); ?>
             <?= $this->Form->end() ?>
@@ -149,12 +149,12 @@ $hidden_class = $show_split ? '' : 'hidden';
             <strong><?= __('Real publishers') ?></strong>
             <span><?= __('Get paid on time, every time.') ?></span>
         </div>
-        <div class="rf-trust-dot">•</div>
+        <div class="rf-trust-dot">â€¢</div>
         <div class="rf-trust-stat">
             <strong><?= __('Top CPM rates') ?></strong>
             <span><?= __('Among the highest in the industry.') ?></span>
         </div>
-        <div class="rf-trust-dot">•</div>
+        <div class="rf-trust-dot">â€¢</div>
         <div class="rf-trust-stat">
             <strong><?= __('Global reach') ?></strong>
             <span><?= __('Links work in 190+ countries.') ?></span>

@@ -121,5 +121,4 @@ $this->Form->button(__('Submit'), [
 <?php endif; ?>
 
 <?php $this->start('scriptBottom'); ?>
-<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
 <?php $this->end(); ?>
