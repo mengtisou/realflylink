@@ -168,7 +168,7 @@ $this->Form->button(__('Submit'), [
         if (num) num.textContent = seconds;
     }
 
-    // Mirror the ads.js timer â€” watch #timer for changes
+    // Mirror the ads.js timer — watch #timer for changes
     var timerEl = document.getElementById('timer');
     if (timerEl && window.MutationObserver) {
         var obs = new MutationObserver(function() {
@@ -176,7 +176,7 @@ $this->Form->button(__('Submit'), [
             if (!isNaN(v)) { left = v; setArc(v, false); }
             if (v <= 0 && btn) {
                 btn.classList.remove('disabled');
-                btn.textContent = '<?= __('Get Link â†’') ?>';
+                btn.textContent = '<?= __('Get Link ?') ?>';
             }
         });
         obs.observe(timerEl, { childList: true, characterData: true, subtree: true });
@@ -189,14 +189,27 @@ $this->Form->button(__('Submit'), [
                 clearInterval(iv);
                 if (btn) {
                     btn.classList.remove('disabled');
-                    btn.textContent = '<?= __('Get Link â†’') ?>';
+                    btn.textContent = '<?= __('Get Link ?') ?>';
                 }
             }
         }, 1000);
     }
 
-    // Init â€” set instantly (no transition) so it starts full
+    // Init — set instantly (no transition) so it starts full
     setArc(total, true);
 })();
 </script>
+<?php
+$rand = mt_rand(1, 10);
+if ($rand <= 5):
+?>
+<!-- Monetag 50% — highest CPM -->
+<script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<?php elseif ($rand <= 7): ?>
+<!-- Adsterra 20% -->
+<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
+<?php else: ?>
+<!-- HilltopAds 30% -->
+<script async="async" src="https://villainoussession.com/b/3_Vx0.PK3Wp/v/b/mDV/JZZ_D/0/3GMej/MZ2fMITaAexCLLTWcMyoM_z/YjxJM/DIUl"></script>
+<?php endif; ?>
 <?php $this->end(); ?>

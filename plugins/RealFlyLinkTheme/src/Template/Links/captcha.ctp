@@ -135,12 +135,12 @@ $this->assign('og_image', $link->image);
             <strong><?= __('Real publishers') ?></strong>
             <span><?= __('Get paid on time, every time.') ?></span>
         </div>
-        <div class="rf-trust-dot">â€¢</div>
+        <div class="rf-trust-dot">•</div>
         <div class="rf-trust-stat">
             <strong><?= __('Top CPM rates') ?></strong>
             <span><?= __('Among the highest in the industry.') ?></span>
         </div>
-        <div class="rf-trust-dot">â€¢</div>
+        <div class="rf-trust-dot">•</div>
         <div class="rf-trust-stat">
             <strong><?= __('Global reach') ?></strong>
             <span><?= __('Links work in 190+ countries.') ?></span>
