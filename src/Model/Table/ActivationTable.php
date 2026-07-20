@@ -63,7 +63,7 @@ class ActivationTable extends Table
             return true;
         }
 
-        return true;
+        return false;
     }
 
     public function licenseCurlRequest($data = [])

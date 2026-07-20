@@ -115,6 +115,5 @@
 
 <?= $this->fetch('scriptBottom') ?>
 <?= get_option('footer_code'); ?>
-
 </body>
 </html>

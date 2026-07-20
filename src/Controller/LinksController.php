@@ -640,6 +640,7 @@ class LinksController extends FrontController
         /**
          * Check for Adblock
          */
+        // if (false) {
         if (!isset($_COOKIE['ab']) || in_array($_COOKIE['ab'], [0, 1])) {
             // Update link hits
             $this->updateLinkHits($link);

@@ -6,6 +6,7 @@
 <?php $user = $this->request->getSession()->read('Auth.User'); ?>
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
+
 <head>
     <?= $this->Html->charset(); ?>
     <title><?= h($this->fetch('title')); ?></title>
