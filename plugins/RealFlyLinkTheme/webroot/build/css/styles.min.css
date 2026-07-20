@@ -2117,7 +2117,7 @@ body.rf-verify-page.rf-light::before { opacity: .5; }
 body.rf-verify-page .container { position: relative; z-index: 1; }
 
 /* Ad slots: transparent frames instead of default white boxes */
-.rf-verify-ad { text-align: center; margin: 18px 0; }
+.rf-verify-ad { text-align: center; margin: 8px 0; }
 .rf-verify-ad .banner-inner {
   display: inline-block;
   border-radius: 8px;
@@ -2190,7 +2190,7 @@ body.rf-light .rf-verify-card {
   border-top: none !important;
   border: none !important;
   border-radius: 0 !important;
-  padding: 32px 0 !important;
+  padding: 20px 0 8px !important;
   text-align: center;
   margin-bottom: 0 !important;
 }
@@ -2324,17 +2324,82 @@ body.rf-light .rf-verify-info p { color: rgba(26, 18, 38, .6) !important; }
   padding: 0 !important;
 }
 
-/* Blog post preview on captcha page */
-.captcha-page .blog-content,
+/* ── Blog post preview on captcha + step pages ── */
+.captcha-page .blog-item,
+.rf-verify-page .blog-item,
+.box-main .blog-item {
+  background: rgba(255,255,255,.03) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  margin-bottom: 20px !important;
+}
+
+/* "From Our Blog:" label */
+.captcha-page .blog-item .page-header small a,
+.box-main .blog-item .page-header small a {
+  color: #9054D8 !important;
+  font-size: 11px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+}
+
+/* Blog post title */
 .captcha-page .blog-item h3,
-.captcha-page .page-header h3 {
-  color: var(--muted) !important;
+.captcha-page .page-header h3,
+.box-main .blog-item h3,
+.box-main .page-header h3 {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin: 4px 0 0 !important;
 }
-.captcha-page .blog-item .page-header {
+
+/* Blog post divider line */
+.captcha-page .blog-item .page-header,
+.box-main .blog-item .page-header {
   border-bottom: 1px solid rgba(255,255,255,.07) !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 10px !important;
 }
-.captcha-page .blog-item a {
+
+/* Blog post body text */
+.captcha-page .blog-content,
+.box-main .blog-content {
+  color: rgba(255,255,255,.55) !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+
+/* Blog headings inside description (h2, h3 etc) */
+.captcha-page .blog-content h1,
+.captcha-page .blog-content h2,
+.captcha-page .blog-content h3,
+.captcha-page .blog-content h4,
+.box-main .blog-content h1,
+.box-main .blog-content h2,
+.box-main .blog-content h3,
+.box-main .blog-content h4 {
   color: #c9a8ec !important;
+  -webkit-text-fill-color: #c9a8ec !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  margin: 12px 0 6px !important;
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+}
+
+/* Links in blog content */
+.captcha-page .blog-item a,
+.box-main .blog-item a {
+  color: #c9a8ec !important;
+}
+.captcha-page .blog-item a:hover,
+.box-main .blog-item a:hover {
+  color: #fff !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2459,7 +2524,7 @@ body.interstitial-page h6 {
 
 .rf-trust-section {
   text-align: center !important;
-  padding: 48px 16px 32px !important;
+  padding: 12px 16px 24px !important;
   max-width: 760px !important;
   margin: 0 auto !important;
 }
@@ -3565,4 +3630,16 @@ body.rf-light .rf-post-footer    { border-color: #e8e2f5 !important; }
   .rf-url-box .btn-captcha,
   .rf-url-box button[type=submit],
   .rf-url-box button   { min-width: 44px !important; padding: 10px 12px !important; }
+}
+
+/* ── Blog post title link on captcha/step pages ── */
+.blog-item .page-header h3 .rf-blog-post-link {
+  color: #fff !important;
+  text-decoration: none !important;
+  transition: color .2s !important;
+  display: inline !important;
+}
+.blog-item .page-header h3 .rf-blog-post-link:hover {
+  color: #c9a8ec !important;
+  text-decoration: underline !important;
 }
