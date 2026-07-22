@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
 <head>
+    <script src="https://pl30164510.effectivecpmnetwork.com/5f/e1/12/5fe11269a95608fdf79ef5c70f8f7c94.js"></script>
+    <script src="https://5gvci.com/act/files/tag.min.js?z=11373692" data-cfasync="false" async></script>
     <meta name="robots" content="noindex, nofollow">
     <meta name="og:title" content="<?= h($this->fetch('og_title')); ?>">
     <meta name="og:description" content="<?= h($this->fetch('og_description')); ?>">
