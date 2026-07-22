@@ -37,6 +37,10 @@ function rf_nav_links($name) {
     <?= $this->element('front_head'); ?>
 </head>
 <body class="<?= ($this->request->getParam('_name') === 'home') ? 'home' : 'inner-page' ?>">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLBRZM5D"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <?= get_option('after_body_tag_code'); ?>
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
