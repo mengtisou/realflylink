@@ -45,7 +45,11 @@ $hidden_class = $show_split ? '' : 'hidden';
             <div class="page-header">
                 <h3>
                     <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small> <?= h($post->title) ?></h3>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
             </div>
             <div class="blog-content"><?= $post->description ?></div>
         </div>
@@ -92,8 +96,8 @@ $hidden_class = $show_split ? '' : 'hidden';
             <?= $this->Form->hidden('page', ['value' => $page + 1]); ?>
             <?= $this->Form->button(
                 $page >= $totalPages
-                    ? __('Continue to Verification →')
-                    : __('Continue ({0}/{1}) →', $page, $totalPages),
+                    ? __('Final Step: Human Verification')
+                    : __('Continue ({0}/{1})', $page, $totalPages),
                 ['class' => 'btn btn-primary btn-captcha rf-verify-btn']
             ); ?>
             <?= $this->Form->end() ?>

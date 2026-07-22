@@ -41,7 +41,11 @@ $timerSeconds = (int)($link_user_plan->timer ?? 5);
             <div class="page-header">
                 <h3>
                     <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small> <?= h($post->title) ?></h3>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
             </div>
             <div class="blog-content"><?= $post->description ?></div>
         </div>
