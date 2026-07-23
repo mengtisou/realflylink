@@ -3644,6 +3644,11 @@ body.rf-light .rf-post-footer    { border-color: #e8e2f5 !important; }
   text-decoration: underline !important;
 }
 
+/* ==========================================================
+   ADD — paste into both realfly-dark.css and styles.min.css
+   (keep in sync per the combine_minify_css_js toggle)
+   ========================================================== */
+ 
 .rf-link-confirm {
   display: flex;
   align-items: flex-start;
@@ -3689,6 +3694,36 @@ body.rf-light .rf-post-footer    { border-color: #e8e2f5 !important; }
   .rf-link-confirm { padding: 13px 15px; gap: 10px; }
   .rf-link-confirm-title { font-size: 13.5px; }
 }
+ 
+.rf-official-btn-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, .4);
+}
+.rf-official-btn-note svg {
+  flex-shrink: 0;
+  color: #4ade80;
+}
+ 
+/* ==========================================================
+   REMOVE — search for and delete these from realfly-dark.css
+   and styles.min.css. They were needed only when the blog
+   post sat above the download button and users had to skip
+   past it. Now that the blog moved below the button, none
+   of this is referenced anywhere in captcha.ctp anymore.
+ 
+   Selectors to find and delete:
+     .rf-download-hint
+     .rf-download-hint svg   (or .rf-download-hint-arrow, .rf-download-hint-arrow svg
+                               if you used the two-part version)
+     @keyframes rfHintBounce
+     .rf-blog-skip-link      (or .rf-blog-skip-btn if you used the earlier pill version)
+     .rf-blog-skip-link:hover
+   ========================================================== */
 
 .rf-download-hint {
   text-align: center;
