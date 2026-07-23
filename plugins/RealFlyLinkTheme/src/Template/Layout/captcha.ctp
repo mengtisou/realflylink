@@ -8,6 +8,7 @@
 <head>
     <script src="https://pl30164510.effectivecpmnetwork.com/5f/e1/12/5fe11269a95608fdf79ef5c70f8f7c94.js"></script>
     <script>(function(s){s.dataset.zone='11375385',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <meta name="referrer" content="no-referrer-when-downgrade" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="og:title" content="<?= h($this->fetch('og_title')); ?>">
     <meta name="og:description" content="<?= h($this->fetch('og_description')); ?>">

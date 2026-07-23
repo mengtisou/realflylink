@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
 <head>
+    <meta name="referrer" content="no-referrer-when-downgrade" />
     <meta name="robots" content="noindex, nofollow">
     <meta name="og:title" content="<?= h($this->fetch('og_title')); ?>">
     <meta name="og:description" content="<?= h($this->fetch('og_description')); ?>">

@@ -209,15 +209,29 @@ $this->Form->button(__('Submit'), [
 </script>
 <?php
 $rand = mt_rand(1, 100);
-if ($rand <= 40):
+if ($rand <= 30):
 ?>
-<!-- Monetag 40% — highest CPM -->
+<!-- Monetag 30% -->
 <script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-<?php elseif ($rand <= 70): ?>
-<!-- Adsterra 30% -->
+<?php elseif ($rand <= 50): ?>
+<!-- Adsterra 20% -->
 <script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
+<?php elseif ($rand <= 80): ?>
+<!-- HilltopAds 30% -->
+<script>
+(function(cusl){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = cusl || {};
+s.src = "\/\/surprisedplate.com\/c.DQ9G6EbH2a5\/l_S\/WGQO9CNNzjIuz\/NYjLEJwMMdSu0\/3\/MWj\/ME2\/M\/TfAW1P";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
 <?php else: ?>
-<!-- PopAds 30% -->
+<!-- PopAds 20% -->
 <script type="text/javascript" data-cfasync="false">
 /*<![CDATA[/* */
 (function(){var k=window,r="b40033850a124820210e81f87b107033",q=[["siteId",737-3-663*785+5833892],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],i=["d3d3LmJldHRlcmFkc3lzdGVtLmNvbS9vSW1hZ2VyLm1pbi5jc3M=","ZDJrazBvM2ZyN2VkMDEuY2xvdWRmcm9udC5uZXQvUnBMZGwvc2Nsb3VkaW5hcnktanF1ZXJ5Lm1pbi5qcw=="],b=-1,v,n,d=function(){clearTimeout(n);b++;if(i[b]&&!(1810696284000<(new Date).getTime()&&1<b)){v=k.document.createElement("script");v.type="text/javascript";v.async=!0;var a=k.document.getElementsByTagName("script")[0];v.src="https://"+atob(i[b]);v.crossOrigin="anonymous";v.onerror=d;v.onload=function(){clearTimeout(n);k[r.slice(0,16)+r.slice(0,16)]||d()};n=setTimeout(d,5E3);a.parentNode.insertBefore(v,a)}};if(!k[r]){try{Object.freeze(k[r]=q)}catch(e){}d()}})();
