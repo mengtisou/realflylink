@@ -56,46 +56,6 @@ $hidden_class = $show_split ? '' : 'hidden';
         </div>
     <?php endif; ?> -->
 
-    <?php if ($post): ?>
-        <div class="blog-item">
-            <div class="page-header">
-                <h3>
-                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small>
-                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>"
-                        class="rf-blog-post-link">
-                        <?= h($post->title) ?>
-                    </a>
-                </h3>
-            </div>
-            <div class="blog-content"><?= $post->description ?></div>
-            <a href="#rf-download-target" class="rf-blog-skip-btn">
-                <?= __('Continue') ?>
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                </svg>
-            </a>
-        </div>
-    <?php endif; ?>
-
-    <?php if (!empty($link->title)): ?>
-        <div class="rf-link-confirm" id="rf-download-target">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
-            <div class="rf-link-confirm-text">
-                <div class="rf-link-confirm-label"><?= __("You're downloading") ?></div>
-                <div class="rf-link-confirm-title"><?= h($link->title) ?></div>
-                <?php if (!empty($link->description)): ?>
-                    <div class="rf-link-confirm-desc"><?= h($link->description) ?></div>
-                <?php endif; ?>
-            </div>
-        </div>
-    <?php endif; ?>
-
     <div class="rf-download-hint">
         <?= __('Complete the steps below to unlock your get link download') ?>
     </div>
@@ -154,6 +114,13 @@ $hidden_class = $show_split ? '' : 'hidden';
                 ['class' => 'btn btn-primary btn-captcha rf-verify-btn']
             ); ?>
             <?= $this->Form->end() ?>
+
+            <div class="rf-official-btn-note">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <?= __('This is your only official button — ignore other ads on this page') ?>
+            </div>
         </div>
     </div>
 
@@ -162,6 +129,22 @@ $hidden_class = $show_split ? '' : 'hidden';
             <div class="banner-inner">
                 <?= $ad_captcha_below; ?>
             </div>
+        </div>
+    <?php endif; ?>
+
+        <?php if ($post): ?>
+        <div class="blog-item">
+            <div class="page-header">
+                <h3>
+                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>"
+                        class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
+            </div>
+            <div class="blog-content"><?= $post->description ?></div>
         </div>
     <?php endif; ?>
 

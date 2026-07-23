@@ -11,7 +11,6 @@
     <meta name="og:description" content="<?= h($this->fetch('og_description')); ?>">
     <meta property="og:image" content="<?= h($this->fetch('og_image')); ?>"/>
     <?= $this->element('front_head'); ?>
-    
 </head>
 <body class="interstitial-page">
 <?= get_option('after_body_tag_code'); ?>
@@ -81,7 +80,6 @@ if ((bool)get_option('combine_minify_css_js', false)) {
 
 <?= $this->fetch('scriptBottom') ?>
 <?= get_option('footer_code'); ?>
-
 
 </body>
 

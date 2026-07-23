@@ -36,21 +36,6 @@ $timerSeconds = (int)($link_user_plan->timer ?? 5);
         </div>
     <?php endif; ?>
 
-    <?php if ($post): ?>
-        <div class="blog-item">
-            <div class="page-header">
-                <h3>
-                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small>
-                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
-                        <?= h($post->title) ?>
-                    </a>
-                </h3>
-            </div>
-            <div class="blog-content"><?= $post->description ?></div>
-        </div>
-    <?php endif; ?>
-
     <h4 class="rf-almost-ready"><?= __('Your link is almost ready.') ?></h4>
 
     <!-- Aurora SVG arc countdown -->
@@ -109,9 +94,31 @@ $timerSeconds = (int)($link_user_plan->timer ?? 5);
         </a>
     </div>
 
+         <div class="rf-official-btn-note">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <?= __('This is your only official button — ignore other ads on this page') ?>
+            </div>
+
     <?php if (!empty($banner_336x280)) : ?>
         <div class="banner banner-336x280">
             <div class="banner-inner"><?= $banner_336x280; ?></div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($post): ?>
+        <div class="blog-item">
+            <div class="page-header">
+                <h3>
+                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
+            </div>
+            <div class="blog-content"><?= $post->description ?></div>
         </div>
     <?php endif; ?>
 </div>
@@ -144,6 +151,7 @@ $this->Form->button(__('Submit'), [
     <?= $this->Form->hidden('pop_ad', ['value' => $pop_ad]); ?>
     <?= $this->Form->end(); ?>
 <?php endif; ?>
+
 
 <?php $this->start('scriptBottom'); ?>
 <script>
@@ -199,4 +207,21 @@ $this->Form->button(__('Submit'), [
     setArc(total, true);
 })();
 </script>
+<?php
+$rand = mt_rand(1, 100);
+if ($rand <= 40):
+?>
+<!-- Monetag 40% — highest CPM -->
+<script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<?php elseif ($rand <= 70): ?>
+<!-- Adsterra 30% -->
+<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
+<?php else: ?>
+<!-- PopAds 30% -->
+<script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var k=window,r="b40033850a124820210e81f87b107033",q=[["siteId",737-3-663*785+5833892],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],i=["d3d3LmJldHRlcmFkc3lzdGVtLmNvbS9vSW1hZ2VyLm1pbi5jc3M=","ZDJrazBvM2ZyN2VkMDEuY2xvdWRmcm9udC5uZXQvUnBMZGwvc2Nsb3VkaW5hcnktanF1ZXJ5Lm1pbi5qcw=="],b=-1,v,n,d=function(){clearTimeout(n);b++;if(i[b]&&!(1810696284000<(new Date).getTime()&&1<b)){v=k.document.createElement("script");v.type="text/javascript";v.async=!0;var a=k.document.getElementsByTagName("script")[0];v.src="https://"+atob(i[b]);v.crossOrigin="anonymous";v.onerror=d;v.onload=function(){clearTimeout(n);k[r.slice(0,16)+r.slice(0,16)]||d()};n=setTimeout(d,5E3);a.parentNode.insertBefore(v,a)}};if(!k[r]){try{Object.freeze(k[r]=q)}catch(e){}d()}})();
+/*]]>/* */
+</script>
+<?php endif; ?>
 <?php $this->end(); ?>
