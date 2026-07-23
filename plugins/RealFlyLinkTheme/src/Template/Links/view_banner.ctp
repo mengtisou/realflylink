@@ -217,18 +217,11 @@ if ($rand <= 30):
 <!-- Adsterra 20% -->
 <script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
 <?php elseif ($rand <= 80): ?>
-<!-- HilltopAds 30% -->
-<script>
-(function(cusl){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = cusl || {};
-s.src = "\/\/surprisedplate.com\/c.DQ9G6EbH2a5\/l_S\/WGQO9CNNzjIuz\/NYjLEJwMMdSu0\/3\/MWj\/ME2\/M\/TfAW1P";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
+<!-- Adcash 30% -->
+<script type="text/javascript">
+    aclib.runPop({
+        zoneId: '11801314',
+    });
 </script>
 <?php else: ?>
 <!-- PopAds 20% -->
