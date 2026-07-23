@@ -25,21 +25,6 @@ $this->assign('og_image', $link->image);
         </div>
     <?php endif; ?>
 
-    <?php if ($post): ?>
-        <div class="blog-item">
-            <div class="page-header">
-                <h3>
-                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small>
-                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
-                        <?= h($post->title) ?>
-                    </a>
-                </h3>
-            </div>
-            <div class="blog-content"><?= $post->description ?></div>
-        </div>
-    <?php endif; ?>
-
     <?php
     $show_split = (get_option('short_link_content', 'no') === 'yes')
         && (!empty($link->image) || !empty($link->title) || !empty($link->description));
@@ -95,6 +80,21 @@ $this->assign('og_image', $link->image);
             <div class="banner-inner">
                 <?= $ad_captcha_below; ?>
             </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($post): ?>
+        <div class="blog-item">
+            <div class="page-header">
+                <h3>
+                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
+            </div>
+            <div class="blog-content"><?= $post->description ?></div>
         </div>
     <?php endif; ?>
 

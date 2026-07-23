@@ -36,21 +36,6 @@ $timerSeconds = (int)($link_user_plan->timer ?? 5);
         </div>
     <?php endif; ?>
 
-    <?php if ($post): ?>
-        <div class="blog-item">
-            <div class="page-header">
-                <h3>
-                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small>
-                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
-                        <?= h($post->title) ?>
-                    </a>
-                </h3>
-            </div>
-            <div class="blog-content"><?= $post->description ?></div>
-        </div>
-    <?php endif; ?>
-
     <h4 class="rf-almost-ready"><?= __('Your link is almost ready.') ?></h4>
 
     <!-- Aurora SVG arc countdown -->
@@ -109,9 +94,31 @@ $timerSeconds = (int)($link_user_plan->timer ?? 5);
         </a>
     </div>
 
+         <div class="rf-official-btn-note">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <?= __('This is your only official button — ignore other ads on this page') ?>
+            </div>
+
     <?php if (!empty($banner_336x280)) : ?>
         <div class="banner banner-336x280">
             <div class="banner-inner"><?= $banner_336x280; ?></div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($post): ?>
+        <div class="blog-item">
+            <div class="page-header">
+                <h3>
+                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
+                    </small>
+                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>" class="rf-blog-post-link">
+                        <?= h($post->title) ?>
+                    </a>
+                </h3>
+            </div>
+            <div class="blog-content"><?= $post->description ?></div>
         </div>
     <?php endif; ?>
 </div>
