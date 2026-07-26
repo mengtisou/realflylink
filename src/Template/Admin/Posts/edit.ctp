@@ -32,6 +32,16 @@ $this->assign('content_title', __('Add Post'));
         ]);
         ?>
 
+                <?=
+        $this->Form->control('tags', [
+            'label' => __('Tags'),
+            'class' => 'form-control',
+            'type' => 'text',
+        ]);
+        ?>
+        <span class="help-block"><?= __('Comma-separated, e.g. "pes-2021, mods" — used for the clickable tag filter on the blog.') ?></span>
+
+
         <?=
         $this->Form->control('published', [
             'label' => __('Published'),

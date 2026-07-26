@@ -46,6 +46,14 @@ try {
                     <span class="rf-post-date"><?= $post->created->format('d M Y') ?></span>
                 </div>
 
+                <?php if (!empty($post->tags)): ?>
+                <div class="rf-post-tags" style="margin-bottom:20px;">
+                    <?php foreach (array_filter(array_map('trim', explode(',', $post->tags))) as $t): ?>
+                        <a href="<?= build_main_domain_url('/blog') ?>?tag=<?= urlencode($t) ?>" style="display:inline-block;background:rgba(144,84,216,.15);color:#c9a8ec;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;margin:0 6px 6px 0;">#<?= h($t) ?></a>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+
                 <!-- Post body -->
                 <div class="rf-post-body">
                     <?= $post->description ?>

@@ -14,9 +14,10 @@ $this->assign('content_title', __('Menu Manager'));
     <div class="box box-primary">
         <div class="box-body">
             <?php
-            $availableMenus = [
+           $availableMenus = [
                 'menu_main' => __('Main Menu'),
                 'menu_short' => __('Short Link Page Menu'),
+                'menu_blog' => __('Blog Page Menu'),
                 'menu_footer' => __('Footer Menu'),
             ]
             ?>

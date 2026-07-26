@@ -41,6 +41,16 @@ function rf_nav_links($name) {
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLBRZM5D"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTG7BYG7HG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-MTG7BYG7HG');
+</script>
 <?= get_option('after_body_tag_code'); ?>
 
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
@@ -77,33 +87,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <!-- Page links only (login/signup filtered out in PHP) -->
             <ul class="nav navbar-nav navbar-right rf-nav-links">
-                <?= rf_nav_links('menu_main') ?>
+                <?php if ($this->request->getParam('controller') === 'Posts'): ?>
+                    <?= rf_nav_links('menu_blog') ?>
+                <?php else: ?>
+                    <?= rf_nav_links('menu_main') ?>
+                <?php endif; ?>
             </ul>
 
             <!-- Auth buttons + dark toggle — always right side -->
             <ul class="nav navbar-nav navbar-right rf-nav-auth">
+                <?php if ($this->request->getParam('controller') === 'Posts'): ?>
+                    <li class="rf-auth-li">
+                        <a class="rf-btn-signup" href="<?= build_main_domain_url('/') ?>">
+                            &larr; <?= __('Exit Blog') ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li class="rf-dark-li">
                     <button class="rf-dark-btn" onclick="rfToggleDark()" title="Toggle theme">
                         <span id="rf-dark-icon">☀️</span>
                     </button>
                 </li>
-                <?php if ($this->request->getSession()->read('Auth.User.id')): ?>
-                    <li class="rf-auth-li">
-                        <a class="rf-btn-login" href="<?= build_main_domain_url('/member/dashboard') ?>">
-                            <?= __('Dashboard') ?>
-                        </a>
-                    </li>
-                <?php else: ?>
-                    <li class="rf-auth-li">
-                        <a class="rf-btn-login" href="<?= build_main_domain_url('/auth/signin') ?>">
-                            <?= __('Login') ?>
-                        </a>
-                    </li>
-                    <li class="rf-auth-li">
-                        <a class="rf-btn-signup" href="<?= build_main_domain_url('/auth/signup') ?>">
-                            <?= __('Sign Up Free') ?>
-                        </a>
-                    </li>
+                <?php if ($this->request->getParam('controller') !== 'Posts'): ?>
+                    <?php if ($this->request->getSession()->read('Auth.User.id')): ?>
+                        <li class="rf-auth-li">
+                            <a class="rf-btn-login" href="<?= build_main_domain_url('/member/dashboard') ?>">
+                                <?= __('Dashboard') ?>
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="rf-auth-li">
+                            <a class="rf-btn-login" href="<?= build_main_domain_url('/auth/signin') ?>">
+                                <?= __('Login') ?>
+                            </a>
+                        </li>
+                        <li class="rf-auth-li">
+                            <a class="rf-btn-signup" href="<?= build_main_domain_url('/auth/signup') ?>">
+                                <?= __('Sign Up Free') ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 <?php endif; ?>
             </ul>
 

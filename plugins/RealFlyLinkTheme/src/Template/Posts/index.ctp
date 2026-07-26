@@ -5,6 +5,7 @@ $this->assign('content_title', __('Blog'));
 
 // Get current search term from URL — AdLinkFly uses ?search= or ?q=
 $searchTerm = $this->request->getQuery('search') ?? $this->request->getQuery('q') ?? '';
+$activeTag = $this->request->getQuery('tag') ?? '';
 ?>
 
 <!-- Blog Hero + Search -->
@@ -43,7 +44,13 @@ $searchTerm = $this->request->getQuery('search') ?? $this->request->getQuery('q'
 <div class="rf-blog-wrap">
     <div class="container">
 
-        <?php if ($searchTerm): ?>
+        <?php if ($activeTag): ?>
+        <p class="rf-blog-search-label">
+            <?= __('Showing posts tagged') ?>: <strong>#<?= h($activeTag) ?></strong>
+            <a href="<?= build_main_domain_url('/blog') ?>" style="color:#c9a8ec;margin-left:10px;font-size:12px;">✕ <?= __('Clear') ?></a>
+            <?php if (empty($posts)): ?>— <?= __('no posts found') ?><?php endif; ?>
+        </p>
+        <?php elseif ($searchTerm): ?>
         <p class="rf-blog-search-label">
             <?= __('Results for') ?> "<strong><?= h($searchTerm) ?></strong>"
             <?php if (empty($posts)): ?>— <?= __('no posts found') ?><?php endif; ?>
@@ -52,7 +59,13 @@ $searchTerm = $this->request->getQuery('search') ?? $this->request->getQuery('q'
 
         <?php if (empty($posts)): ?>
             <p class="rf-blog-empty">
-                <?= $searchTerm ? __('No posts matched your search. Try different keywords.') : __('No posts yet. Check back soon!') ?>
+                <?php if ($activeTag): ?>
+                    <?= __('No posts tagged') ?> "<?= h($activeTag) ?>" <?= __('yet.') ?>
+                <?php elseif ($searchTerm): ?>
+                    <?= __('No posts matched your search. Try different keywords.') ?>
+                <?php else: ?>
+                    <?= __('No posts yet. Check back soon!') ?>
+                <?php endif; ?>
             </p>
         <?php else: ?>
             <div class="rf-blog-grid">

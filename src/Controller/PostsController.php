@@ -29,6 +29,13 @@ class PostsController extends FrontController
         $query = $this->Posts->find()
             ->where(['Posts.published' => 1])
             ->order(['Posts.id' => 'DESC']);
+
+        $tag = trim((string)$this->request->getQuery('tag'));
+        if ($tag !== '') {
+            $query->where(['Posts.tags LIKE' => '%' . $tag . '%']);
+        }
+        $this->set('activeTag', $tag);
+
         $posts = $this->paginate($query);
 
         $this->set('posts', $posts);
