@@ -2760,7 +2760,7 @@ a.get-link:not(.disabled):hover {
     rgba(144,84,216,.2), transparent 60%),
     var(--bg) !important;
   border-bottom: 1px solid var(--border) !important;
-  padding: 72px 0 52px !important;
+  padding: 22px 0 12px !important;
 }
 
 /* ── Hero layout: text left, search right ── */
@@ -2843,7 +2843,7 @@ a.get-link:not(.disabled):hover {
 
 @media (max-width: 767px) {
   .rf-blog-search-wrap { flex: 1 1 100% !important; }
-  .rf-blog-hero { padding: 48px 0 36px !important; }
+  .rf-blog-hero { padding: 22px 0 10px !important; }
 }
 
 /* Light mode search */
@@ -2881,7 +2881,7 @@ body.rf-light .rf-search-icon { color: rgba(26,18,38,.35) !important; }
 }
 
 .rf-blog-hero-title {
-  font-size: 38px !important;
+  font-size: 22px !important;
   font-weight: 900 !important;
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
@@ -2950,7 +2950,7 @@ body.rf-light .rf-search-icon { color: rgba(26,18,38,.35) !important; }
 }
 @media (max-width: 600px) {
   .rf-blog-grid { grid-template-columns: 1fr !important; }
-  .rf-blog-hero-title { font-size: 26px !important; }
+  .rf-blog-hero-title { font-size: 20px !important; }
   .rf-blog-post-title { font-size: 20px !important; }
 }
 
