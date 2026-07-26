@@ -51,6 +51,27 @@ try {
                     <?= $post->description ?>
                 </div>
 
+                <script>
+                (function(){
+                document.querySelectorAll('.rf-dl-btn').forEach(function(btn){
+                    var key = 'rf_dl_' + btn.getAttribute('href');
+                    function markDone(){
+                    btn.style.background = 'rgba(255,255,255,.08)';
+                    btn.style.color = 'rgba(255,255,255,.55)';
+                    btn.style.boxShadow = 'none';
+                    btn.textContent = 'Downloaded ✓';
+                    }
+                    if (localStorage.getItem(key)) {
+                    markDone();
+                    }
+                    btn.addEventListener('click', function(){
+                    localStorage.setItem(key, '1');
+                    markDone();
+                    });
+                });
+                })();
+                </script>
+                
                 <!-- Share -->
                 <div class="rf-post-footer">
                     <div class="rf-post-share">
