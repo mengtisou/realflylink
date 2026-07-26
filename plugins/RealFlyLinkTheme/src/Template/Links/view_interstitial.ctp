@@ -129,20 +129,13 @@ $this->Form->button(__('Please Wait {0}s', $timerSeconds), [
 </script>
 <?php
 $rand = mt_rand(1, 100);
-if ($rand <= 30):
+if ($rand <= 40):
 ?>
-<!-- Monetag 30% -->
+<!-- Monetag 40% -->
 <script>(function(s){s.dataset.zone='11226349',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-<?php elseif ($rand <= 50): ?>
-<!-- Adsterra 20% -->
-<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
 <?php elseif ($rand <= 80): ?>
-<!-- Adcash 30% -->
-<script type="text/javascript">
-    aclib.runPop({
-        zoneId: '11801314',
-    });
-</script>
+<!-- Adsterra 40% -->
+<script src="https://pl30163555.effectivecpmnetwork.com/4b/91/a5/4b91a5c967c61f1858ecf06edab8adfb.js"></script>
 <?php else: ?>
 <!-- PopAds 20% -->
 <script type="text/javascript" data-cfasync="false">
