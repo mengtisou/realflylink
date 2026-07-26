@@ -75,6 +75,15 @@ $this->assign('content_title', __('Add Post'));
         ?>
         <span class="help-block"><?= __('The recommended length is 160 characters.') ?></span>
 
+        <?=
+        $this->Form->control('image', [
+            'label' => __('Image URL'),
+            'class' => 'form-control',
+            'type' => 'text',
+        ]);
+        ?>
+        <span class="help-block"><?= __('Paste a direct image URL — this appears as the hero image at the top of the blog post.') ?></span>
+
         <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']); ?>
 
         <?= $this->Form->end(); ?>
