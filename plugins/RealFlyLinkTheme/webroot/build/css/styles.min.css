@@ -873,7 +873,7 @@ body.rf-light .rf-url-box form {
 
 @media(max-width:767px) {
   header.shorten {
-    padding: 48px 0 44px !important
+    padding: 28px 0 44px !important
   }
 
   .intro-heading {
@@ -1021,7 +1021,7 @@ body.rf-light .rf-bg-alt {
 
 @media(max-width:767px) {
   .rf-pad {
-    padding: 48px 0
+    padding: 18px 0
   }
 
   .rf-sec-h {
