@@ -99,6 +99,24 @@ $this->assign('content_title', __('Statistics Table'));
         ]);
         ?>
 
+        <?=
+        $this->Form->control('Filter.date_from', [
+            'label' => false,
+            'class' => 'form-control',
+            'type' => 'date',
+            'placeholder' => __('From Date'),
+        ]);
+        ?>
+
+        <?=
+        $this->Form->control('Filter.date_to', [
+            'label' => false,
+            'class' => 'form-control',
+            'type' => 'date',
+            'placeholder' => __('To Date'),
+        ]);
+        ?>
+
         <?= $this->Form->button(__('Filter'), ['class' => 'btn btn-default btn-sm']); ?>
 
         <?= $this->Html->link(__('Reset'), $base_url, ['class' => 'btn btn-link btn-sm']); ?>

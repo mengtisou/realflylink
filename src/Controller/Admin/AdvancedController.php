@@ -14,7 +14,7 @@ class AdvancedController extends AppAdminController
 
         $conditions = [];
 
-        $filter_fields = ['user_id', 'reason', 'link_id', 'referral_id', 'ad_type', 'campaign_id', 'ip', 'country'];
+        $filter_fields = ['user_id', 'reason', 'link_id', 'referral_id', 'ad_type', 'campaign_id', 'ip', 'country', 'date_from', 'date_to'];
 
         //Transform POST into GET
         if ($this->getRequest()->is(['post', 'put']) && isset($this->getRequest()->data['Filter'])) {
@@ -42,6 +42,27 @@ class AdvancedController extends AppAdminController
             // Inspect all the named parameters to apply the filters
             foreach ($this->getRequest()->getQuery() as $param_name => $value) {
                 $value = urldecode($value);
+
+                if ($param_name === 'date_from' && strlen($value)) {
+                    try {
+                        $conditions['Statistics.created >='] = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $value)->startOfDay();
+                    } catch (\Exception $e) {
+                        // Malformed date — ignore, filter just won't apply
+                    }
+                    $this->getRequest()->data['Filter'][$param_name] = $value;
+                    continue;
+                }
+
+                if ($param_name === 'date_to' && strlen($value)) {
+                    try {
+                        $conditions['Statistics.created <='] = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $value)->endOfDay();
+                    } catch (\Exception $e) {
+                        // Malformed date — ignore, filter just won't apply
+                    }
+                    $this->getRequest()->data['Filter'][$param_name] = $value;
+                    continue;
+                }
+
                 if (in_array($param_name, $filter_fields)) {
                     if (in_array($param_name, [])) {
                         $conditions[] = [
