@@ -44,14 +44,20 @@ class AdvancedController extends AppAdminController
                 $value = urldecode($value);
 
                 if ($param_name === 'date_range' && strlen($value)) {
-                    // Expected format: "2026-07-24 - 2026-07-28"
+                    // Expected format: "2026-07-27 - 2026-07-28"
                     $parts = array_map('trim', explode(' - ', $value));
                     if (count($parts) === 2) {
                         try {
-                            $dateFrom = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $parts[0])->startOfDay();
-                            $dateTo = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $parts[1])->endOfDay();
-                            $conditions['Statistics.created >='] = $dateFrom;
-                            $conditions['Statistics.created <='] = $dateTo;
+                            $tz = get_option('timezone', 'UTC');
+
+                            $dateFrom = new \DateTime($parts[0] . ' 00:00:00', new \DateTimeZone($tz));
+                            $dateFrom->setTimezone(new \DateTimeZone('UTC'));
+
+                            $dateTo = new \DateTime($parts[1] . ' 23:59:59', new \DateTimeZone($tz));
+                            $dateTo->setTimezone(new \DateTimeZone('UTC'));
+
+                            $conditions['Statistics.created >='] = $dateFrom->format('Y-m-d H:i:s');
+                            $conditions['Statistics.created <='] = $dateTo->format('Y-m-d H:i:s');
                         } catch (\Exception $e) {
                             // Malformed date input — ignore silently, filter just won't apply
                         }

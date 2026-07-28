@@ -975,7 +975,7 @@ body.rf-light .rf-bg-alt {
 }
 
 .rf-pad {
-  padding: 50px 0
+  padding: 20px 0
 }
 
 .rf-eyebrow {
@@ -3786,4 +3786,24 @@ body.rf-light .rf-post-footer    { border-color: #e8e2f5 !important; }
 }
 html {
   scroll-behavior: smooth;
+}
+
+@media (max-width: 767px) {
+  #mainNav .navbar-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    float: none !important;
+    width: 100% !important;
+  }
+
+  #mainNav .rf-brand {
+    order: 1 !important;
+  }
+
+  #mainNav .navbar-toggle {
+    order: 2 !important;
+    float: none !important;
+    margin: 0 !important;
+  }
 }

@@ -99,12 +99,24 @@ $this->assign('content_title', __('Statistics Table'));
         ]);
         ?>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <input type="text" name="Filter[date_range]" id="rf-date-range" class="form-control"
                 placeholder="<?= __('Date Range') ?>"
                 value="<?= h($this->request->getQuery('date_range')) ?>"
                 autocomplete="off" style="width: 230px;" />
-        </div>
+        </div> -->
+
+       <?=
+        $this->Form->control('Filter.date_range', [
+            'label' => false,
+            'class' => 'form-control',
+            'type' => 'text',
+            'id' => 'rf-date-range',
+            'placeholder' => __('Date Range'),
+            'autocomplete' => 'off',
+            'style' => 'width: 230px;',
+        ]);
+        ?>
 
         <?= $this->Form->button(__('Filter'), ['class' => 'btn btn-default btn-sm']); ?>
 
