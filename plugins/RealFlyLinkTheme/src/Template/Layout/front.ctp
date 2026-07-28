@@ -29,6 +29,9 @@ function rf_nav_links($name) {
     }
     return $html;
 }
+
+$isBlogPage = ($this->request->getParam('controller') === 'Posts');
+$logoHref   = $isBlogPage ? build_main_domain_url('/blog') : build_main_domain_url('/');
 ?>
 <!DOCTYPE html>
 <html lang="<?= locale_get_primary_language('') ?>">
@@ -70,12 +73,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <?php $logo = get_logo(); ?>
             <?php if ($logo['type'] === 'image'): ?>
-                <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
+                <a class="navbar-brand rf-brand" href="<?= $logoHref ?>">
                     <span class="rf-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="rf-logo-pin" width="24" height="24"><path d="M10 55 C 30 40, 45 40, 58 55 C 45 58, 30 62, 10 55 Z" fill="#4FA8E0"/><path d="M58 55 C 70 20, 95 8, 112 15 C 100 30, 90 45, 66 58 Z" fill="#8B5FD6"/><path d="M58 55 C 75 55, 90 65, 95 85 C 78 82, 64 74, 55 62 Z" fill="#B24FCB"/><path d="M55 62 C 60 78, 55 95, 42 108 C 40 92, 42 76, 50 62 Z" fill="#D14FA8"/><circle cx="60" cy="52" r="4.5" fill="#FFFFFF" class="rf-pin-dot"/></svg></span>
                     <?= $logo['content'] ?>
                 </a>
             <?php else: ?>
-                <a class="navbar-brand rf-brand" href="<?= build_main_domain_url('/') ?>">
+                <a class="navbar-brand rf-brand" href="<?= $logoHref ?>">
                     <span class="rf-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="rf-logo-pin" width="24" height="24"><path d="M10 55 C 30 40, 45 40, 58 55 C 45 58, 30 62, 10 55 Z" fill="#4FA8E0"/><path d="M58 55 C 70 20, 95 8, 112 15 C 100 30, 90 45, 66 58 Z" fill="#8B5FD6"/><path d="M58 55 C 75 55, 90 65, 95 85 C 78 82, 64 74, 55 62 Z" fill="#B24FCB"/><path d="M55 62 C 60 78, 55 95, 42 108 C 40 92, 42 76, 50 62 Z" fill="#D14FA8"/><circle cx="60" cy="52" r="4.5" fill="#FFFFFF" class="rf-pin-dot"/></svg></span>
                     <span class="rf-logo-text">Real<span>Fly</span><span class="rf-logo-link">Link<span class="rf-logo-dot">.com</span></span></span>
                 </a>
@@ -87,7 +90,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <!-- Page links only (login/signup filtered out in PHP) -->
             <ul class="nav navbar-nav navbar-right rf-nav-links">
-                <?php if ($this->request->getParam('controller') === 'Posts'): ?>
+                <?php if ($isBlogPage): ?>
                     <?= rf_nav_links('menu_blog') ?>
                 <?php else: ?>
                     <?= rf_nav_links('menu_main') ?>
@@ -96,7 +99,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             <!-- Auth buttons + dark toggle — always right side -->
             <ul class="nav navbar-nav navbar-right rf-nav-auth">
-                <?php if ($this->request->getParam('controller') === 'Posts'): ?>
+                <?php if ($isBlogPage): ?>
                     <li class="rf-auth-li">
                         <a class="rf-btn-signup" href="<?= build_main_domain_url('/') ?>">
                             &larr; <?= __('Exit Blog') ?>
@@ -108,7 +111,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span id="rf-dark-icon">☀️</span>
                     </button>
                 </li>
-                <?php if ($this->request->getParam('controller') !== 'Posts'): ?>
+                <?php if (!$isBlogPage): ?>
                     <?php if ($this->request->getSession()->read('Auth.User.id')): ?>
                         <li class="rf-auth-li">
                             <a class="rf-btn-login" href="<?= build_main_domain_url('/member/dashboard') ?>">

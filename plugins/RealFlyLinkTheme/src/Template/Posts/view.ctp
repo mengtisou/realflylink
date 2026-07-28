@@ -73,6 +73,18 @@ try {
                     <?= $post->description ?>
                 </div>
 
+                <?php
+                $installVideoEmbedUrl = extract_video_embed_url($post->install_video_url ?? '');
+                ?>
+                <?php if ($installVideoEmbedUrl): ?>
+                <div class="rf-howto-block" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin:28px 0;">
+                    <h3 style="color:#c9a8ec;font-size:15px;font-weight:800;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;">Video Install Tutorial</h3>
+                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;">
+                        <iframe src="<?= h($installVideoEmbedUrl) ?>" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen title="Install Tutorial Video"></iframe>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <script>
                 (function(){
                 document.querySelectorAll('.rf-dl-btn').forEach(function(btn){

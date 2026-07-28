@@ -32,7 +32,7 @@ $this->assign('content_title', __('Add Post'));
         ]);
         ?>
 
-                <?=
+        <?=
         $this->Form->control('tags', [
             'label' => __('Tags'),
             'class' => 'form-control',
@@ -68,6 +68,15 @@ $this->assign('content_title', __('Add Post'));
             'type' => 'textarea',
         ]);
         ?>
+
+        <?=
+        $this->Form->control('install_video_url', [
+            'label' => __('Install Tutorial Video URL'),
+            'class' => 'form-control',
+            'type' => 'text',
+        ]);
+        ?>
+        <span class="help-block"><?= __('Optional — YouTube or Google Drive link. Leave empty and the video section stays hidden on this post. When filled in, it shows after the Description, under "Video Install Tutorial".') ?></span>
 
         <?=
         $this->Form->control('meta_title', [

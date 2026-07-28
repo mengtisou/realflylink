@@ -2172,6 +2172,22 @@ $this->assign('content_title', __('Settings'));
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-sm-2"><?= __('How-To Video URL') ?></div>
+                <div class="col-sm-10">
+                    <?=
+                    $this->Form->control('Options.' . $settings['blog_howto_video_url']['id'] . '.value', [
+                        'label' => false,
+                        'class' => 'form-control',
+                        'type' => 'text',
+                        'value' => $settings['blog_howto_video_url']['value'],
+                    ]);
+                    ?>
+                    <span class="help-block">
+                        <?= __("YouTube or Google Drive link for the tutorial video shown automatically at the top of every blog post. Paste a new link here anytime and it updates everywhere instantly — no need to edit individual posts.") ?>
+                    </span>
+                </div>
+            </div>
 
         </div>
 
