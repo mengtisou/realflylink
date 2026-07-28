@@ -54,6 +54,20 @@ try {
                 </div>
                 <?php endif; ?>
 
+                <?php
+                $howtoVideoUrl = get_option('blog_howto_video_url', '');
+                $howtoEmbedUrl = extract_video_embed_url($howtoVideoUrl);
+                ?>
+                <?php if ($howtoEmbedUrl): ?>
+                <div class="rf-howto-block" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin-bottom:28px;">
+                    <h3 style="color:#c9a8ec;font-size:15px;font-weight:800;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px;">How to Download from RealFlyLink</h3>
+                    <p style="color:rgba(255,255,255,.55);font-size:13px;margin:0 0 14px;">New here? Watch this quick walkthrough of the verification steps before downloading any file below.</p>
+                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;">
+                        <iframe src="<?= h($howtoEmbedUrl) ?>" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen title="How to download from RealFlyLink"></iframe>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <!-- Post body -->
                 <div class="rf-post-body">
                     <?= $post->description ?>

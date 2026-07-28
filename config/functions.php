@@ -1506,3 +1506,19 @@ function get_countries($campaing = false)
 
     return $countries;
 }
+
+function extract_video_embed_url($url)
+{
+    if (empty($url)) {
+        return null;
+    }
+    // YouTube — watch, youtu.be, or already-embed links
+    if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $url, $matches)) {
+        return 'https://www.youtube.com/embed/' . $matches[1];
+    }
+    // Google Drive — /view or /preview links
+    if (preg_match('/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+        return 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+    }
+    return null;
+}
