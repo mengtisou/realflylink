@@ -99,27 +99,49 @@ $this->assign('content_title', __('Statistics Table'));
         ]);
         ?>
 
-        <?=
-        $this->Form->control('Filter.date_from', [
-            'label' => false,
-            'class' => 'form-control',
-            'type' => 'date',
-            'placeholder' => __('From Date'),
-        ]);
-        ?>
-
-        <?=
-        $this->Form->control('Filter.date_to', [
-            'label' => false,
-            'class' => 'form-control',
-            'type' => 'date',
-            'placeholder' => __('To Date'),
-        ]);
-        ?>
+        <div class="form-group">
+            <input type="text" name="Filter[date_range]" id="rf-date-range" class="form-control"
+                placeholder="<?= __('Date Range') ?>"
+                value="<?= h($this->request->getQuery('date_range')) ?>"
+                autocomplete="off" style="width: 230px;" />
+        </div>
 
         <?= $this->Form->button(__('Filter'), ['class' => 'btn btn-default btn-sm']); ?>
 
         <?= $this->Html->link(__('Reset'), $base_url, ['class' => 'btn btn-link btn-sm']); ?>
+
+        <?php $this->start('scriptBottom'); ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script>
+        if (typeof jQuery === 'undefined') {
+            document.write('<scr' + 'ipt src="https://code.jquery.com/jquery-3.7.1.min.js"></scr' + 'ipt>');
+        }
+        </script>
+        <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <script>
+        jQuery(function($) {
+            $('#rf-date-range').daterangepicker({
+                autoUpdateInput: false,
+                locale: { format: 'YYYY-MM-DD', cancelLabel: 'Clear' },
+                ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            });
+            $('#rf-date-range').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            });
+            $('#rf-date-range').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+        });
+        </script>
+        <?php $this->end(); ?>
 
         <?= $this->Form->end(); ?>
 

@@ -14,7 +14,7 @@ class AdvancedController extends AppAdminController
 
         $conditions = [];
 
-        $filter_fields = ['user_id', 'reason', 'link_id', 'referral_id', 'ad_type', 'campaign_id', 'ip', 'country', 'date_from', 'date_to'];
+        $filter_fields = ['user_id', 'reason', 'link_id', 'referral_id', 'ad_type', 'campaign_id', 'ip', 'country', 'date_range'];
 
         //Transform POST into GET
         if ($this->getRequest()->is(['post', 'put']) && isset($this->getRequest()->data['Filter'])) {
@@ -43,21 +43,18 @@ class AdvancedController extends AppAdminController
             foreach ($this->getRequest()->getQuery() as $param_name => $value) {
                 $value = urldecode($value);
 
-                if ($param_name === 'date_from' && strlen($value)) {
-                    try {
-                        $conditions['Statistics.created >='] = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $value)->startOfDay();
-                    } catch (\Exception $e) {
-                        // Malformed date — ignore, filter just won't apply
-                    }
-                    $this->getRequest()->data['Filter'][$param_name] = $value;
-                    continue;
-                }
-
-                if ($param_name === 'date_to' && strlen($value)) {
-                    try {
-                        $conditions['Statistics.created <='] = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $value)->endOfDay();
-                    } catch (\Exception $e) {
-                        // Malformed date — ignore, filter just won't apply
+                if ($param_name === 'date_range' && strlen($value)) {
+                    // Expected format: "2026-07-24 - 2026-07-28"
+                    $parts = array_map('trim', explode(' - ', $value));
+                    if (count($parts) === 2) {
+                        try {
+                            $dateFrom = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $parts[0])->startOfDay();
+                            $dateTo = \Cake\I18n\FrozenTime::createFromFormat('Y-m-d', $parts[1])->endOfDay();
+                            $conditions['Statistics.created >='] = $dateFrom;
+                            $conditions['Statistics.created <='] = $dateTo;
+                        } catch (\Exception $e) {
+                            // Malformed date input — ignore silently, filter just won't apply
+                        }
                     }
                     $this->getRequest()->data['Filter'][$param_name] = $value;
                     continue;
