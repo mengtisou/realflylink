@@ -171,7 +171,6 @@ class UsersController extends AppMemberController
         $this->set('total_earnings', array_sum(array_column_polyfill($CurrentMonthDays, 'publisher_earnings')));
         $this->set('referral_earnings', array_sum(array_column_polyfill($CurrentMonthDays, 'referral_earnings')));
 
-        /*
         $popularLinks = Cache::read('popularLinks_' . $auth_user_id . '_' . $date1 . '_' . $date2, '15min');
         if ($popularLinks === false) {
             $popularLinks = $this->Users->Statistics->find()
@@ -200,12 +199,59 @@ class UsersController extends AppMemberController
                 Cache::write('popularLinks_' . $auth_user_id . '_' . $date1 . '_' . $date2, $popularLinks, '15min');
             }
         }
-
         $this->set('popularLinks', $popularLinks);
-        */
+
+        $topCountries = Cache::read('topCountries_' . $auth_user_id . '_' . $date1 . '_' . $date2, '15min');
+        if ($topCountries === false) {
+            $topCountries = $this->Users->Statistics->find()
+                ->select([
+                    'country' => 'Statistics.country',
+                    'views' => "count(case when Statistics.publisher_earn > 0 then Statistics.publisher_earn end)",
+                    'publisher_earnings' => 'SUM(Statistics.publisher_earn)',
+                ])
+                ->where([
+                    "Statistics.created BETWEEN :date1 AND :date2",
+                    'Statistics.user_id' => $auth_user_id,
+                ])
+                ->order(['views' => 'DESC'])
+                ->bind(':date1', $date1, 'datetime')
+                ->bind(':date2', $date2, 'datetime')
+                ->limit(10)
+                ->group('Statistics.country')
+                ->toArray();
+
+            if ((bool)get_option('cache_member_statistics', 1)) {
+                Cache::write('topCountries_' . $auth_user_id . '_' . $date1 . '_' . $date2, $topCountries, '15min');
+            }
+        }
+        $this->set('topCountries', $topCountries);
+
+        $topSources = Cache::read('topSources_' . $auth_user_id . '_' . $date1 . '_' . $date2, '15min');
+        if ($topSources === false) {
+            $topSources = $this->Users->Statistics->find()
+                ->select([
+                    'referer_domain' => 'Statistics.referer_domain',
+                    'views' => "count(case when Statistics.publisher_earn > 0 then Statistics.publisher_earn end)",
+                    'publisher_earnings' => 'SUM(Statistics.publisher_earn)',
+                ])
+                ->where([
+                    "Statistics.created BETWEEN :date1 AND :date2",
+                    'Statistics.user_id' => $auth_user_id,
+                ])
+                ->order(['views' => 'DESC'])
+                ->bind(':date1', $date1, 'datetime')
+                ->bind(':date2', $date2, 'datetime')
+                ->limit(10)
+                ->group('Statistics.referer_domain')
+                ->toArray();
+
+            if ((bool)get_option('cache_member_statistics', 1)) {
+                Cache::write('topSources_' . $auth_user_id . '_' . $date1 . '_' . $date2, $topSources, '15min');
+            }
+        }
+        $this->set('topSources', $topSources);
 
         $this->loadModel('Announcements');
-
         $announcements = $this->Announcements->find()
             ->where(['Announcements.published' => 1])
             ->order(['Announcements.id DESC'])
