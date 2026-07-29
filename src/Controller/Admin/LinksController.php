@@ -79,6 +79,32 @@ class LinksController extends AppAdminController
             ->where(['Links.status' => 1]);
         $links = $this->paginate($query);
 
+        $linkIds = [];
+        foreach ($links as $l) {
+            $linkIds[] = $l->id;
+        }
+
+        $linkStats = [];
+        if (!empty($linkIds)) {
+            $statsQuery = $this->Links->Statistics->find();
+            $statsQuery
+                ->select([
+                    'link_id' => 'link_id',
+                    'views' => $statsQuery->func()->count('*'),
+                    'earnings' => $statsQuery->func()->sum('publisher_earn'),
+                ])
+                ->where(['link_id IN' => $linkIds])
+                ->group('link_id');
+
+            foreach ($statsQuery as $row) {
+                $linkStats[$row->link_id] = [
+                    'views' => (int)$row->views,
+                    'earnings' => (float)$row->earnings,
+                ];
+            }
+        }
+
+        $this->set('linkStats', $linkStats);
         $this->set('links', $links);
     }
 
@@ -138,33 +164,6 @@ class LinksController extends AppAdminController
             ->where($conditions)
             ->where(['Links.status' => 2]);
         $links = $this->paginate($query);
-
-        $linkIds = [];
-        foreach ($links as $l) {
-            $linkIds[] = $l->id;
-        }
-
-        $linkStats = [];
-        if (!empty($linkIds)) {
-            $statsQuery = $this->Links->Statistics->find();
-            $statsQuery
-                ->select([
-                    'link_id' => 'link_id',
-                    'views' => $statsQuery->func()->count('*'),
-                    'earnings' => $statsQuery->func()->sum('publisher_earn'),
-                ])
-                ->where(['link_id IN' => $linkIds])
-                ->group('link_id');
-
-            foreach ($statsQuery as $row) {
-                $linkStats[$row->link_id] = [
-                    'views' => (int)$row->views,
-                    'earnings' => (float)$row->earnings,
-                ];
-            }
-        }
-
-        $this->set('linkStats', $linkStats);
 
         $this->set('links', $links);
     }

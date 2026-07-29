@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Link[]|\Cake\Collection\CollectionInterface $links
  * @var \App\Model\Entity\Plan $logged_user_plan
+ * @var array $linkStats
  */
 $this->assign('title', __('Manage Links'));
 $this->assign('description', '');
@@ -76,6 +77,8 @@ $this->assign('content_title', __('Manage Links'));
             "<a href='{$short_url}/info' target='_blank'  rel='nofollow noopener noreferrer'>" .
             __('Stats') . "</a> - ";
     }
+
+    $stats = $linkStats[$link->id] ?? ['views' => 0, 'earnings' => 0];
     ?>
 
 
@@ -95,6 +98,10 @@ $this->assign('content_title', __('Manage Links'));
                     </a>
                     - <?= __('Created on') ?>: <?= h(get_link_methods($link->method)); ?>
                 </small>
+            </p>
+            <p>
+                <span class="label label-default"><i class="fa fa-eye"></i> <?= number_format($stats['views']) ?> <?= __('Views') ?></span>
+                <span class="label label-success">$<?= number_format($stats['earnings'], 4) ?> <?= __('Earned') ?></span>
             </p>
             <div class="row">
                 <div class="col-sm-6">
