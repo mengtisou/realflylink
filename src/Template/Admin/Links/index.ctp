@@ -94,6 +94,7 @@ $this->assign('content_title', __('Manage Links'));
                     <th><input type="checkbox" id="select-all"></th>
                     <th style="width:150px;"><?= __('Title') ?></th>
                     <th><?= __('Short Link') ?></th>
+                    <th><?= __('Performance') ?></th>
                     <th><?= __('Username'); ?></th>
                     <th><?= $this->Paginator->sort('created', __('Created')); ?></th>
                     <th>
@@ -168,6 +169,15 @@ $this->assign('content_title', __('Manage Links'));
                                 </small>
                             </div>
                         </td>
+                        
+                        <td>
+                            <?php
+                            $stats = $linkStats[$link->id] ?? ['views' => 0, 'earnings' => 0];
+                            ?>
+                            <div><i class="fa fa-eye text-muted"></i> <?= number_format($stats['views']) ?></div>
+                            <div class="text-success"><strong>$<?= number_format($stats['earnings'], 4) ?></strong></div>
+                        </td>
+
                         <td>
                             <?=
                             $this->Html->link(
@@ -176,6 +186,7 @@ $this->assign('content_title', __('Manage Links'));
                             );
                             ?>
                         </td>
+                        
                         <td>
                             <?= display_date_timezone($link->created); ?>
                         </td>
