@@ -891,19 +891,13 @@ body.rf-light .rf-url-box form {
   }
 
   .rf-trust-row {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 20px
+    margin-top: 14px !important;
+    gap: 6px !important;
   }
 
-  .rf-trust-item {
-    background: rgba(255, 255, 255, .04);
-    border: 1px solid rgba(0, 212, 255, .08);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 12px;
-    justify-content: center
+  .rf-trust-pill {
+    font-size: 11px !important;
+    padding: 5px 10px !important;
   }
 }
 
@@ -1926,11 +1920,28 @@ html, body { overflow-x: hidden; }
   .rf-trust-pill { font-size: 10px !important; padding: 4px 9px !important; }
 }
 
+@media (max-width: 575px) {
+  .rf-stats-row::before { display: none !important; }
+}
+
 /* ── Stats: wrap to 2-up then 1-up gracefully, stay glass ── */
 @media (max-width: 575px) {
-  .rf-stats-float { margin-top: -30px !important; }
-  .rf-stats-row { gap: 8px !important; }
-  .rf-stat-card { min-width: 44% !important; padding: 14px 8px !important; }
+  .rf-stats-float { margin-top: -10px !important; }
+  .rf-stats-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
+  .rf-stat-card {
+    min-width: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 14px 8px !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
   .rf-stat-card [class*="rf-count-up"] { font-size: 19px !important; }
 }
 
@@ -2052,6 +2063,10 @@ body.rf-light #rf-ticker-amount {
   -webkit-text-fill-color: transparent !important;
 }
 body.rf-light .rf-ticker-lnk { color: #7B3CBE !important; }
+
+@media (max-width: 575px) {
+  .rf-stats-row::before { display: none !important; }
+}
 
 /* Stats: readable numbers + labels, softened glow, light cards */
 body.rf-light .rf-stats-float::before,
