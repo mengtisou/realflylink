@@ -29,20 +29,7 @@ class UsersController extends AppAdminController
     public function dashboard()
     {
         $last_record = Time::now();
-
-        /**
-         * @var \App\Model\Entity\Statistic $first_record
-         */
-        $first_record = $this->Users->Statistics->find()
-            ->select('created')
-            ->order(['created' => 'ASC'])
-            ->first();
-
-        if (!$first_record) {
-            $first_record = Time::now()->modify('-1 second');
-        } else {
-            $first_record = $first_record->created;
-        }
+        $first_record = Time::now()->subMonths(11);
 
         $year_month = [];
 
@@ -51,25 +38,24 @@ class UsersController extends AppAdminController
 
         while ($first_month <= $last_month) {
             $year_month[$last_month->format('Y-m')] = $last_month->i18nFormat('LLLL Y');
-
             $last_month->modify('-1 month');
         }
 
         $this->set('year_month', $year_month);
 
         $to_month = Time::now()->format('Y-m');
-        if ($this->getRequest()->getQuery('month') &&
+        if (
+            $this->getRequest()->getQuery('month') &&
             array_key_exists($this->getRequest()->getQuery('month'), $year_month)
         ) {
             $to_month = explode('-', $this->getRequest()->getQuery('month'));
-            $year = (int)$to_month[0];
-            $month = (int)$to_month[1];
+            $year = (int) $to_month[0];
+            $month = (int) $to_month[1];
         } else {
             $time = new Time($to_month);
             $current_time = $time->startOfMonth();
-
-            $year = (int)$current_time->format('Y');
-            $month = (int)$current_time->format('m');
+            $year = (int) $current_time->format('Y');
+            $month = (int) $current_time->format('m');
         }
 
         $time_zone = get_option('timezone', 'UTC');
@@ -81,45 +67,20 @@ class UsersController extends AppAdminController
             ->i18nFormat('yyyy-MM-dd HH:mm:ss', 'UTC', 'en');
 
         $connection = ConnectionManager::get('default');
-
         $time_zone_offset = Time::now($time_zone)->format('P');
 
-        $CurrentMonthDays = Cache::read('currentMonthDays_' . $date1 . '_' . $date2, '15min');
+        $CurrentMonthDays = Cache::read('adminCurrentMonthDays_' . $date1 . '_' . $date2, '15min');
         if ($CurrentMonthDays === false) {
             $sql = "SELECT
-                  CASE
-                    WHEN Statistics.publisher_earn > 0
-                    THEN
-                      DATE_FORMAT(CONVERT_TZ(Statistics.created,'+00:00','" . $time_zone_offset . "'), '%Y-%m-%d')
-                  END  AS `day`,
-                  CASE
-                    WHEN Statistics.publisher_earn > 0
-                    THEN
-                      COUNT(Statistics.id)
-                  END AS `count`,
-                  CASE
-                    WHEN Statistics.publisher_earn > 0
-                    THEN
-                      SUM(Statistics.owner_earn)
-                  END AS `owner_earnings`,
-                  CASE
-                    WHEN Statistics.publisher_earn > 0
-                    THEN
-                      SUM(Statistics.publisher_earn)
-                  END AS `publisher_earnings`,
-                  CASE
-                    WHEN Statistics.publisher_earn > 0
-                    THEN
-                      SUM(Statistics.referral_earn)
-                  END AS `referral_earnings`
-                FROM
-                  statistics Statistics
-                WHERE
-                  (
-                    Statistics.created BETWEEN :date1 AND :date2
-                  )
-                GROUP BY
-                  day";
+                  CASE WHEN Statistics.publisher_earn > 0 THEN
+                    DATE_FORMAT(CONVERT_TZ(Statistics.created,'+00:00','" . $time_zone_offset . "'), '%Y-%m-%d')
+                  END AS `day`,
+                  CASE WHEN Statistics.publisher_earn > 0 THEN COUNT(Statistics.id) END AS `count`,
+                  CASE WHEN Statistics.publisher_earn > 0 THEN SUM(Statistics.publisher_earn) END AS `publisher_earnings`,
+                  CASE WHEN Statistics.owner_earn > 0 THEN SUM(Statistics.owner_earn) END AS `owner_earnings`
+                FROM statistics Statistics
+                WHERE Statistics.created BETWEEN :date1 AND :date2
+                GROUP BY day";
 
             $stmt = $connection->prepare($sql);
             $stmt->bindValue('date1', $date1, 'datetime');
@@ -128,16 +89,14 @@ class UsersController extends AppAdminController
             $views = $stmt->fetchAll('assoc');
 
             $CurrentMonthDays = [];
-
             $targetTime = Time::createFromDate($year, $month, 01)->startOfMonth();
 
             for ($i = 1; $i <= $targetTime->format('t'); $i++) {
                 $CurrentMonthDays[$year . "-" . str_pad($month, 2, '0', STR_PAD_LEFT) . "-" .
-                str_pad($i, 2, '0', STR_PAD_LEFT)] = [
+                    str_pad($i, 2, '0', STR_PAD_LEFT)] = [
                     'view' => 0,
-                    'owner_earnings' => 0,
                     'publisher_earnings' => 0,
-                    'referral_earnings' => 0,
+                    'owner_earnings' => 0,
                 ];
             }
 
@@ -145,27 +104,24 @@ class UsersController extends AppAdminController
                 if (!$view['day']) {
                     continue;
                 }
-
                 $day = $view['day'];
                 $CurrentMonthDays[$day]['view'] = $view['count'];
-                $CurrentMonthDays[$day]['owner_earnings'] = $view['owner_earnings'];
                 $CurrentMonthDays[$day]['publisher_earnings'] = $view['publisher_earnings'];
-                $CurrentMonthDays[$day]['referral_earnings'] = $view['referral_earnings'];
+                $CurrentMonthDays[$day]['owner_earnings'] = $view['owner_earnings'];
             }
+            unset($view);
 
-            if ((bool)get_option('cache_admin_statistics', 1)) {
-                Cache::write('currentMonthDays_' . $date1 . '_' . $date2, $CurrentMonthDays, '5min');
-            }
+            Cache::write('adminCurrentMonthDays_' . $date1 . '_' . $date2, $CurrentMonthDays, '15min');
         }
         $this->set('CurrentMonthDays', $CurrentMonthDays);
 
-        $this->set('owner_earnings', array_sum(array_column_polyfill($CurrentMonthDays, 'owner_earnings')));
-        $this->set('publisher_earnings', array_sum(array_column_polyfill($CurrentMonthDays, 'publisher_earnings')));
-        $this->set('referral_earnings', array_sum(array_column_polyfill($CurrentMonthDays, 'referral_earnings')));
-        $this->set('total_views', array_sum(array_column_polyfill($CurrentMonthDays, 'view')));
+        $this->set('total_views', array_sum(array_column($CurrentMonthDays, 'view')));
+        $this->set('publisher_earnings', array_sum(array_column($CurrentMonthDays, 'publisher_earnings')));
+        $this->set('owner_earnings', array_sum(array_column($CurrentMonthDays, 'owner_earnings')));
+        $this->set('referral_earnings', 0);
 
-        /*
-        if (($popularLinks = Cache::read('popularLinks_' . $date1 . '_' . $date2, '5min')) === false) {
+        $popularLinks = Cache::read('adminPopularLinks_' . $date1 . '_' . $date2, '15min');
+        if ($popularLinks === false) {
             $popularLinks = $this->Users->Statistics->find()
                 ->contain(['Links'])
                 ->select([
@@ -173,13 +129,10 @@ class UsersController extends AppAdminController
                     'Links.url',
                     'Links.title',
                     'Links.domain',
-                    'Links.created',
                     'views' => "count(case when Statistics.publisher_earn > 0 then Statistics.publisher_earn end)",
-                    'publisher_earnings' => 'SUM(Statistics.publisher_earn)'
+                    'publisher_earnings' => 'SUM(Statistics.publisher_earn)',
                 ])
-                ->where([
-                    "Statistics.created BETWEEN :date1 AND :date2",
-                ])
+                ->where(["Statistics.created BETWEEN :date1 AND :date2"])
                 ->order(['views' => 'DESC'])
                 ->bind(':date1', $date1, 'datetime')
                 ->bind(':date2', $date2, 'datetime')
@@ -187,42 +140,57 @@ class UsersController extends AppAdminController
                 ->group('Statistics.link_id')
                 ->toArray();
 
-            if ((bool)get_option('cache_admin_statistics', 1)) {
-                Cache::write('popularLinks_' . $date1 . '_' . $date2, $popularLinks, '5min');
-            }
+            Cache::write('adminPopularLinks_' . $date1 . '_' . $date2, $popularLinks, '15min');
         }
-
         $this->set('popularLinks', $popularLinks);
-        */
 
-        /*
-        if (($popularUsers = Cache::read('popularUsers_' . $date1 . '_' . $date2, '5min')) === false) {
-            $popularUsers = $this->Users->Statistics->find()
-                ->contain(['Users'])
+        $topCountries = Cache::read('adminTopCountries_' . $date1 . '_' . $date2, '15min');
+        if ($topCountries === false) {
+            $topCountries = $this->Users->Statistics->find()
                 ->select([
-                    'Users.username',
-                    'Users.id',
+                    'country' => 'Statistics.country',
                     'views' => "count(case when Statistics.publisher_earn > 0 then Statistics.publisher_earn end)",
                     'publisher_earnings' => 'SUM(Statistics.publisher_earn)',
-                    'referral_earn' => 'SUM(Statistics.referral_earn)',
                 ])
-                ->where([
-                    "Statistics.created BETWEEN :date1 AND :date2",
-                ])
+                ->where(["Statistics.created BETWEEN :date1 AND :date2"])
                 ->order(['views' => 'DESC'])
                 ->bind(':date1', $date1, 'datetime')
                 ->bind(':date2', $date2, 'datetime')
                 ->limit(10)
-                ->group('Statistics.user_id')
+                ->group('Statistics.country')
                 ->toArray();
 
-            if ((bool)get_option('cache_admin_statistics', 1)) {
-                Cache::write('popularUsers_' . $date1 . '_' . $date2, $popularUsers, '5min');
-            }
+            Cache::write('adminTopCountries_' . $date1 . '_' . $date2, $topCountries, '15min');
         }
+        $this->set('topCountries', $topCountries);
 
-        $this->set('popularUsers', $popularUsers);
-        */
+        $topSources = Cache::read('adminTopSources_' . $date1 . '_' . $date2, '15min');
+        if ($topSources === false) {
+            $topSources = $this->Users->Statistics->find()
+                ->select([
+                    'referer_domain' => 'Statistics.referer_domain',
+                    'views' => "count(case when Statistics.publisher_earn > 0 then Statistics.publisher_earn end)",
+                    'publisher_earnings' => 'SUM(Statistics.publisher_earn)',
+                ])
+                ->where(["Statistics.created BETWEEN :date1 AND :date2"])
+                ->order(['views' => 'DESC'])
+                ->bind(':date1', $date1, 'datetime')
+                ->bind(':date2', $date2, 'datetime')
+                ->limit(10)
+                ->group('Statistics.referer_domain')
+                ->toArray();
+
+            Cache::write('adminTopSources_' . $date1 . '_' . $date2, $topSources, '15min');
+        }
+        $this->set('topSources', $topSources);
+
+        $this->loadModel('Posts');
+        $topPosts = $this->Posts->find()
+            ->where(['published' => 1])
+            ->order(['views' => 'DESC'])
+            ->limit(10)
+            ->toArray();
+        $this->set('topPosts', $topPosts);
     }
 
     public function index()
@@ -279,15 +247,17 @@ class UsersController extends AppAdminController
                             ['Users.last_name LIKE' => '%' . $value . '%'],
                             ['Users.address1 LIKE' => '%' . $value . '%'],
                         ];
-                    } elseif (in_array($param_name, [
-                        'id',
-                        'status',
-                        'plan_id',
-                        'disable_earnings',
-                        'country',
-                        'login_ip',
-                        'register_ip',
-                    ])) {
+                    } elseif (
+                        in_array($param_name, [
+                            'id',
+                            'status',
+                            'plan_id',
+                            'disable_earnings',
+                            'country',
+                            'login_ip',
+                            'register_ip',
+                        ])
+                    ) {
                         if ($param_name == 'status' && !in_array($value, [1, 2, 3])) {
                             continue;
                         }
@@ -514,9 +484,9 @@ class UsersController extends AppAdminController
         if ($this->getRequest()->is(['post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->getRequest()->getData());
 
-            $user->wallet_money = price_database_format((float)$user->wallet_money);
-            $user->publisher_earnings = price_database_format((float)$user->publisher_earnings);
-            $user->referral_earnings = price_database_format((float)$user->referral_earnings);
+            $user->wallet_money = price_database_format((float) $user->wallet_money);
+            $user->publisher_earnings = price_database_format((float) $user->publisher_earnings);
+            $user->referral_earnings = price_database_format((float) $user->referral_earnings);
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been updated.'));
@@ -791,8 +761,9 @@ class UsersController extends AppAdminController
         ob_start(); ?>
         <!DOCTYPE html>
         <html>
+
         <head>
-            <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+            <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
             <style type='text/css'>
                 body {
                     color: black;
@@ -825,216 +796,218 @@ class UsersController extends AppAdminController
             </style>
             <title><?= h(__('Personal Data Export')) ?></title>
         </head>
+
         <body>
 
-        <h1><?= h(__('Personal Data Export')) ?></h1>
+            <h1><?= h(__('Personal Data Export')) ?></h1>
 
-        <h2><?= h(__('About')) ?></h2>
-        <div>
-            <table>
-                <tbody>
-                <tr>
-                    <th><?= h(__('Report generated for')) ?></th>
-                    <td><?= h($user->username) ?> - <?= h($user->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('For site')) ?></th>
-                    <td><?= h(get_option('site_name')) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('At URL')) ?></th>
-                    <td><a href="<?= build_main_domain_url('/') ?>"><?= build_main_domain_url('/') ?></a></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('On')) ?></th>
-                    <td><?= date('Y-m-d H:i:s') ?></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <h2><?= h(__('About')) ?></h2>
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th><?= h(__('Report generated for')) ?></th>
+                            <td><?= h($user->username) ?> - <?= h($user->email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('For site')) ?></th>
+                            <td><?= h(get_option('site_name')) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('At URL')) ?></th>
+                            <td><a href="<?= build_main_domain_url('/') ?>"><?= build_main_domain_url('/') ?></a></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('On')) ?></th>
+                            <td><?= date('Y-m-d H:i:s') ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <h2><?= h(__('User')) ?></h2>
-        <div>
-            <table>
-                <tbody>
-                <tr>
-                    <th><?= h(__('Id')) ?></th>
-                    <td><?= h($user->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Username')) ?></th>
-                    <td><?= h($user->username) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Email')) ?></th>
-                    <td><?= h($user->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('API Token')) ?></th>
-                    <td><?= h($user->api_token) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Money Wallet')) ?></th>
-                    <td><?= h(display_price_currency($user->wallet_money)) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Publisher Earnings')) ?></th>
-                    <td><?= h(display_price_currency($user->publisher_earnings)) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Referral Earnings')) ?></th>
-                    <td><?= h(display_price_currency($user->referral_earnings)) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('First Name')) ?></th>
-                    <td><?php pr($user->first_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Last Name')) ?></th>
-                    <td><?= h($user->last_name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Address 1')) ?></th>
-                    <td><?= h($user->address1) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Address 2')) ?></th>
-                    <td><?= h($user->address2) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('City')) ?></th>
-                    <td><?= h($user->city) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('State')) ?></th>
-                    <td><?= h($user->state) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Zip')) ?></th>
-                    <td><?= h($user->zip) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Country')) ?></th>
-                    <td><?= h($user->country) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Phone Number')) ?></th>
-                    <td><?= h($user->phone_number) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Withdrawal Method')) ?></th>
-                    <td><?= h($user->withdrawal_method) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Withdrawal Account')) ?></th>
-                    <td><?= h($user->withdrawal_account) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Login IP')) ?></th>
-                    <td><?= h($user->login_ip) ?></td>
-                </tr>
-                <tr>
-                    <th><?= h(__('Register IP')) ?></th>
-                    <td><?= h($user->register_ip) ?></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <h2><?= h(__('User')) ?></h2>
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th><?= h(__('Id')) ?></th>
+                            <td><?= h($user->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Username')) ?></th>
+                            <td><?= h($user->username) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Email')) ?></th>
+                            <td><?= h($user->email) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('API Token')) ?></th>
+                            <td><?= h($user->api_token) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Money Wallet')) ?></th>
+                            <td><?= h(display_price_currency($user->wallet_money)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Publisher Earnings')) ?></th>
+                            <td><?= h(display_price_currency($user->publisher_earnings)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Referral Earnings')) ?></th>
+                            <td><?= h(display_price_currency($user->referral_earnings)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('First Name')) ?></th>
+                            <td><?php pr($user->first_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Last Name')) ?></th>
+                            <td><?= h($user->last_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Address 1')) ?></th>
+                            <td><?= h($user->address1) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Address 2')) ?></th>
+                            <td><?= h($user->address2) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('City')) ?></th>
+                            <td><?= h($user->city) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('State')) ?></th>
+                            <td><?= h($user->state) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Zip')) ?></th>
+                            <td><?= h($user->zip) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Country')) ?></th>
+                            <td><?= h($user->country) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Phone Number')) ?></th>
+                            <td><?= h($user->phone_number) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Withdrawal Method')) ?></th>
+                            <td><?= h($user->withdrawal_method) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Withdrawal Account')) ?></th>
+                            <td><?= h($user->withdrawal_account) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Login IP')) ?></th>
+                            <td><?= h($user->login_ip) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= h(__('Register IP')) ?></th>
+                            <td><?= h($user->register_ip) ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <h2><?= h(__('Links')) ?></h2>
-        <div>
-            <table>
-                <tbody>
-                <?php
-                /**
-                 * @var \App\Model\Entity\Link $link
-                 */
-                ?>
-                <tr>
-                    <th><?= __('Short Link') ?></th>
-                    <th><?= __('Long URL') ?></th>
-                    <th><?= __('Created') ?></th>
-                </tr>
-                <?php foreach ($user->links as $link) : ?>
-                    <tr>
-                        <td><?= get_short_url($link->alias) ?></td>
-                        <td><?= h($link->url) ?></td>
-                        <td><?= display_date_timezone($link->created) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+            <h2><?= h(__('Links')) ?></h2>
+            <div>
+                <table>
+                    <tbody>
+                        <?php
+                        /**
+                         * @var \App\Model\Entity\Link $link
+                         */
+                        ?>
+                        <tr>
+                            <th><?= __('Short Link') ?></th>
+                            <th><?= __('Long URL') ?></th>
+                            <th><?= __('Created') ?></th>
+                        </tr>
+                        <?php foreach ($user->links as $link): ?>
+                            <tr>
+                                <td><?= get_short_url($link->alias) ?></td>
+                                <td><?= h($link->url) ?></td>
+                                <td><?= display_date_timezone($link->created) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
-        <h2><?= h(__('Withdraws')) ?></h2>
-        <div>
-            <table>
-                <tbody>
-                <?php
-                /**
-                 * @var \App\Model\Entity\Withdraw $withdraw
-                 */
-                ?>
-                <tr>
-                    <th><?= __('ID') ?></th>
-                    <th><?= __('Date') ?></th>
-                    <th><?= __('Status') ?></th>
-                    <th><?= __('Publisher Earnings') ?></th>
-                    <th><?= __('Referral Earnings') ?></th>
-                    <th><?= __('Total Amount') ?></th>
-                    <th><?= __('Withdrawal Method') ?></th>
-                    <th><?= __('Withdrawal Method') ?></th>
-                </tr>
-                <?php foreach ($user->withdraws as $withdraw) : ?>
-                    <tr>
-                        <td><?= $withdraw->id ?></td>
-                        <td><?= display_date_timezone($withdraw->created) ?></td>
-                        <td><?= h(withdraw_statuses($withdraw->status)) ?></td>
-                        <td><?= display_price_currency($withdraw->publisher_earnings) ?></td>
-                        <td><?= display_price_currency($withdraw->referral_earnings) ?></td>
-                        <td><?= display_price_currency($withdraw->amount) ?></td>
-                        <td><?= h($withdraw->method) ?></td>
-                        <td><?= nl2br(h($withdraw->account)) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+            <h2><?= h(__('Withdraws')) ?></h2>
+            <div>
+                <table>
+                    <tbody>
+                        <?php
+                        /**
+                         * @var \App\Model\Entity\Withdraw $withdraw
+                         */
+                        ?>
+                        <tr>
+                            <th><?= __('ID') ?></th>
+                            <th><?= __('Date') ?></th>
+                            <th><?= __('Status') ?></th>
+                            <th><?= __('Publisher Earnings') ?></th>
+                            <th><?= __('Referral Earnings') ?></th>
+                            <th><?= __('Total Amount') ?></th>
+                            <th><?= __('Withdrawal Method') ?></th>
+                            <th><?= __('Withdrawal Method') ?></th>
+                        </tr>
+                        <?php foreach ($user->withdraws as $withdraw): ?>
+                            <tr>
+                                <td><?= $withdraw->id ?></td>
+                                <td><?= display_date_timezone($withdraw->created) ?></td>
+                                <td><?= h(withdraw_statuses($withdraw->status)) ?></td>
+                                <td><?= display_price_currency($withdraw->publisher_earnings) ?></td>
+                                <td><?= display_price_currency($withdraw->referral_earnings) ?></td>
+                                <td><?= display_price_currency($withdraw->amount) ?></td>
+                                <td><?= h($withdraw->method) ?></td>
+                                <td><?= nl2br(h($withdraw->account)) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
-        <h2><?= h(__('Invoices')) ?></h2>
-        <div>
-            <table>
-                <tbody>
-                <?php
-                /**
-                 * @var \App\Model\Entity\Invoice $invoice
-                 */
-                ?>
-                <tr>
-                    <th><?= __('ID') ?></th>
-                    <th><?= __('Status') ?></th>
-                    <th><?= __('Description') ?></th>
-                    <th><?= __('Amount') ?></th>
-                    <th><?= __('Payment Method') ?></th>
-                    <th><?= __('Paid Date') ?></th>
-                    <th><?= __('Created Date') ?></th>
-                </tr>
-                <?php foreach ($user->invoices as $invoice) : ?>
-                    <tr>
-                        <td><?= $invoice->id ?></td>
-                        <td><?= h(invoice_statuses($invoice->status)) ?></td>
-                        <td><?= h($invoice->description) ?></td>
-                        <td><?= display_price_currency($invoice->amount) ?></td>
-                        <td><?= h($invoice->payment_method) ?></td>
-                        <td><?= display_date_timezone($invoice->paid_date) ?></td>
-                        <td><?= display_date_timezone($invoice->created) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+            <h2><?= h(__('Invoices')) ?></h2>
+            <div>
+                <table>
+                    <tbody>
+                        <?php
+                        /**
+                         * @var \App\Model\Entity\Invoice $invoice
+                         */
+                        ?>
+                        <tr>
+                            <th><?= __('ID') ?></th>
+                            <th><?= __('Status') ?></th>
+                            <th><?= __('Description') ?></th>
+                            <th><?= __('Amount') ?></th>
+                            <th><?= __('Payment Method') ?></th>
+                            <th><?= __('Paid Date') ?></th>
+                            <th><?= __('Created Date') ?></th>
+                        </tr>
+                        <?php foreach ($user->invoices as $invoice): ?>
+                            <tr>
+                                <td><?= $invoice->id ?></td>
+                                <td><?= h(invoice_statuses($invoice->status)) ?></td>
+                                <td><?= h($invoice->description) ?></td>
+                                <td><?= display_price_currency($invoice->amount) ?></td>
+                                <td><?= h($invoice->payment_method) ?></td>
+                                <td><?= display_date_timezone($invoice->paid_date) ?></td>
+                                <td><?= display_date_timezone($invoice->created) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
         </body>
+
         </html>
         <?php
         $data = ob_get_contents();

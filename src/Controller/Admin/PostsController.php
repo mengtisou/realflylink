@@ -79,13 +79,6 @@ class PostsController extends AppAdminController
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
 
-        /*
-        if(in_array($id, [1, 2, 3, 4, 5]) ) {
-            $this->Flash->error(__('You can not delete this post.'));
-            return $this->redirect(['action' => 'index']);
-        }
-        */
-
         $post = $this->Posts->findById($id)->first();
 
         if ($this->Posts->delete($post)) {

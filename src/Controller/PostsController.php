@@ -57,6 +57,9 @@ class PostsController extends FrontController
             throw new NotFoundException(__('Invalid Post.'));
         }
 
+        $this->Posts->updateAll(['views' => $post->views + 1], ['id' => $post->id]);
+        $post->views = $post->views + 1;
+
         $this->set('post', $post);
     }
 }

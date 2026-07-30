@@ -214,7 +214,6 @@ $this->assign('content_title', __('Dashboard'));
 
     <div class="row">
         <div class="col-md-8">
-
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <i class="fa fa-bar-chart"></i>

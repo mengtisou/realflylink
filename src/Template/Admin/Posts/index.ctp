@@ -18,6 +18,7 @@ $this->assign('content_title', __('Manage Posts'));
                     <th><?= $this->Paginator->sort('title', __('Title')); ?></th>
                     <th><?= $this->Paginator->sort('slug', __('Slug')); ?></th>
                     <th><?= $this->Paginator->sort('published', __('Published')); ?></th>
+                    <th><?= $this->Paginator->sort('views', __('Views')); ?></th>
                     <th><?= $this->Paginator->sort('modified', __('modified')); ?></th>
                     <th><?= $this->Paginator->sort('created', __('Created')); ?></th>
                     <th><?php echo __('Actions') ?></th>
@@ -46,6 +47,7 @@ $this->assign('content_title', __('Manage Posts'));
                         </td>
                         <td><?= $post->slug ?></td>
                         <td><?= ($post->published) ? __('Yes') : __('No') ?></td>
+                        <td><?= number_format($post->views) ?></td>
                         <td><?= display_date_timezone($post->modified) ?></td>
                         <td><?= display_date_timezone($post->created) ?></td>
                         <td>
