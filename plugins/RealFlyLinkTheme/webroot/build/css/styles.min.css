@@ -329,8 +329,12 @@ body.rf-light .rf-btn-login:hover {
 }
 
 #mainNav .navbar-toggle .icon-bar {
-  background: rgba(0, 212, 255, .8) !important;
+  background: white !important;
   border-radius: 2px
+}
+
+body.rf-light #mainNav .navbar-toggle .icon-bar {
+  background: #1a1226 !important;
 }
 
 #mainNav .navbar-toggle:hover {

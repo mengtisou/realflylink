@@ -264,7 +264,7 @@ $this->assign('content_title', __('Dashboard'));
                 <div class="box-header with-border">
                     <i class="fa fa-newspaper-o"></i>
                     <h3 class="box-title">
-                        <?= __("Top Blog Posts") ?>
+                        <?= __("Top 10 Blog Posts") ?>
                     </h3>
                 </div>
                 <div class="box-body">
@@ -434,31 +434,6 @@ $this->assign('content_title', __('Dashboard'));
 <script src="https://fastly.jsdelivr.net/gh/DmitryBaranovskiy/raphael@v2.1.0/raphael-min.js"></script>
 <script src="https://fastly.jsdelivr.net/gh/almasaeed2010/AdminLTE@v2.3.11/plugins/morris/morris.min.js"
     type="text/javascript"></script>
-<!-- <script>
-    jQuery(document).ready(function () {
-        new Morris.Line({
-            element: 'chart_div',
-            resize: true,
-            data: [
-                <?php foreach ($CurrentMonthDays ?? [] as $key => $value) {
-                    echo '{date: "' . $key . '", views: ' . $value['view'] . '},';
-                } ?>
-            ],
-            xkey: 'date',
-            xLabels: 'day',
-            ykeys: ['views'],
-            labels: ['<?= __('Views') ?>'],
-            lineColors: ['#E04898'],
-            gridLineColor: 'rgba(26,18,38,.08)',
-            gridTextColor: 'rgba(26,18,38,.45)',
-            lineWidth: 2,
-            pointSize: 3,
-            hideHover: 'auto',
-            smooth: true,
-        });
-    });
-</script> -->
-
 <script>
     jQuery(document).ready(function () {
         new Morris.Line({

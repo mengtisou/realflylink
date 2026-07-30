@@ -134,7 +134,7 @@ function rf_mask_user($name) {
     <?php else : ?>
         <div style="padding:48px;text-align:center;color:var(--muted);font-size:14px">
             <?= __('No payments yet — be the first to get paid!') ?><br><br>
-            <a href="<?= build_main_domain_url('/register') ?>"
+            <a href="<?= build_main_domain_url('/auth/signup') ?>"
                style="display:inline-block;background:var(--grad);color:#070d14;font-weight:800;padding:11px 28px;border-radius:9px;text-decoration:none;font-size:14px">
                 <?= __('Start Earning Free →') ?>
             </a>

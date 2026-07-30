@@ -324,7 +324,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
                     <li class="rf-pay-item"><span class="rf-pay-dot"></span><?= h($m) ?></li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary">
+                <a href="<?= build_main_domain_url('/auth/signup') ?>" class="rf-btn-primary">
                     <?= __('Start Earning Free →') ?>
                 </a>
             </div>
@@ -678,7 +678,7 @@ $tk0 = $tickerData[0]; // first REAL payment rendered server-side, no JS needed
                 <?php endif; ?>
             </p>
             <div class="rf-cta-btns">
-                <a href="<?= build_main_domain_url('/register') ?>" class="rf-btn-primary"><?= __('Create Free Account →') ?></a>
+                <a href="<?= build_main_domain_url('/auth/signup') ?>" class="rf-btn-primary"><?= __('Create Free Account →') ?></a>
                 <a href="<?= build_main_domain_url('/pages/payment-proof') ?>" class="rf-btn-secondary"><?= __('View Rates') ?></a>
             </div>
         </div>
