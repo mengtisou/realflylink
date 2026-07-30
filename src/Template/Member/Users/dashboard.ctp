@@ -15,18 +15,13 @@
  * @var mixed $topSources
  */
 
-function rf_flag_emoji($code)
+function rf_flag_icon($code)
 {
-    $code = strtoupper(trim((string) $code));
+    $code = strtolower(trim((string)$code));
     if (strlen($code) !== 2 || !ctype_alpha($code)) {
-        return '🌐';
+        return '<i class="fa fa-globe" style="margin-right:4px;color:#9054D8;"></i>';
     }
-    $flag = '';
-    foreach (str_split($code) as $c) {
-        $flag .= mb_chr(127397 + ord($c), 'UTF-8');
-    }
-
-    return $flag;
+    return '<span class="flag-icon flag-icon-' . h($code) . '" style="margin-right:6px;border-radius:2px;width:16px;height:12px;display:inline-block;vertical-align:middle;"></span>';
 }
 
 $maxCountryViews = 1;
@@ -316,7 +311,7 @@ $this->assign('content_title', __('Dashboard'));
                             <div class="rf-sidebar-body">
                                 <div class="rf-sidebar-top-row">
                                     <span class="rf-sidebar-name">
-                                        <?= rf_flag_emoji($row->country) ?>
+                                        <?= rf_flag_icon($row->country) ?>
                                         <?= h(get_countries()[$row->country] ?? $row->country) ?>
                                     </span>
                                     <span
@@ -377,6 +372,7 @@ $this->assign('content_title', __('Dashboard'));
 
 <?php $this->start('scriptBottom'); ?>
 
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/lipis/flag-icon-css@3.3.0/css/flag-icon.min.css">
 <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/almasaeed2010/AdminLTE@v2.3.11/plugins/morris/morris.css">
 <script src="https://fastly.jsdelivr.net/gh/DmitryBaranovskiy/raphael@v2.1.0/raphael-min.js"></script>
 <script src="https://fastly.jsdelivr.net/gh/almasaeed2010/AdminLTE@v2.3.11/plugins/morris/morris.min.js"
