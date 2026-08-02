@@ -155,6 +155,27 @@ try {
                         </a>
                     </div>
 
+<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;margin:28px 0;text-align:center;">
+    <h3 style="color:#c9a8ec;font-size:15px;font-weight:800;margin:0 0 16px;text-transform:uppercase;letter-spacing:.5px;">Follow Us on Facebook</h3>
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0">
+    </script>
+
+    <div class="fb-page"
+        data-href="https://www.facebook.com/realflylink"
+        data-tabs="timeline"
+        data-width="340"
+        data-height="500"
+        data-small-header="false"
+        data-adapt-container-width="true"
+        data-hide-cover="false"
+        data-show-facepile="true"
+        data-color-scheme="dark">
+    </div>
+</div>
+
                     <!-- Recent posts -->
                     <?php if (!empty($recentPosts)): ?>
                     <div class="rf-sidebar-recent">
