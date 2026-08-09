@@ -116,9 +116,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <!-- Page links only (login/signup filtered out in PHP) -->
             <ul class="nav navbar-nav navbar-right rf-nav-links">
                 <?php if ($isBlogPage): ?>
-                    <?= rf_nav_links('menu_blog', [
-                        ['title' => __('How To Download'), 'link' => '/pages/how-to-download'],
-                    ]) ?>
+                    <?= rf_nav_links('menu_blog') ?>
                 <?php else: ?>
                     <?= rf_nav_links('menu_main', [
                         ['title' => __('Earn Money'), 'link' => '/pages/earn-money'],
