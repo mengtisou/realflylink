@@ -54,6 +54,8 @@ try {
                 </div>
                 <?php endif; ?>
 
+                <?= $this->element('blog_ad_slot', ['slot' => 'blog_ad_top']) ?>
+
                 <?php
                 $howtoVideoUrl = get_option('blog_howto_video_url', '');
                 $howtoEmbedUrl = extract_video_embed_url($howtoVideoUrl);
@@ -72,6 +74,10 @@ try {
                 <div class="rf-post-body">
                     <?= $post->description ?>
                 </div>
+
+                <?= $this->element('blog_native_card') ?>
+
+                <?= $this->element('blog_ad_slot', ['slot' => 'blog_ad_inline']) ?>
 
                 <?php
                 $installVideoEmbedUrl = extract_video_embed_url($post->install_video_url ?? '');
@@ -125,6 +131,8 @@ try {
                     </div>
                 </div>
 
+                <?= $this->element('blog_ad_slot', ['slot' => 'blog_ad_bottom']) ?>
+
             </div>
 
             <!-- ── Sidebar ── -->
@@ -176,6 +184,8 @@ try {
     </div>
 </div>
 
+                    <?= $this->element('blog_ad_slot', ['slot' => 'blog_ad_sidebar']) ?>
+
                     <!-- Recent posts -->
                     <?php if (!empty($recentPosts)): ?>
                     <div class="rf-sidebar-recent">
@@ -200,3 +210,5 @@ try {
         </div>
     </div>
 </div>
+
+<?= $this->element('blog_sticky_bar') ?>

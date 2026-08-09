@@ -4124,3 +4124,152 @@ body.rf-light .rfa-sec .rfa-waves{opacity:.16}
   .rfd-sec .rfd-bar span{font-size:10px}
   .rfd-sec .rfd-frame{border-radius:11px}
 }
+/* ==================================================================
+   RealFlyLink — blog promo/ad slots + sticky bottom bar
+   Class names avoid the string "ad" on its own: uBlock and AdBlock hide
+   elements whose class contains "ad", which makes a working slot look broken.
+   Append to BOTH realfly-dark.css and styles.min.css.
+   Uses the theme's own vars, so it follows rf-light automatically.
+   ================================================================== */
+
+/* --- inline ad slots --- */
+.rf-promo{
+  position:relative;margin:26px 0;padding:26px 14px 14px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  text-align:center;overflow:hidden;
+}
+.rf-promo-label{
+  position:absolute;top:8px;left:14px;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);opacity:.65;
+}
+.rf-promo-inner{display:block;max-width:100%;overflow-x:auto}
+.rf-promo-inner img,.rf-promo-inner iframe{max-width:100%;height:auto;border-radius:8px}
+/* an empty network response should not leave a hole */
+.rf-promo:has(.rf-promo-inner:empty){display:none}
+
+.rf-promo-blog-ad-sidebar{margin:22px 0}
+.rf-promo-blog-ad-top{margin-top:6px}
+
+/* --- sticky bottom bar --- */
+.rf-sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:1040;
+  transform:translateY(110%);transition:transform .3s ease;
+  background:rgba(16,12,24,.97);
+  border-top:1px solid var(--border);
+  box-shadow:0 -10px 30px -18px rgba(0,0,0,.95);
+  padding:10px 46px 10px 14px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+body.rf-light .rf-sticky{background:rgba(255,255,255,.98)}
+.rf-sticky.rf-sticky-in{transform:translateY(0)}
+
+.rf-sticky-x{
+  position:absolute;top:50%;right:10px;margin-top:-14px;
+  width:28px;height:28px;line-height:26px;text-align:center;
+  border:1px solid var(--border);border-radius:50%;
+  background:transparent;color:var(--muted);
+  font-size:18px;cursor:pointer;padding:0;
+}
+.rf-sticky-x:hover{color:var(--text);border-color:var(--cyan)}
+
+.rf-sticky-ad{display:flex;justify-content:center;align-items:center;min-height:50px}
+.rf-sticky-ad img,.rf-sticky-ad iframe{max-width:100%;height:auto;display:block}
+
+.rf-sticky-promo{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  text-decoration:none;flex-wrap:wrap;
+}
+.rf-sticky-promo:hover,.rf-sticky-promo:focus{text-decoration:none}
+.rf-sticky-txt{color:var(--muted);font-size:14px;line-height:1.35}
+.rf-sticky-txt b{color:var(--text);font-weight:800;margin-right:4px}
+.rf-sticky-cta{
+  display:inline-block;padding:9px 20px;border-radius:999px;
+  background:var(--grad);color:#fff;font-weight:700;font-size:13.5px;
+  white-space:nowrap;box-shadow:0 8px 20px -12px rgba(144,84,216,.95);
+}
+.rf-sticky-promo:hover .rf-sticky-cta{filter:brightness(1.08)}
+
+/* keep the footer clear of the bar while it is up */
+body.rf-has-sticky{padding-bottom:74px}
+
+@media (max-width:600px){
+  .rf-promo{margin:20px 0;padding:24px 10px 12px}
+  .rf-sticky{padding:9px 42px 9px 12px}
+  .rf-sticky-promo{gap:10px}
+  .rf-sticky-txt{font-size:12.5px;flex:1 1 100%;text-align:center}
+  .rf-sticky-cta{padding:8px 18px;font-size:13px;margin:0 auto}
+  body.rf-has-sticky{padding-bottom:96px}
+}
+
+/* ------------------------------------------------------------------
+   Native promo card — in-feed unit, Linkvertise style.
+   Sits in the content flow: never fixed, never overlays, so it cannot
+   cover the page. Classes avoid the bare string "ad" so blockers do
+   not hide the whole card.
+   ------------------------------------------------------------------ */
+.rf-native{
+  margin:28px 0;border-radius:16px;overflow:hidden;
+  background:var(--card);border:1px solid var(--border);
+  box-shadow:0 14px 40px -30px rgba(0,0,0,.95);
+}
+
+.rf-native-media{
+  position:relative;display:block;line-height:0;text-decoration:none;
+  background:var(--card2);
+}
+.rf-native-media img{
+  width:100%;height:auto;display:block;
+  transition:transform .35s ease;
+}
+.rf-native-media:hover img{transform:scale(1.015)}
+
+.rf-native-tag{
+  position:absolute;top:10px;left:10px;z-index:2;
+  display:inline-block;padding:3px 9px;border-radius:6px;
+  background:rgba(10,8,16,.82);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  line-height:1.5;
+}
+
+.rf-native-body{padding:16px 18px 18px}
+
+.rf-native-title{
+  display:block;margin:0 0 14px;
+  color:var(--text);font-size:17px;font-weight:700;line-height:1.35;
+  text-decoration:none;letter-spacing:-.01em;
+}
+.rf-native-title:hover,.rf-native-title:focus{color:var(--cyan);text-decoration:none}
+
+.rf-native-btn{
+  display:block;width:100%;padding:14px 20px;
+  border-radius:10px;text-align:center;
+  background:var(--grad);color:#fff !important;
+  font-size:15px;font-weight:700;text-decoration:none;
+  box-shadow:0 10px 26px -14px rgba(144,84,216,.95);
+  transition:filter .16s,transform .16s;
+}
+.rf-native-btn:hover,.rf-native-btn:focus{
+  color:#fff !important;text-decoration:none;filter:brightness(1.08);transform:translateY(-1px);
+}
+
+@media (max-width:600px){
+  .rf-native{margin:22px 0;border-radius:13px}
+  .rf-native-body{padding:14px 14px 16px}
+  .rf-native-title{font-size:15.5px;margin-bottom:12px}
+  .rf-native-btn{padding:13px 16px;font-size:14.5px}
+}
+
+/* Native ad tags (Adsterra Native Banner, Monetag native) draw their own
+   cards, so the slot must not add a second frame around them. The inline
+   slot is therefore bare: no border, no background, no label. */
+.rf-promo-blog-ad-inline{
+  background:none;border:0;border-radius:0;
+  padding:0;margin:26px 0;text-align:left;
+}
+.rf-promo-blog-ad-inline .rf-promo-label{display:none}
+.rf-promo-blog-ad-inline .rf-promo-inner{overflow:visible}
+
+/* keep whatever the network injects inside the column */
+.rf-promo-inner > *{max-width:100%}
+.rf-promo-inner img{height:auto}
