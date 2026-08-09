@@ -1917,7 +1917,7 @@ html, body { overflow-x: hidden; }
   .rf-hero-title { font-size: 34px !important; letter-spacing: -1px !important; }
   .rf-hero-subtext { font-size: 14px !important; padding: 0 10px; }
   .rf-hero-eyebrow { font-size: 10px !important; letter-spacing: 3px !important; }
-  .rf-url-box { max-width: 92% !important; }
+  .rf-url-box { max-width: 100% !important; }
 }
 @media (max-width: 480px) {
   .rf-hero-title { font-size: 27px !important; }
