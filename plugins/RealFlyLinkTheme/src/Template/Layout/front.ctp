@@ -5,15 +5,28 @@
  * Dark/light mode toggle persists via localStorage
  */
 
-function rf_nav_links($name) {
+/**
+ * Build the <li> list for a DB-driven menu.
+ *
+ * @param string $name  Options row name, e.g. 'menu_main'
+ * @param array  $extra Items added in code, each ['title'=>, 'link'=>, 'class'=>].
+ *                      Skipped automatically if an equivalent link already
+ *                      exists in the DB menu, so adding it later in Menu
+ *                      Manager will not produce a duplicate.
+ */
+function rf_nav_links($name, array $extra = []) {
     $req   = \Cake\Routing\Router::getRequest();
     $uid   = $req->getSession()->read('Auth.User.id');
     $tbl   = \Cake\ORM\TableRegistry::getTableLocator()->get('Options')
                 ->addBehavior('Translate', ['fields' => ['value']]);
-    $items = json_decode($tbl->findByName($name)->first()->value);
+    $row   = $tbl->findByName($name)->first();
+    $items = $row ? json_decode($row->value) : [];
+    if (!is_array($items)) { $items = []; }
     $skip  = ['signin','signup','sign-up','register','login','dashboard'];
     $html  = '';
+    $seen  = [];
     foreach ($items as $item) {
+        $seen[] = trim(strtolower($item->link), '/');
         $hide = false;
         foreach ($skip as $w) {
             if (stripos($item->link, $w) !== false) { $hide = true; break; }
@@ -26,6 +39,18 @@ function rf_nav_links($name) {
                    . '<a href="' . build_main_domain_url($item->link) . '">' . h($item->title) . '</a>'
                    . '</li>';
         }
+    }
+    foreach ($extra as $ex) {
+        $key = trim(strtolower($ex['link']), '/');
+        $dup = false;
+        foreach ($seen as $s) {
+            if ($s === $key || substr($s, -strlen($key)) === $key) { $dup = true; break; }
+        }
+        if ($dup) continue;
+        $cls = isset($ex['class']) ? $ex['class'] : '';
+        $html .= '<li class="' . h($cls) . '">'
+               . '<a href="' . build_main_domain_url($ex['link']) . '">' . h($ex['title']) . '</a>'
+               . '</li>';
     }
     return $html;
 }
@@ -91,9 +116,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <!-- Page links only (login/signup filtered out in PHP) -->
             <ul class="nav navbar-nav navbar-right rf-nav-links">
                 <?php if ($isBlogPage): ?>
-                    <?= rf_nav_links('menu_blog') ?>
+                    <?= rf_nav_links('menu_blog', [
+                        ['title' => __('How To Download'), 'link' => '/pages/how-to-download'],
+                    ]) ?>
                 <?php else: ?>
-                    <?= rf_nav_links('menu_main') ?>
+                    <?= rf_nav_links('menu_main', [
+                        ['title' => __('Earn Money'), 'link' => '/pages/earn-money'],
+                    ]) ?>
                 <?php endif; ?>
             </ul>
 

@@ -16,22 +16,41 @@ $this->assign('content_title', $page->title);
 </div>
 
 <!-- Page Content -->
-<div class="rf-bg-alt">
-    <div class="container" style="padding-top: 20px; padding-bottom: 40px; min-height: 400px">
-        <?= $page->content ?>
+<?php
+/**
+ * Pages whose body is rendered from a theme element instead of the DB.
+ * Keeps complex markup in code so CKEditor can never mangle it.
+ * Key = page slug, value = element name.
+ */
+$rfElementPages = [
+    'earn-money'      => 'earn_money_flow',
+    'how-to-download' => 'howto_download',
+];
+$rfSlug    = isset($page->slug) ? (string)$page->slug : '';
+$rfElement = isset($rfElementPages[$rfSlug]) ? $rfElementPages[$rfSlug] : null;
+?>
+<?php if ($rfElement): ?>
+    <div class="rf-bg-alt">
+        <?= $this->element($rfElement) ?>
     </div>
-</div>
+<?php else: ?>
+    <div class="rf-bg-alt">
+        <div class="container" style="padding-top: 20px; padding-bottom: 40px; min-height: 400px">
+            <?= $page->content ?>
+        </div>
+    </div>
+<?php endif; ?>
 
 <style>
 /* Page header bar */
 .rf-page-header {
-    background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,.12), transparent 70%), var(--bg);
+    background: radial-gradient(ellipse at 50% 0%, rgba(144,84,216,.20), transparent 70%), var(--bg);
     border-bottom: 1px solid var(--border);
-    padding: 60px 20px 40px;
+    padding: 20px 10px 20px;
     text-align: center;
 }
 .rf-page-title {
-    font-size: 36px;
+    font-size: 26px;
     font-weight: 900;
     letter-spacing: -1.5px;
     color: var(--text);

@@ -3826,3 +3826,289 @@ html {
     margin: 0 !important;
   }
 }
+
+/* ==================================================================
+   RealFlyLink — Earn Money "Shortly about us" flow
+   Append to BOTH realfly-dark.css and styles.min.css.
+   Uses the theme's own --grad / --cyan / --green / --muted vars,
+   so it follows the aurora palette and works in rf-light automatically.
+   Both SVGs are masked data URIs, so they take their colour from the
+   theme variables and there is no <svg> in the pasted page content.
+   ================================================================== */
+
+.rfa-sec{position:relative;overflow:hidden;padding:56px 0 72px}
+.rfa-sec *{box-sizing:border-box}
+
+/* flowing background lines — masked so they inherit the accent */
+.rfa-sec .rfa-waves{
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.30;
+  background:var(--cyan);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%201500%22%20preserveAspectRatio%3D%22none%22%20fill%3D%22none%22%3E%3Cg%20stroke%3D%22%23000%22%20stroke-width%3D%221.4%22%3E%3Cpath%20d%3D%22M-40%20300%20C%20260%20170%2C%20500%20470%2C%20760%20380%20S%201120%20190%2C%201260%20300%22%2F%3E%3Cpath%20d%3D%22M-40%20360%20C%20260%20230%2C%20500%20530%2C%20760%20440%20S%201120%20250%2C%201260%20360%22%2F%3E%3Cpath%20d%3D%22M-40%20425%20C%20260%20295%2C%20500%20595%2C%20760%20505%20S%201120%20315%2C%201260%20425%22%2F%3E%3Cpath%20d%3D%22M-40%20495%20C%20260%20365%2C%20500%20665%2C%20760%20575%20S%201120%20385%2C%201260%20495%22%2F%3E%3Cpath%20d%3D%22M-40%20640%20C%20300%20520%2C%20480%20860%2C%20780%20740%20S%201100%20560%2C%201260%20660%22%2F%3E%3Cpath%20d%3D%22M-40%20715%20C%20300%20595%2C%20480%20935%2C%20780%20815%20S%201100%20635%2C%201260%20735%22%2F%3E%3Cpath%20d%3D%22M-40%20795%20C%20300%20675%2C%20480%201015%2C%20780%20895%20S%201100%20715%2C%201260%20815%22%2F%3E%3Cpath%20d%3D%22M-40%201000%20C%20280%20880%2C%20520%201220%2C%20800%201090%20S%201120%20900%2C%201260%201010%22%2F%3E%3Cpath%20d%3D%22M-40%201080%20C%20280%20960%2C%20520%201300%2C%20800%201170%20S%201120%20980%2C%201260%201090%22%2F%3E%3Cpath%20d%3D%22M-40%201165%20C%20280%201045%2C%20520%201385%2C%20800%201255%20S%201120%201065%2C%201260%201175%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center/120% 100% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%201500%22%20preserveAspectRatio%3D%22none%22%20fill%3D%22none%22%3E%3Cg%20stroke%3D%22%23000%22%20stroke-width%3D%221.4%22%3E%3Cpath%20d%3D%22M-40%20300%20C%20260%20170%2C%20500%20470%2C%20760%20380%20S%201120%20190%2C%201260%20300%22%2F%3E%3Cpath%20d%3D%22M-40%20360%20C%20260%20230%2C%20500%20530%2C%20760%20440%20S%201120%20250%2C%201260%20360%22%2F%3E%3Cpath%20d%3D%22M-40%20425%20C%20260%20295%2C%20500%20595%2C%20760%20505%20S%201120%20315%2C%201260%20425%22%2F%3E%3Cpath%20d%3D%22M-40%20495%20C%20260%20365%2C%20500%20665%2C%20760%20575%20S%201120%20385%2C%201260%20495%22%2F%3E%3Cpath%20d%3D%22M-40%20640%20C%20300%20520%2C%20480%20860%2C%20780%20740%20S%201100%20560%2C%201260%20660%22%2F%3E%3Cpath%20d%3D%22M-40%20715%20C%20300%20595%2C%20480%20935%2C%20780%20815%20S%201100%20635%2C%201260%20735%22%2F%3E%3Cpath%20d%3D%22M-40%20795%20C%20300%20675%2C%20480%201015%2C%20780%20895%20S%201100%20715%2C%201260%20815%22%2F%3E%3Cpath%20d%3D%22M-40%201000%20C%20280%20880%2C%20520%201220%2C%20800%201090%20S%201120%20900%2C%201260%201010%22%2F%3E%3Cpath%20d%3D%22M-40%201080%20C%20280%20960%2C%20520%201300%2C%20800%201170%20S%201120%20980%2C%201260%201090%22%2F%3E%3Cpath%20d%3D%22M-40%201165%20C%20280%201045%2C%20520%201385%2C%20800%201255%20S%201120%201065%2C%201260%201175%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center/120% 100% no-repeat;
+}
+body.rf-light .rfa-sec .rfa-waves{opacity:.16}
+
+.rfa-sec .rfa-wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 15px}
+
+/* logo medallion */
+.rfa-sec .rfa-medal{
+  width:82px;height:82px;margin:0 auto;border-radius:50%;position:relative;z-index:3;
+  background:var(--card);border:1px solid var(--border);
+  box-shadow:0 0 42px -6px rgba(144,84,216,.55);
+}
+.rfa-sec .rfa-medal:before{
+  content:"";position:absolute;inset:0;background:var(--grad);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222.1%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M10%2013a5%205%200%200%200%207.5.5l3-3a5%205%200%200%200-7-7l-1.5%201.5%22%2F%3E%3Cpath%20d%3D%22M14%2011a5%205%200%200%200-7.5-.5l-3%203a5%205%200%200%200%207%207L12%2019%22%2F%3E%3C%2Fsvg%3E") center/40px 40px no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222.1%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M10%2013a5%205%200%200%200%207.5.5l3-3a5%205%200%200%200-7-7l-1.5%201.5%22%2F%3E%3Cpath%20d%3D%22M14%2011a5%205%200%200%200-7.5-.5l-3%203a5%205%200%200%200%207%207L12%2019%22%2F%3E%3C%2Fsvg%3E") center/40px 40px no-repeat;
+}
+
+/* the flow */
+.rfa-sec .rfa-flow{position:relative;padding-top:10px}
+.rfa-sec .rfa-flow:before{
+  content:"";position:absolute;left:50%;top:0;bottom:96px;width:1px;
+  transform:translateX(-50%);background:var(--cyan);opacity:.22;
+}
+
+.rfa-sec .rfa-step{
+  position:relative;display:grid;grid-template-columns:1fr 62px 62px 1fr;
+  align-items:center;margin-bottom:44px;
+}
+
+.rfa-sec .rfa-txt{font-size:16px;line-height:1.45;color:var(--muted);margin:0}
+.rfa-sec .rfa-txt b{color:var(--text);font-weight:800}
+.rfa-sec .rfa-l .rfa-txt{grid-column:1;text-align:right;padding-right:20px}
+.rfa-sec .rfa-r .rfa-txt{grid-column:4;text-align:left;padding-left:20px}
+
+.rfa-sec .rfa-num{
+  justify-self:center;position:relative;z-index:2;
+  width:54px;height:54px;border-radius:50%;
+  background:var(--card2);border:1px solid var(--border);
+  color:var(--text);font-size:16px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 10px 22px -10px rgba(0,0,0,.9);
+}
+.rfa-sec .rfa-l .rfa-num{grid-column:2}
+.rfa-sec .rfa-r .rfa-num{grid-column:3}
+
+.rfa-sec .rfa-num:before{
+  content:"";position:absolute;top:44px;left:8px;right:8px;height:16px;
+  border-radius:50%;background:var(--cyan);opacity:.42;filter:blur(7px);z-index:-1;
+}
+
+/* glowing elbow trace */
+.rfa-sec .rfa-elbow{
+  position:absolute;top:100%;height:52px;width:150px;
+  border-bottom:2px solid var(--cyan);pointer-events:none;
+  filter:drop-shadow(0 0 5px rgba(181,124,232,.85));
+}
+.rfa-sec .rfa-l .rfa-elbow{right:50%;border-right:2px solid var(--cyan);border-bottom-right-radius:18px}
+.rfa-sec .rfa-r .rfa-elbow{left:50%;border-left:2px solid var(--cyan);border-bottom-left-radius:18px}
+
+.rfa-sec .rfa-elbow:after{
+  content:"";position:absolute;bottom:-4px;width:8px;height:8px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px 2px rgba(228,72,192,.95);
+}
+.rfa-sec .rfa-l .rfa-elbow:after{left:-4px}
+.rfa-sec .rfa-r .rfa-elbow:after{right:-4px}
+
+.rfa-sec .rfa-last .rfa-elbow{
+  width:2px;height:74px;border:0;border-left:2px solid var(--cyan);
+  left:50%;right:auto;border-radius:0;
+}
+.rfa-sec .rfa-last .rfa-elbow:after{left:-4px;bottom:-5px}
+
+/* CTA — matches the Sign Up Free button */
+.rfa-sec .rfa-cta{
+  position:relative;z-index:3;display:block;width:max-content;
+  margin:44px auto 0;padding:14px 34px;border-radius:999px;
+  text-decoration:none;font-weight:700;font-size:16px;
+  color:#fff;background:var(--grad);
+  box-shadow:0 14px 34px -12px rgba(144,84,216,.95);
+  transition:filter .2s,transform .2s;
+}
+.rfa-sec .rfa-cta:hover,.rfa-sec .rfa-cta:focus{
+  color:#fff;text-decoration:none;filter:brightness(1.1);transform:translateY(-2px);
+}
+.rfa-sec .rfa-cta span{opacity:.7;margin-left:10px}
+
+@media (max-width:767px){
+  .rfa-sec{padding:38px 0 56px}
+  .rfa-sec .rfa-medal{width:64px;height:64px}
+  .rfa-sec .rfa-medal:before{-webkit-mask-size:31px 31px;mask-size:31px 31px}
+  .rfa-sec .rfa-step{grid-template-columns:1fr 46px 46px 1fr;margin-bottom:34px}
+  .rfa-sec .rfa-num{width:42px;height:42px;font-size:13px}
+  .rfa-sec .rfa-num:before{top:34px;height:12px}
+  .rfa-sec .rfa-txt{font-size:13.5px;line-height:1.4}
+  .rfa-sec .rfa-l .rfa-txt{padding-right:11px}
+  .rfa-sec .rfa-r .rfa-txt{padding-left:11px}
+  .rfa-sec .rfa-elbow{height:38px;width:78px}
+  .rfa-sec .rfa-last .rfa-elbow{height:56px}
+}
+
+/* ==================================================================
+   RealFlyLink — How To Download guide ("Signal Rail")
+   Appended to BOTH realfly-dark.css and styles.min.css.
+   Uses the theme's --cyan / --green / --muted / --border vars so it
+   follows the aurora palette and works in rf-light automatically.
+   All selectors scoped .rfd-sec .rfd-* to beat .rf-bg-alt p / a.
+   ================================================================== */
+
+.rfd-sec{position:relative;padding:34px 0 60px}
+.rfd-sec *{box-sizing:border-box}
+.rfd-sec .rfd-wrap{max-width:820px;margin:0 auto;padding:0 15px}
+
+.rfd-sec .rfd-intro{
+  color:var(--muted);font-size:17px;line-height:1.7;margin:0 0 34px;
+}
+
+/* the rail */
+.rfd-sec .rfd-rail{position:relative;padding-left:58px}
+.rfd-sec .rfd-rail:before{
+  content:"";position:absolute;left:19px;top:10px;bottom:26px;width:2px;
+  background:linear-gradient(180deg,var(--cyan),transparent);
+}
+
+.rfd-sec .rfd-step{position:relative;margin-bottom:36px}
+
+.rfd-sec .rfd-node{
+  position:absolute;left:-58px;top:0;width:40px;height:40px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--cyan);color:var(--cyan);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 6px var(--bg),0 0 18px -4px rgba(181,124,232,.7);
+}
+.rfd-sec .rfd-done .rfd-node{
+  border-color:var(--green);color:var(--green);
+  box-shadow:0 0 0 6px var(--bg),0 0 18px -4px rgba(228,72,192,.75);
+}
+
+.rfd-sec .rfd-lab{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 6px;
+}
+.rfd-sec .rfd-h{
+  font-size:21px;font-weight:700;color:var(--text);margin:0 0 8px;letter-spacing:-.01em;
+}
+.rfd-sec .rfd-p{color:var(--muted);line-height:1.7;margin:0 0 14px;font-size:15px}
+.rfd-sec .rfd-p b{color:var(--text);font-weight:700}
+
+/* screenshots */
+.rfd-sec .rfd-shot{
+  width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--border);
+}
+.rfd-sec .rfd-ph{
+  width:100%;padding:52px 12px;border-radius:10px;border:1px dashed var(--border);
+  background:var(--card);color:var(--muted);text-align:center;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+}
+
+/* video */
+.rfd-sec .rfd-sub{
+  font-size:22px;font-weight:700;color:var(--text);margin:38px 0 14px;
+}
+.rfd-sec .rfd-video{
+  position:relative;padding-bottom:56.25%;height:0;overflow:hidden;
+  border-radius:12px;border:1px solid var(--border);background:var(--card);
+}
+.rfd-sec .rfd-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+
+/* troubleshooting */
+.rfd-sec .rfd-faq{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:6px 20px;
+}
+.rfd-sec .rfd-faq p{color:var(--muted);line-height:1.7;margin:14px 0;font-size:15px}
+.rfd-sec .rfd-faq b{color:var(--text);font-weight:700;display:block;margin-bottom:2px}
+
+@media (max-width:767px){
+  .rfd-sec{padding:24px 0 46px}
+  .rfd-sec .rfd-intro{font-size:15px;margin-bottom:26px}
+  .rfd-sec .rfd-rail{padding-left:46px}
+  .rfd-sec .rfd-rail:before{left:15px}
+  .rfd-sec .rfd-node{left:-46px;width:32px;height:32px;font-size:12px;box-shadow:0 0 0 5px var(--bg)}
+  .rfd-sec .rfd-done .rfd-node{box-shadow:0 0 0 5px var(--bg)}
+  .rfd-sec .rfd-h{font-size:18px}
+  .rfd-sec .rfd-p{font-size:14px}
+  .rfd-sec .rfd-sub{font-size:19px}
+}
+
+/* ==================================================================
+   How To Download — polish pass
+   Overrides earlier .rfd- rules, so it must stay AFTER them.
+   ================================================================== */
+
+/* ambient glow behind the top of the section */
+.rfd-sec:before{
+  content:"";position:absolute;left:50%;top:-30px;
+  width:700px;height:320px;max-width:120%;transform:translateX(-50%);
+  background:radial-gradient(ellipse at center,rgba(144,84,216,.17),transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.rfd-sec .rfd-wrap{position:relative;z-index:1}
+
+/* front.css uppercases every h1-h6 globally — undo it here only */
+.rfd-sec .rfd-h,.rfd-sec .rfd-sub{
+  text-transform:none;font-family:inherit;
+}
+.rfd-sec .rfd-h{
+  font-size:23px;font-weight:800;letter-spacing:-.4px;color:var(--text);margin:0 0 9px;
+}
+.rfd-sec .rfd-sub{
+  font-size:24px;font-weight:800;letter-spacing:-.4px;color:var(--text);
+}
+
+/* lead paragraph + time badge */
+.rfd-sec .rfd-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 15px;border-radius:999px;margin:0 0 16px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--muted);font-size:12.5px;letter-spacing:.03em;
+}
+.rfd-sec .rfd-badge b{color:var(--cyan);font-weight:700}
+.rfd-sec .rfd-intro{font-size:18px;line-height:1.65;max-width:660px}
+
+/* screenshots framed as a little browser window */
+.rfd-sec .rfd-frame{
+  display:block;border-radius:14px;overflow:hidden;
+  border:1px solid var(--border);background:var(--card);
+  box-shadow:0 24px 54px -30px rgba(0,0,0,.95);
+  transition:transform .25s ease,box-shadow .25s ease;
+  text-decoration:none;
+}
+.rfd-sec a.rfd-frame:hover,.rfd-sec a.rfd-frame:focus{
+  transform:translateY(-3px);
+  box-shadow:0 30px 64px -28px rgba(144,84,216,.55);
+  text-decoration:none;
+}
+.rfd-sec .rfd-bar{
+  display:flex;align-items:center;gap:7px;padding:10px 13px;
+  background:var(--card2);border-bottom:1px solid var(--border);
+}
+.rfd-sec .rfd-bar i{width:9px;height:9px;border-radius:50%;display:block;flex:0 0 auto}
+.rfd-sec .rfd-bar i:nth-child(1){background:#ff5f57}
+.rfd-sec .rfd-bar i:nth-child(2){background:#febc2e}
+.rfd-sec .rfd-bar i:nth-child(3){background:#28c840}
+.rfd-sec .rfd-bar span{
+  margin-left:9px;font-size:11px;color:var(--muted);letter-spacing:.05em;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.rfd-sec .rfd-shot{width:100%;height:auto;display:block;border:0;border-radius:0}
+.rfd-sec .rfd-ph{border:0;border-radius:0;background:var(--card2);padding:62px 12px}
+
+/* troubleshooting card */
+.rfd-sec .rfd-faq{padding:8px 22px}
+.rfd-sec .rfd-faq p{border-bottom:1px solid var(--border);padding-bottom:14px}
+.rfd-sec .rfd-faq p:last-child{border-bottom:0}
+
+@media (max-width:767px){
+  .rfd-sec .rfd-h{font-size:19px}
+  .rfd-sec .rfd-sub{font-size:20px}
+  .rfd-sec .rfd-intro{font-size:15.5px}
+  .rfd-sec .rfd-bar{padding:8px 11px}
+  .rfd-sec .rfd-bar i{width:7px;height:7px}
+  .rfd-sec .rfd-bar span{font-size:10px}
+  .rfd-sec .rfd-frame{border-radius:11px}
+}

@@ -29,6 +29,8 @@
                         <a href="<?= build_main_domain_url('/payout-rates') ?>"><?= __('Publisher Rates') ?></a>
                         <a href="<?= build_main_domain_url('/pages/payment-proof') ?>"><?= __('Payment Proof') ?></a>
                         <a href="<?= build_main_domain_url('/blog') ?>"><?= __('Blog') ?></a>
+                        <a href="<?= build_main_domain_url('/pages/how-to-download') ?>"><?= __('How To Download') ?></a>
+                        <a href="<?= build_main_domain_url('/pages/earn-money') ?>"><?= __('Earn Money') ?></a>
                         <a href="<?= build_main_domain_url('/page/api') ?>"><?= __('API Docs') ?></a>
                     </div>
                 </div>
