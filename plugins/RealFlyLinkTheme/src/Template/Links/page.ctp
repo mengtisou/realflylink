@@ -40,24 +40,24 @@ $hidden_class = $show_split ? '' : 'hidden';
         </div>
     <?php endif; ?>
 
-    <!-- <?php if ($post): ?>
-        <div class="blog-item">
-            <div class="page-header">
-                <h3>
-                    <small><a href="<?= build_main_domain_url('/blog') ?>"><?= __('From Our Blog') ?>:</a>
-                    </small>
-                    <a href="<?= build_main_domain_url('/blog/' . $post->id . '-' . $post->slug) ?>"
-                        class="rf-blog-post-link">
-                        <?= h($post->title) ?>
-                    </a>
-                </h3>
+    <?php if (!empty($link->title)) : ?>
+        <div class="rf-link-confirm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <div class="rf-link-confirm-text">
+                <div class="rf-link-confirm-label"><?= __('Your download') ?></div>
+                <div class="rf-link-confirm-title"><?= h($link->title) ?></div>
+                <?php if (!empty($link->description)) : ?>
+                    <div class="rf-link-confirm-desc"><?= h($link->description) ?></div>
+                <?php endif; ?>
             </div>
-            <div class="blog-content"><?= $post->description ?></div>
         </div>
-    <?php endif; ?> -->
+    <?php endif; ?>
 
     <div class="rf-download-hint">
-        <?= __('Complete the steps below to unlock your get link download') ?>
+        <?= __('Complete the steps below to unlock your download') ?>
     </div>
     <div class="rf-download-hint-arrow">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B060E8"
@@ -132,7 +132,7 @@ $hidden_class = $show_split ? '' : 'hidden';
         </div>
     <?php endif; ?>
 
-        <?php if ($post): ?>
+    <?php if ($post): ?>
         <div class="blog-item">
             <div class="page-header">
                 <h3>
