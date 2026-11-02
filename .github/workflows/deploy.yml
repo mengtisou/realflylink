@@ -1,0 +1,124 @@
+name: Deploy to Hetzner
+
+# Deploys realflylink to the Hetzner server over SSH whenever main changes.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions -> Secrets):
+#   HETZNER_HOST     server IP or hostname, e.g. 178.105.135.4
+#   HETZNER_USER     SSH user that owns the site folder (a dedicated "deploy" user, not root)
+#   HETZNER_SSH_KEY  private key for that user
+# Optional secret:
+#   HETZNER_KNOWN_HOSTS  output of `ssh-keyscan -t ed25519 <host>` taken from a trusted network.
+#                        If unset, the host key is fetched at deploy time (trust on first use).
+#
+# Required repository variable (Settings -> Secrets and variables -> Actions -> Variables):
+#   DEPLOY_PATH      absolute path of the realflylink folder on the server (the folder that
+#                    contains webroot/, src/, config/), e.g. /var/www/realflylink
+#
+# Only realflylink's own folder is written to. Nothing else on the server is touched.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+      HETZNER_USER: ${{ secrets.HETZNER_USER }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check configuration
+        run: |
+          missing=0
+          for v in HETZNER_HOST HETZNER_USER DEPLOY_PATH; do
+            if [ -z "${!v}" ]; then echo "::error::$v is not set"; missing=1; fi
+          done
+          if [ -z "${{ secrets.HETZNER_SSH_KEY }}" ]; then echo "::error::HETZNER_SSH_KEY is not set"; missing=1; fi
+          case "$DEPLOY_PATH" in
+            /|/root|/root/*|/home|/etc*|/usr*|/var|/var/www) echo "::error::Refusing to deploy to DEPLOY_PATH=$DEPLOY_PATH"; missing=1 ;;
+            /*) ;;
+            *) echo "::error::DEPLOY_PATH must be an absolute path"; missing=1 ;;
+          esac
+          exit $missing
+
+      - name: PHP syntax check
+        run: |
+          find src config plugins webroot -name '*.php' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Set up SSH
+        env:
+          SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.HETZNER_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          if [ -n "$KNOWN_HOSTS" ]; then
+            printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -T 15 -H "$HETZNER_HOST" > ~/.ssh/known_hosts
+          fi
+          cat > ~/.ssh/config <<CFG
+          Host deploy-target
+            HostName $HETZNER_HOST
+            User $HETZNER_USER
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          CFG
+
+      - name: Check server PHP version (PHP2Shell, CVE-2026-109618 / CVE-2026-109619)
+        run: |
+          ver=$(ssh deploy-target 'php -r "echo PHP_VERSION;"' || true)
+          echo "Server PHP CLI version: ${ver:-unknown}"
+          ok=$(php -r '
+            $v = $argv[1];
+            if ($v === "") { echo "unknown"; exit; }
+            $min = ["8.5" => "8.5.12", "8.4" => "8.4.27", "8.3" => "8.3.36", "8.2" => "8.2.35"];
+            $branch = implode(".", array_slice(explode(".", $v), 0, 2));
+            echo isset($min[$branch]) && version_compare($v, $min[$branch], ">=") ? "yes" : "no";
+          ' "$ver")
+          if [ "$ok" = "no" ]; then
+            echo "::warning::Server PHP $ver is vulnerable to PHP2Shell. Upgrade to 8.2.35 / 8.3.36 / 8.4.27 / 8.5.12 or newer, then restart PHP-FPM."
+          elif [ "$ok" = "unknown" ]; then
+            echo "::warning::Could not read the server PHP version. Check it is patched for PHP2Shell."
+          fi
+          echo "Note: this is the CLI version. Confirm PHP-FPM uses the same version (php-fpm -v)."
+
+      - name: Upload files
+        run: |
+          ssh deploy-target "test -d '$DEPLOY_PATH/webroot' || { echo 'DEPLOY_PATH does not look like the realflylink folder (no webroot/)'; exit 1; }"
+          # No --delete: files that exist only on the server (vendor/, uploads, config) are never removed.
+          rsync -az --itemize-changes \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'vendor/' \
+            --exclude 'tmp/' \
+            --exclude 'logs/' \
+            --exclude 'config/app.php' \
+            --exclude 'config/app_local.php' \
+            --exclude 'config/email.php' \
+            --exclude 'config/.env' \
+            --exclude 'tests/' \
+            ./ "deploy-target:$DEPLOY_PATH/"
+
+      - name: Clear app cache
+        run: |
+          ssh deploy-target "cd '$DEPLOY_PATH' && rm -rf tmp/cache/models/* tmp/cache/persistent/* tmp/cache/views/* 2>/dev/null; touch tmp/cache/models/empty tmp/cache/persistent/empty tmp/cache/views/empty 2>/dev/null; true"
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
