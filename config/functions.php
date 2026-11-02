@@ -1050,8 +1050,14 @@ function createEmailFile()
         'email_smtp_tls' => 'false',
     ];
 
+    // Values are written inside single-quoted PHP strings in config/email.php, so both the
+    // backslash and the single quote must be escaped. Escaping only the quote lets a value
+    // such as `\'; system($_GET[1]); //` break out of the string and inject PHP code.
+    // Line breaks and NUL bytes are stripped as defence in depth.
     $config = array_map(function ($value) {
-        return addcslashes($value, '\'');
+        $value = str_replace(["\0", "\r", "\n"], '', (string)$value);
+
+        return addcslashes($value, "\\'");
     }, $config);
 
     $email_smtp_security = $options->findByName('email_smtp_security')->first()->value;
@@ -1081,9 +1087,13 @@ function createEmailFile()
     $file = new \Cake\Filesystem\File(CONFIG . 'email.php');
     $content = $file->read();
 
+    // strtr() replaces all placeholders in a single pass, so a value that itself contains
+    // a `{placeholder}` token is never substituted again.
+    $replacements = [];
     foreach ($config as $configKey => $configValue) {
-        $content = str_replace('{' . $configKey . '}', $configValue, $content);
+        $replacements['{' . $configKey . '}'] = $configValue;
     }
+    $content = strtr($content, $replacements);
 
     if (!$file->write($content)) {
         \Cake\Log\Log::write('debug', 'Could not write email.php file.');
