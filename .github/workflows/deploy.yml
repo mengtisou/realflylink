@@ -82,21 +82,46 @@ jobs:
 
       - name: Check server PHP version (PHP2Shell, CVE-2026-109618 / CVE-2026-109619)
         run: |
+          # Ubuntu/Debian backport security fixes without changing the upstream number
+          # (a patched Ubuntu 24.04 still reports 8.3.6), so check the package version too.
           ver=$(ssh deploy-target 'php -r "echo PHP_VERSION;"' || true)
-          echo "Server PHP CLI version: ${ver:-unknown}"
-          ok=$(php -r '
-            $v = $argv[1];
-            if ($v === "") { echo "unknown"; exit; }
-            $min = ["8.5" => "8.5.12", "8.4" => "8.4.27", "8.3" => "8.3.36", "8.2" => "8.2.35"];
-            $branch = implode(".", array_slice(explode(".", $v), 0, 2));
-            echo isset($min[$branch]) && version_compare($v, $min[$branch], ">=") ? "yes" : "no";
-          ' "$ver")
-          if [ "$ok" = "no" ]; then
-            echo "::warning::Server PHP $ver is vulnerable to PHP2Shell. Upgrade to 8.2.35 / 8.3.36 / 8.4.27 / 8.5.12 or newer, then restart PHP-FPM."
-          elif [ "$ok" = "unknown" ]; then
-            echo "::warning::Could not read the server PHP version. Check it is patched for PHP2Shell."
+          branch=$(echo "$ver" | cut -d. -f1,2)
+          pkg=""
+          if [ -n "$branch" ]; then
+            pkg=$(ssh deploy-target "dpkg-query -W -f='\${Version}' php${branch}-common 2>/dev/null" || true)
           fi
-          echo "Note: this is the CLI version. Confirm PHP-FPM uses the same version (php-fpm -v)."
+          echo "Server PHP CLI version: ${ver:-unknown}"
+          echo "Package php${branch}-common: ${pkg:-not installed via apt}"
+
+          case "$branch" in
+            8.5) upstream_min=8.5.12 ;;
+            8.4) upstream_min=8.4.27 ;;
+            8.3) upstream_min=8.3.36 ;;
+            8.2) upstream_min=8.2.35 ;;
+            *)   upstream_min="" ;;
+          esac
+          # Distribution packages known to carry the fix (Ubuntu security tracker).
+          case "$pkg" in
+            8.3.6-0ubuntu0.24.04.*) distro_min=8.3.6-0ubuntu0.24.04.13 ;;
+            8.1.2-1ubuntu2*)        distro_min=8.1.2-1ubuntu2.28 ;;
+            *)                      distro_min="" ;;
+          esac
+
+          status=vulnerable
+          if [ -z "$ver" ]; then
+            status=unknown
+          elif [ -n "$distro_min" ]; then
+            dpkg --compare-versions "$pkg" ge "$distro_min" && status=patched
+          elif [ -n "$upstream_min" ] && dpkg --compare-versions "$ver" ge "$upstream_min"; then
+            status=patched
+          fi
+
+          case "$status" in
+            patched) echo "PHP2Shell: patched." ;;
+            unknown) echo "::warning::Could not read the server PHP version. Check it is patched for PHP2Shell." ;;
+            *)       echo "::warning::Server PHP ${ver} (package ${pkg:-n/a}) looks vulnerable to PHP2Shell. Run 'apt update && apt upgrade' on the server and restart PHP-FPM." ;;
+          esac
+          echo "Note: this checks the CLI. Make sure PHP-FPM uses the same version and was restarted after upgrading."
 
       - name: Upload files
         run: |
